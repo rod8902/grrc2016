@@ -1,0 +1,414 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<title>TAP-plugins</title>
+<meta name="generator" content="GNU Emacs 21.2.1">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="Tom's Audio Processing plugins for
+audio engineering on the Linux platform.">
+<meta name="keywords" content="TAP-plugins TAP Reverb Editor
+Reverberator Equalizer EQ Vibrato Tremolo Echo Tom Szilagyi LADSPA
+JACK Plugin Linux Audio">
+<meta name="author" content="Tom Szilagyi">
+</head>
+
+<body bgcolor=#ffffff>
+<table cellpadding="5" cellspacing="0" border="0" bgcolor=#ffffc0 width="100%">
+<tr><td>
+<font size="+2" color=#004060><b>TAP</b>-plugins</font><br>
+<font color=#004060>Tom's Audio Processing plugins</font><br>
+<font size="-1" color=#004060><i>for audio engineering on the Linux platform</i></font>
+</td><td>
+<center>
+<a href="../index.html">[ Home ]</a>
+<a href="../ladspa.html">[ LADSPA plugins ]</a>
+<a href="../reverbed.html">[ TAP Reverb Editor ]</a>
+</center>
+<hr>
+<center>
+<a href="install.html">[ Compiling & installing ]</a>
+<a href="manual.html">[ User Manual ]</a>
+</center>
+</td></tr>
+</table>
+
+<br><br>
+<font size="5">TAP Reverb Editor</font><br>
+<font size="6"><b>User Manual</b></font>
+
+
+<h2>Starting the program</h2>
+<p>
+If the program is <a href="install.html">correctly installed</a> on
+your system, all you have to do is type
+<code>reverbed</code>. However, there are a few command-line
+parameters that are worth mentioning:
+</p>
+
+<ul>
+
+<li><b>-a</b>: by default, the program does not connect its inputs and
+outputs to any JACK port. When this option is used, the program will
+try to connect its inputs to the first two hardware capture ports, and
+its outputs to the first two hardware playback ports.</li>
+
+<li><b>-i</b>: same as <b>-a</b>, but connect only the inputs to
+hardware capture ports.</li>
+
+<li><b>-o</b>: same as <b>-a</b>, but connect only the outputs to
+hardware playback ports.</li>
+
+<li><b>-c <i>&lt;client_name&gt;</i></b>: use
+<i>&lt;client_name&gt;</i> instead of the default 'reverbED' when
+registering to JACK. You need this option if you want to run more than
+one instance of the program at the same time, since JACK client
+programs must have unique client names.</li>
+
+</ul>
+
+
+<h2>The main window</h2>
+
+<img src="editor1.png" alt="Editor window (1)">
+
+<p>
+The main window (as shown above) lets you do most of the work. It
+consists of three areas: the top part provides controls for adjusting
+global parameters of the reverberation unit, as well as three buttons
+to launch additional windows (<i>Port Setup</i>, <i>Save / Export</i>,
+<i>About</i>). The middle part (with the combo box and the <i>New</i>,
+<i>Copy</i>, <i>Rename</i>, <i>Del</i> buttons) lets you manage your
+Reverb Types by creating new ones from scratch or from an existing
+one, as well as renaming and deleting them. Finally, the notebook
+provides controls to adjust internal parameters of a chosen Reverb
+Type. So let's describe them in detail.
+</p>
+
+
+<h2>Global parameters</h2>
+
+<ul>
+
+<li><b>Comb filters</b>: this toggle button switches processing of
+comb filters on/off, the default being switched on. Comb filters
+simulate the early reflections part of the reverb sound.</li>
+
+<li><b>Allpass filters</b>: switches processing of allpass filters
+on/off, the default being switched on. Allpass filters simulate the
+dense 'tail' of the reverb; they add more depth to the reverberated
+sound.</li>
+
+<li><b>Bandpass filter</b>: switches the bandpass filter on/off, the
+default being switched on. The bandpass filter has a low and high
+cutoff frequency; the spectral content that falls outside this range
+is attenuated. It processes the sound coming from the comb and allpass
+filters, and makes the effect more natural by filtering out those
+frequencies that normally do not occur in natural reverberation.</li>
+
+<li><b>Enhanced Stereo</b>: adds spatial spread to the reverb sound,
+largely adding to its depth and dimension. It sounds so great, it's
+best to always leave this on. It does not consume extra CPU, just
+changes the way internal parameters are calculated.</li>
+
+</ul>
+
+<p>
+The <a href="../ladspa/reverb.html">TAP Reverberator</a> manual has
+detailed advice about setting the following plugin parameters.
+</p>
+
+<ul>
+
+<li><b>Decay</b>: adjusts a mostly important global parameter of the
+whole effect. Larger values create depth, while smaller ones create
+the feel of tighter, smaller spaces.</li>
+
+<li><b>Dry Level</b>: adjusts the amount of the incoming dry signal in
+the output signal.</li>
+
+<li><b>Wet Level</b>: adjusts the amount of processed signal in the
+output signal.</li>
+
+</ul>
+
+<p>
+Some people will agree that the <b>BYPASS</b> button provides the most
+useful feature of the program. ;-)
+</p>
+
+
+<h2>Managing Reverb Types</h2>
+
+<p>
+It's all about creating the perfect sounding reverb for your own use!
+TAP Reverb Editor comes with a set of Reverb Types, but the whole
+point is that you can create your own ones. Let's see what the program
+provides to this end.
+</p>
+
+<ul>
+
+<li>The <b>Reverb Type</b> selector combo box holds the name of all
+currently available Reverb Types. Use it to select a Reverb Type to
+listen to, or operate on.</li>
+
+</ul>
+
+<p>
+These buttons provide functions for Reverb Type management:
+</p>
+
+<ul>
+
+<li><b>New</b>: create a new Reverb Type from scratch. After you enter
+the new name in the dialog that pops up when you press this button, an
+'empty' Reverb Type with that name is created and inserted into the
+list, so it will show up in the combo box. The new Reverb Type is not
+completely empty: it has one comb filter and one allpass filter, with
+their parameters set to default values. The bandpass low and high
+cutoff frequencies are also set to default values.</li>
+
+<li><b>Copy</b>: create a new Reverb Type, starting out as a copy of
+the currently selected Reverb Type. Use this to enhance existing
+Reverb Types while keeping the old version as well. Or create a
+working copy of an already satisfactory Reverb Type for random
+experimentations without spoiling the original.</li>
+
+<li><b>Rename</b>: change the name of the currently selected Reverb
+Type.</li>
+
+<li><b>Delete</b>: remove a Reverb Type that you don't like.</li>
+
+</ul>
+
+<p>
+Any changes you make to any Reverb Type (including creating, renaming
+and deleting them) remains in memory until you explicitly tell the
+program to save Reverb Types to file (more on saving later). So if you
+mess something up, just exit the program without using the <i>Save /
+Export</i> button, and all your changes will be gone.
+</p>
+
+
+<h2>Editing a Reverb Type</h2>
+
+<p>
+Reverberation is modelled by a set of comb filters, allpass filters
+and a bandpass filter. The maximum number of comb filters is 20, and
+the same limit applies to allpass filters. (It's easy to heighten this
+limit in the source code, but that is beyond the scope of this
+manual.)
+</p>
+
+
+<h3>Mastering the filters</h3>
+
+<p>
+The notebook pages <i>Comb Filters</i> and
+<i>Allpass Filters</i> consist of a graphical display representing
+each comb/allpass filter with a vertical line. There are controls to
+cycle through all filters (<i>Next</i> and <i>Prev</i> buttons),
+add/remove filters (<i>New</i>, <i>Del</i>) and adjust the parameters
+of the currently selected filter (spin/slider controls at the bottom
+of the page). The currently selected filter is highlighted in the
+graphical display.
+</p>
+<p>
+The reverb sound will immediately follow the changes you make to
+filter settings. It is possible to set filters so hot that they start
+operating as oscillators instead of filters (usually at extreme high
+feedback <i>and</i> extreme low delay time settings). If this happens
+while you are editing a Reverb Type, <b>don't panic</b>. Just hit the
+BYPASS button -- that will zero out all internal buffers so everything
+will cool down. While the effect is bypassed, move the filter
+parameters that caused trouble back to the 'safe area', then re-enable
+the plugin.
+</p>
+
+
+<h4>Comb filters</h4>
+
+<p>
+Comb filters are responsible for creating early reflections. They have
+three parameters: <i>Delay</i>, <i>Feedback</i> and
+<i>Freq. Response</i>. The delay time is proportional to the distance
+the sound travels before it reaches your ear as an early
+reflection. As each comb filter simulates a certain area where
+acoustic reflection occurs (a wall or the ceiling for example, but
+possibly other objects as well), the delay time you set determines the
+virtual distance of this object from the sound source and the
+listener. In the graphical display, the horizontal position of the
+line representing the filter depends on this parameter.
+</p>
+<p>
+Various kinds of materials reflect and absorb acoustic energy in
+various degrees. The feedback parameter provides control of this
+effect. For something that is a very good reflector (a flat brick-wall
+for example) a reasonably high feedback value should be used. In the
+graphical display, the length of the line representing the filter
+depends on this parameter.
+</p>
+<p>
+There is a secondary effect taken into account when simulating early
+reflections: not only does the reflection ratio of acoustic surfaces
+vary from one to another, but the reflection ratio of surfaces is also
+frequency-dependent. Higher frequencies are attenuated more, thus high
+frequency components decay in a shorter time. The <i>Frequency
+Response</i> slider sets the amount of high attenuation for a given
+comb filter. There is nearly no extra attenuation of high frequencies
+when it is set to zero. In the graphical display, the color of the
+line representing the filter depends on this parameter. Filters with
+lower Freq. Response values (which mean smaller extra attenuation of
+high frequencies) will be plot with a 'hotter' shade.
+</p>
+
+
+<h4>Allpass filters</h4>
+
+<p>
+Allpass filters are responsible for creating a reverb tail that makes
+the reverberation thicker and more natural sounding. They have two
+parameters, identical to the first two parameters of comb filters.
+Note, however, that the maximum delay time of allpass filters is about
+an order of magnitude lower than of comb filters. The graphical
+representation of allpass filters is done in the same way as comb
+filters, but here each line has the same color.
+</p>
+
+<h4>Bandpass filter</h4>
+
+<p>
+This notebook page provides two sliders to set the low and high cutoff
+frequencies of the bandpass filter.
+</p>
+
+
+
+<h3>Impulse Response: a visual aid</h3>
+
+<img src="editor2.png" alt="Editor window (2)">
+
+<p>
+A cornerstone of linear systems theory is that any linear system (such
+as a complex digital filter like this reverb) is unequivocally
+determined by its impulse response. Apart from this theoretical
+curiosity, it may be useful to take a look at the impulse response of
+a Reverb Type while inspecting or modifying it.
+</p>
+<p>
+The <i>Length</i> slider below the plot lets you choose the end time
+of the simulation (with the start point being at time zero). The time
+needed to finish plotting is proportional to the time simulated. As
+this is quite a CPU-demanding operation, it is never performed
+automatically: you have to press the <i>Recalculate</i> button every
+time you want to see a new plot of the currently active Reverb Type.
+</p>
+<p>
+Please note that the simulation shows the impulse response of the
+'clean' reverb: the settings of the dry and wet levels as well as the
+BYPASS button are irrelevant. The decay time setting and the global
+switches (Comb Filters, Allpass Filters, Bandpass Filter, Enhanced
+Stereo) do affect the plot, though.
+</p>
+
+
+
+<h2>Port Setup</h2>
+
+<img src="ports.png" alt="Port Setup dialog">
+
+<p>
+When you press the <i>Port Setup</i> button, a dialog similar to the
+above pops up. It is very much like the input/output connections
+dialog of a mixer-strip in Ardour, the only difference being that here
+the input and output ports setup is performed in one dialog.
+</p>
+<p>
+The upper half of the window handles connections to the input
+ports. On the left, each input port has a list of its current
+connections. By clicking on any list item, that connection will be
+removed. The <i>Clear connections</i> button removes all connections
+from the input ports.
+</p>
+<p>
+The notebook on the right has a page for all client programs and
+hardware devices available to the JACK server. By selecting a page,
+you will see a list of that client's output ports. Clicking on a list
+item connects the port to the currently selected input port (which has
+a blue header). You can change the selected input port by clicking on
+the unselected (grey) list header. When you add connections to the
+input ports, the selection alters between the two inputs.
+</p>
+<p>
+Connecting the outputs can be performed in the same manner. If you
+start up another JACK client while the dialog is open, you may press
+the <i>Rescan</i> button to make it appear in the notebooks on the
+right. Closing and re-opening the dialog has the same effect, since
+JACK ports are re-read and a new dialog instance is built every time.
+</p>
+
+
+
+<h2>Save / Export</h2>
+
+<img src="export.png" alt="Save / Export dialog">
+
+<h3>Saving your work</h3>
+
+<p>
+After you have had a good time messing around with Reverb Types, you
+may want to leave everything as it was. In this case, just exit the
+program and every change you made will be lost. However, there may be
+times when you do have something to save: in this case, you will want
+to make the changes permanent. So press the <i>Save / Export</i>
+button, and the above dialog will appear.
+</p>
+<p>
+Since there is quite a lengthy explanation included in this dialog,
+things are pretty straightforward. The program stores everything there
+is to Reverb Types in one file, and reads it every time you start the
+program. The file read on program startup is always
+<code>~/.reverbed</code> (a file called <code>.reverbed</code> in your
+home directory), but you have the option to write to another file in
+case you want to maintain different versions of the file.
+</p>
+
+<blockquote>
+<h4><u>A request to all users</u></h4>
+<i>The author of this program kindly asks you that if you develop any
+new Reverb Type that you think would be of general interest, please
+send him your </i><code>.reverbed </code> <i>file via e-mail, along
+with your name (if your mail headers don't tell it all). Good Reverb
+Types will be included in the next release (with due credit given to
+the original author, that's why I need your name). This is a perfect
+way to give something back for this software, and other users will
+benefit from it as well. Thank you.</i> </blockquote>
+
+
+<h3>Exporting to TAP Reverberator</h3>
+
+<p>
+Since this program is a JACK client, it cannot be automated from
+within powerful hosts such as Ardour. However, if you created a good
+Reverb Type, the program supports transferring its data into <a
+href="../ladspa/reverb.html">TAP Reverberator</a>, which is a LADSPA
+plugin for the same reverberation algorithm. It has the advantage of
+being automatable on Ardour mixes, but it has no capabilities for
+editing Reverb Types (that's why TAP Reverb Editor was created, after
+all).
+</p>
+<p>
+Exporting is the process of making the set of Reverb Types in TAP
+Reverberator be identical to the set of Reverb Types in this
+program. To do this, you have to export two files named
+<code>tap_reverb_presets.h</code> and <code>tap_reverb.rdf</code> to
+an arbitrary place on your computer storage. In the source code
+directory of the TAP-plugins LADSPA plugin package you will find two
+files with these names. Overwrite them with the newly exported ones,
+and re-compile and re-install the TAP-plugins package. That's all, you
+will have the same Reverb Types available in TAP Reverberator after
+that. Pretty cool, eh?
+</p>
+</body></html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<title>TAP-plugins</title>
+<meta name="generator" content="GNU Emacs 21.2.1">
+<meta http-equiv="Content-Type" content="text/html;
+charset=iso-8859-1">
+<meta name="description" content="Tom's Audio Processing plugins for
+audio engineering on the Linux platform.">
+<meta name="keywords" content="TAP-plugins TAP Reverb Editor
+Reverberator Equalizer EQ Vibrato Tremolo Echo Tom Szilagyi LADSPA
+JACK Plugin Linux Audio">
+<meta name="author" content="Tom Szilagyi">
+</head>
+
+<body bgcolor=#ffffff>
+<table cellpadding="5" cellspacing="0" border="0" bgcolor=#ffffc0
+width="100%">
+<tr><td>
+<font size="+2" color=#004060><b>TAP</b>-plugins</font><br>
+<font color=#004060>Tom's Audio Processing plugins</font><br>
+<font size="-1" color=#004060><i>for audio engineering on the Linux
+platform</i></font>
+</td><td>
+<center>
+<a href="../index.html">[ Home ]</a>
+<a href="../ladspa.html">[ LADSPA plugins ]</a>
+<a href="../reverbed.html">[ TAP Reverb Editor ]</a>
+</center>
+<hr>
+<center>
+<a href="releases.html">[ Releases ]</a>
+<a href="general.html">[ General Info ]</a>
+<a href="manuals.html">[ Plugin Manuals ]</a>
+</center>
+</td></tr>
+</table>
+
+<blockquote>
+<a href="autopan.html">[&nbsp;TAP&nbsp;AutoPanner&nbsp;]</a>
+<a href="chorusflanger.html">[&nbsp;TAP&nbsp;Chorus/Flanger&nbsp;]</a>
+<a href="deesser.html">[&nbsp;TAP&nbsp;DeEsser&nbsp;]</a>
+<a href="dynamics.html">[&nbsp;TAP&nbsp;Dynamics&nbsp;(Mono&nbsp;&&nbsp;Stereo)&nbsp;]</a>
+<a href="eq.html">[&nbsp;TAP&nbsp;Equalizer&nbsp;and&nbsp;TAP&nbsp;Equalizer/BW&nbsp;]</a>
+<a href="doubler.html">[&nbsp;TAP&nbsp;Fractal&nbsp;Doubler&nbsp;]</a>
+<a href="pinknoise.html">[&nbsp;TAP&nbsp;Pink/Fractal&nbsp;Noise&nbsp;]</a>
+<a href="pitch.html">[&nbsp;TAP&nbsp;Pitch&nbsp;Shifter&nbsp;]</a>
+<a href="reflector.html">[&nbsp;TAP&nbsp;Reflector&nbsp;]</a>
+<a href="reverb.html">[&nbsp;TAP&nbsp;Reverberator&nbsp;]</a>
+<a href="rotspeak.html">[&nbsp;TAP&nbsp;Rotary&nbsp;Speaker&nbsp;]</a>
+<a href="limiter.html">[&nbsp;TAP&nbsp;Scaling&nbsp;Limiter&nbsp;]</a>
+<a href="sigmoid.html">[&nbsp;TAP&nbsp;Sigmoid&nbsp;Booster&nbsp;]</a>
+<a href="echo.html">[&nbsp;TAP&nbsp;Stereo&nbsp;Echo&nbsp;]</a>
+<a href="tremolo.html">[&nbsp;TAP&nbsp;Tremolo&nbsp;]</a>
+<a href="tubewarmth.html">[&nbsp;TAP&nbsp;TubeWarmth&nbsp;]</a>
+<a href="vibrato.html">[&nbsp;TAP&nbsp;Vibrato&nbsp;]</a>
+</blockquote>
+
+<h2>TAP Reflector</h2>
+<img src="tap_reflector.png" alt="[TAP Reflector GUI as shown in Ardour]">
+<p>
+This plugin creates a psychedelic reverse audio effect. Overlapping
+time intervals of incoming samples are treated as blocks called
+'fragments'. Each fragment is reversed in time, and faded in and out
+while played back to the output, hence creating a nearly constant
+signal level with the mixture resembling a normal reverse-played track
+-- with the difference that the audio actually progresses forward,
+only pieces of it are reversed.
+</p>
+
+<h3>General information</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th align="left">Unique ID</th><td>2154</td>
+<tr><th align="left">I/O ports</th><td>1 input / 1 output</td>
+<tr><th align="left">CPU usage (44.1 kHz)</th><td>4.5%</td>
+<tr><th align="left">CPU usage (96 kHz)</th><td>9.7%</td>
+<tr><th align="left">Hard RT Capable</th><td>Yes</td></tr>
+<tr><th align="left">In-place operation</th><td>Supported</td>
+<tr><th align="left">run_adding() function</th><td>Provided</td>
+</table>
+
+
+<h3>Usage tips</h3>
+<p>
+The <i>Fragment Length</i> setting has a great impact on the sound of
+the effect. It is best to set it to approximately match the tempo of
+the track, so the Fragment Length is equal to the time of one
+measure. Other settings may also be interesting (particularly larger
+ones). This is a very experimental effect, so experimentation is also
+required when using it.
+</p>
+<p>
+When mixed together with the dry signal, the effect is somewhat
+similar to reverse reverberation. If you aim for such a sound, set the
+<i>Wet Level</i> a few dB-s below the <i>Dry Level</i>. On the other
+hand, raise the Wet Level if you want a really psychedelic effect. It
+is especially worth trying this plugin on sustained guitar and vocal
+tracks. Percussive sounds also create a very characteristic atmosphere
+when played backwards.
+</p>
+
+
+<h3>Summary of user controls</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th>name</th><th>min. value</th><th>default value</th><th>max. value</th></tr>
+
+<tr align="center"><td>Fragment Length [ms]</td>
+<td>20</td>
+<td>415</td>
+<td>1600</td></tr>
+<tr align="center"><td>Dry Level [dB]</td>
+<td>-90</td>
+<td>-90</td>
+<td>20</td></tr>
+<tr align="center"><td>Wet Level [dB]</td>
+<td>-90</td>
+<td>0</td>
+<td>20</td></tr>
+
+</table>
+
+
+<h3>Notes</h3>
+<p>
+If for some reason you need longer Fragment Length times, it is safe
+to raise the value set by the <code>#define MAX_FRAGMENT_LEN</code> at
+the top of <code>tap_reflector.c</code>.
+</p>
+</body></html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<title>TAP-plugins</title>
+<meta name="generator" content="GNU Emacs 21.2.1">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="Tom's Audio Processing plugins for
+audio engineering on the Linux platform.">
+<meta name="keywords" content="TAP-plugins TAP Reverb Editor
+Reverberator Equalizer EQ Vibrato Tremolo Echo Tom Szilagyi LADSPA
+JACK Plugin Linux Audio">
+<meta name="author" content="Tom Szilagyi">
+</head>
+
+<body bgcolor=#ffffff>
+<table cellpadding="5" cellspacing="0" border="0" bgcolor=#ffffc0 width="100%">
+<tr><td>
+<font size="+2" color=#004060><b>TAP</b>-plugins</font><br>
+<font color=#004060>Tom's Audio Processing plugins</font><br>
+<font size="-1" color=#004060><i>for audio engineering on the Linux platform</i></font>
+</td><td>
+<center>
+<a href="../index.html">[ Home ]</a>
+<a href="../ladspa.html">[ LADSPA plugins ]</a>
+<a href="../reverbed.html">[ TAP Reverb Editor ]</a>
+</center>
+<hr>
+<center>
+<a href="releases.html">[ Releases ]</a>
+<a href="general.html">[ General Info ]</a>
+<a href="manuals.html">[ Plugin Manuals ]</a>
+</center>
+</td></tr>
+</table>
+
+<h1>Getting the latest source and contributing</h1>
+<p>
+If you suspect a bug, or just want to use the "bleeding edge", please
+use the source control repository at
+<a href="https://github.com/tomszilagyi/tap-plugins">GitHub</a>.
+</p>
+
+<p>
+You can clone the repository with the following command:
+</p>
+
+<code>
+git clone https://github.com/tomszilagyi/tap-plugins.git
+</code>
+
+<p>
+Feel free to fork the repo and send me pull requests via GitHub or
+just plain oldschool patch files (generated with <code>diff -up</code>)
+via email.
+</p>
+
+<p>
+However, because git normally contains nothing other than the latest
+tarball release (this is a small -- and after 10 years, mostly dormant
+-- project, after all), this is not required. You are welcome to send
+bugreports against the latest tarball version.
+</p>
+
+<h1>Releases</h1>
+<p>
+Please go to the <a
+href="http://sourceforge.net/projects/tap-plugins">SourceForge project
+page</a> to download tarball releases listed in the following table.
+The source repository of the LADSPA plugins is on
+<a href="https://github.com/tomszilagyi/tap-plugins">GitHub</a>; please
+use that if you'd like to contribute.
+</p>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th>version</th><th>date</th><th>comments</th></tr>
+
+<tr><td valign="top">
+0.7.3
+</td><td valign="top">
+2014-05-26
+</td><td>
+Bugfix release: a rewritten Makefile to solve problems with the linking step.
+</td></tr>
+
+<tr><td valign="top">
+0.7.2
+</td><td valign="top">
+2012-07-08
+</td><td>
+Bugfix release: fix Scaling Limiter buffer boundary / sharp peaks / level jump problem.
+</td></tr>
+
+<tr><td valign="top">
+0.7.1
+</td><td valign="top">
+2009-08-17
+</td><td>
+Bugfix release: 64-bit compatibility, GCC compiler warning elimination,
+denormal fixes, plus fixed some uninitialised variables.<br>
+</td></tr>
+
+<tr><td valign="top">
+0.7.0
+</td><td valign="top">
+2004-08-17
+</td><td>
+Added new plugins TAP Chorus/Flanger, TAP Sigmoid Booster
+and TAP TubeWarmth.<br>
+Fixed denormal FP problem leading to runaway CPU usage in TAP Stereo
+Echo.<br>
+</td></tr>
+
+<tr><td valign="top">
+0.6.0
+</td><td valign="top">
+2004-06-22
+</td><td>
+Added new plugins TAP Fractal Doubler, TAP Pink/Fractal Noise
+and TAP Reflector.<br>
+Enhanced the internal workings of TAP Reverberator to result in much
+better reverb sound.<br>
+Fixed CPU runaway problems in TAP Reverberator and TAP Dynamics (Mono
+& Stereo).<br>
+Added new Reverb Types: Ambience, Ambience (Thick), Ambience (Thick) -
+HD, Cathedral, Cathedral - HD.<br>
+Complete website/docs redesign, now downloadable as a separate package.
+</td></tr>
+
+<tr><td valign="top">
+0.5.0
+</td><td valign="top">
+2004-05-01
+</td><td>
+Added TAP Dynamics (Mono & Stereo).<br>
+Ardour now supports drop-down lists in plugin GUIs, so there are
+no more long port labels.<br>
+Minor fixes, improvements, new screenshots ;-)
+</td></tr>
+
+<tr><td valign="top">
+0.4.2
+</td><td valign="top">
+2004-03-03
+</td><td>
+TAP Deesser's Monitor control didn't work, apparently because
+my awesome out-of-range protection applied to that input
+didn't let anything but zero get through due to a typo in the
+source. Sigh.
+</td></tr>
+
+<tr><td valign="top">
+0.4.1
+</td><td valign="top">
+2004-03-03
+</td><td>
+Added TAP Equalizer/BW, which is identical to TAP Equalizer but
+provides separate controls to set the bandwidth of each EQ band
+filter.<br>
+Fixed yet another crashing bug in TAP Reverberator (which appears
+to be introduced upon fixing the previous crashing bug).<br>
+</td></tr>
+<tr><td valign="top">
+0.4.0
+</td><td valign="top">
+2004-02-21
+</td><td>
+Added new plugins TAP Pitch Shifter, TAP Rotary Speaker and TAP
+Vibrato.<br>
+Fixed crashing bug in TAP Reverberator (the bug appeared with hosts
+that
+call <code>activate()</code> before <code>connect_port()</code>).<br>
+Fixed lock-up bug in TAP DeEsser (the bug appeared when an input
+sample had +/- INF value).<br>
+Various smaller bugfixes (almost every plugin locked up when control
+input values of +/- INF were appiled).<br>
+</td></tr>
+
+<tr><td valign="top">
+0.3.0
+</td><td valign="top">
+2004-02-04
+</td><td>
+Added new plugins TAP AutoPanner and TAP DeEsser.<br>
+Changed TAP Tremolo code to compute and store the cosine
+table only once on library loading, not for every
+instance.<br>
+Changes were made to the memory management of TAP Limiter.<br>
+</td></tr>
+<tr><td valign="top">
+0.2.0
+</td><td valign="top">
+2004-01-28
+</td><td>
+Added new plugin TAP Scaling Limiter.<br>
+Added Bode diagram to the TAP Equalizer manual.<br>
+Changed versioning from <i>x</i>.<i>y</i>-<i>z</i> to
+<i>x</i>.<i>y</i>.<i>z</i> to fit better in
+Debian, Gentoo and such distributions.<br>
+Moved project to SourceForge.net on 2004-01-29.
+Minor changes to HTML page.
+Changed name from TAP to TAP-plugins.
+</td></tr>
+
+<tr><td valign="top">
+0.1-1
+</td><td valign="top">
+2004-01-25
+</td><td>
+Added RDF support in the form of an <code>.rdf</code> file
+describing the plugins. Hosts that obey RDF metadata should
+have less difficulties displaying plugin GUIs. (*)
+</td></tr>
+
+<tr><td valign="top">
+0.1-0
+</td><td valign="top">
+2004-01-24
+</td><td>
+Initial release. Available plugins: TAP Equalizer, TAP Reverberator,
+TAP Stereo Echo and TAP Tremolo. (*)
+</td></tr>
+
+</table>
+
+<p>
+(*) These versions are not available anymore.
+</p>
+</body></html>

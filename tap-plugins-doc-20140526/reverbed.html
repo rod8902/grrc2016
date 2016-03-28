@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<title>TAP-plugins</title>
+<meta name="generator" content="GNU Emacs 21.2.1">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="Tom's Audio Processing plugins for
+audio engineering on the Linux platform.">
+<meta name="keywords" content="TAP-plugins TAP Reverb Editor
+Reverberator Equalizer EQ Vibrato Tremolo Echo Tom Szilagyi LADSPA
+JACK Plugin Linux Audio">
+<meta name="author" content="Tom Szilagyi">
+</head>
+
+<body bgcolor=#ffffff>
+<table cellpadding="5" cellspacing="0" border="0" bgcolor=#ffffc0 width="100%">
+<tr><td>
+<font size="+2" color=#004060><b>TAP</b>-plugins</font><br>
+<font color=#004060>Tom's Audio Processing plugins</font><br>
+<font size="-1" color=#004060><i>for audio engineering on the Linux platform</i></font>
+</td><td>
+<center>
+<a href="index.html">[ Home ]</a>
+<a href="ladspa.html">[ LADSPA plugins ]</a>
+<a href="reverbed.html">[ TAP Reverb Editor ]</a>
+</center>
+<hr>
+<center>
+<a href="reverbed/install.html">[ Compiling & installing ]</a>
+<a href="reverbed/manual.html">[ User Manual ]</a>
+</center>
+</td></tr>
+</table>
+
+<br><br>
+<font size="6"><b>TAP Reverb Editor</b></font><br>
+<i>An interactive tool for room acoustics simulation</i>
+
+<blockquote>
+Latest version: <b>Release 0</b>
+</blockquote>
+
+<br>
+<p>
+TAP Reverb Editor is the standalone JACK counterpart of the LADSPA
+plugin <a href="ladspa/reverb.html">TAP Reverberator</a>, which is
+part of the TAP-plugins LADSPA plugin set.  This means that the two
+programs/plugins perform the same audio processing, but they have some
+advantages over each other:
+</p>
+
+<ul>
+<li>
+TAP Reverberator is a LADSPA plugin. It has limited capabilities with
+regard to the user interface (besides global plugin parameters, only
+the Reverb Type can be chosen; changing any internal parameter is not
+possible). On the other hand, it can be automated when used in
+powerful host programs such as Ardour.
+</li><li>
+TAP Reverb Editor is a separate JACK application. It has its own
+special user interface that allows for changing any internal
+parameter on-the-fly, as well as plotting the impulse response of
+Reverb Types as a visual aid. On the other hand, it cannot be
+automated from other programs; its main use is to allow for
+developing one's own Reverb Types.
+</li>
+</ul>
+
+<p>
+Reverb Types created with this program can be easily 'exported' into
+the LADSPA version. (Easily means: you have to copy two files and
+re-compile TAP-plugins.) For a detailed description of this process,
+please refer to the <a href="reverbed/manual.html">manual</a>.
+</p>
+<p>
+To get satisfactory results with TAP Reverb Editor, you will need to
+set your system up to run JACK well. See <a
+href="http://jackaudio.org">http://jackaudio.org</a> for details.
+</p>
+<p>
+This program relies on <a href="http://www.gtk.org">The GIMP
+Toolkit</a> (GTK+) version 2.0. You need the GTK+-2.0 development
+libraries correctly installed to be able to compile.
+</p>
+</body></html>

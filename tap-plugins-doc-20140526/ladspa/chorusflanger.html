@@ -1,0 +1,195 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<title>TAP-plugins</title>
+<meta name="generator" content="GNU Emacs 21.2.1">
+<meta http-equiv="Content-Type" content="text/html;
+charset=iso-8859-1">
+<meta name="description" content="Tom's Audio Processing plugins for
+audio engineering on the Linux platform.">
+<meta name="keywords" content="TAP-plugins TAP Reverb Editor
+Reverberator Equalizer EQ Vibrato Tremolo Echo Tom Szilagyi LADSPA
+JACK Plugin Linux Audio">
+<meta name="author" content="Tom Szilagyi">
+</head>
+
+<body bgcolor=#ffffff>
+<table cellpadding="5" cellspacing="0" border="0" bgcolor=#ffffc0
+width="100%">
+<tr><td>
+<font size="+2" color=#004060><b>TAP</b>-plugins</font><br>
+<font color=#004060>Tom's Audio Processing plugins</font><br>
+<font size="-1" color=#004060><i>for audio engineering on the Linux
+platform</i></font>
+</td><td>
+<center>
+<a href="../index.html">[ Home ]</a>
+<a href="../ladspa.html">[ LADSPA plugins ]</a>
+<a href="../reverbed.html">[ TAP Reverb Editor ]</a>
+</center>
+<hr>
+<center>
+<a href="releases.html">[ Releases ]</a>
+<a href="general.html">[ General Info ]</a>
+<a href="manuals.html">[ Plugin Manuals ]</a>
+</center>
+</td></tr>
+</table>
+
+<blockquote>
+<a href="autopan.html">[&nbsp;TAP&nbsp;AutoPanner&nbsp;]</a>
+<a href="chorusflanger.html">[&nbsp;TAP&nbsp;Chorus/Flanger&nbsp;]</a>
+<a href="deesser.html">[&nbsp;TAP&nbsp;DeEsser&nbsp;]</a>
+<a href="dynamics.html">[&nbsp;TAP&nbsp;Dynamics&nbsp;(Mono&nbsp;&&nbsp;Stereo)&nbsp;]</a>
+<a href="eq.html">[&nbsp;TAP&nbsp;Equalizer&nbsp;and&nbsp;TAP&nbsp;Equalizer/BW&nbsp;]</a>
+<a href="doubler.html">[&nbsp;TAP&nbsp;Fractal&nbsp;Doubler&nbsp;]</a>
+<a href="pinknoise.html">[&nbsp;TAP&nbsp;Pink/Fractal&nbsp;Noise&nbsp;]</a>
+<a href="pitch.html">[&nbsp;TAP&nbsp;Pitch&nbsp;Shifter&nbsp;]</a>
+<a href="reflector.html">[&nbsp;TAP&nbsp;Reflector&nbsp;]</a>
+<a href="reverb.html">[&nbsp;TAP&nbsp;Reverberator&nbsp;]</a>
+<a href="rotspeak.html">[&nbsp;TAP&nbsp;Rotary&nbsp;Speaker&nbsp;]</a>
+<a href="limiter.html">[&nbsp;TAP&nbsp;Scaling&nbsp;Limiter&nbsp;]</a>
+<a href="sigmoid.html">[&nbsp;TAP&nbsp;Sigmoid&nbsp;Booster&nbsp;]</a>
+<a href="echo.html">[&nbsp;TAP&nbsp;Stereo&nbsp;Echo&nbsp;]</a>
+<a href="tremolo.html">[&nbsp;TAP&nbsp;Tremolo&nbsp;]</a>
+<a href="tubewarmth.html">[&nbsp;TAP&nbsp;TubeWarmth&nbsp;]</a>
+<a href="vibrato.html">[&nbsp;TAP&nbsp;Vibrato&nbsp;]</a>
+</blockquote>
+
+<h2>TAP Chorus/Flanger</h2>
+<img src="tap_chorusflanger.png" alt="[TAP Chorus/Flanger GUI as shown in Ardour]">
+<p>
+This plugin is an implementation capable of creating traditional
+Chorus and Flanger effects, spiced up a bit to make use of stereo
+processing. It sounds best on guitar and synth tracks.
+</p>
+
+<h3>General information</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th align="left">Unique ID</th><td>2159</td>
+<tr><th align="left">I/O ports</th><td>2 inputs / 2 outputs</td>
+<tr><th align="left">CPU usage (44.1 kHz)</th><td>2.8%</td>
+<tr><th align="left">CPU usage (96 kHz)</th><td>6.2%</td>
+<tr><th align="left">Hard RT Capable</th><td>Yes</td></tr>
+<tr><th align="left">In-place operation</th><td>Supported</td>
+<tr><th align="left">run_adding() function</th><td>Provided</td>
+</table>
+
+
+<h3>Usage tips</h3>
+<p>
+The Chorus and Flanger effects operate on a very similar basis, that's
+why they were implemented in the same plugin. Both effects are
+achieved by creating a time-varying delay of the incoming signal and
+mixing it with the original. The delay time is modulated by a
+sinusoidal. After the time-varying delay is applied to the signal, it
+is further delayed by an (adjustable) amount of time. If this
+additional delay is small (under 10 ms), then mixing the dry and wet
+signals will introduce strong phase distortions, and thus a Flanger
+effect is achieved. If the delay time is greater than 20 ms, then the
+wet signal is more likely perceived as an additional "voice".  Thus,
+mixing the two signals yields a Chorus effect.
+</p>
+<p>
+The <i>Frequency</i> control determines the LFO frequency with which
+the time-varying delay is modulated. The higher the frequency, the
+more intense the effect will be. Values in the range of 1-3 Hz should
+be a good starting point in most cases.
+</p>
+<p>
+This plugin is capable of creating true stereo chorus/flanger
+effects. The <i>L/R Phase Shift</i> control is provided to this
+end. The two LFO's controlling the delay modulation of the two
+channels run in sync with the same frequency, but the phase shift
+between them can be adjusted with this control. The higher this
+setting, the stronger the "stereo-ness" of the effect will be. When
+set to 0, processing of the two channels will be in-phase; when set to
+180 degrees, the two LFO's are is counter-phase to create the widest
+stereo effect.
+</p>
+<p>
+The <i>Depth</i> control allows for adjusting the modulation depth of
+the delay. Increasing it will result in stronger modulation using the
+same LFO frequency. It should be noted that the <i>Frequency</i> and
+<i>Depth</i> settings jointly determine the intensity of the
+effect. Smaller frequencies usually allow for using a greater
+modulation depth, and vice versa. If the modulation is fast (higher
+frequency) and deep (higher depth) at the same time, a vibrato effect
+is introduced. You may or may not want this.
+</p>
+<p>
+The <i>Delay</i> control determines the fixed amount of time with
+which the signal is delayed after the time-varying delay has been
+applied. The setting of this control distinguishes between the Chorus
+and Flanger effects. Delays smaller than 10 ms can be labeled Flanger,
+delays above 20 ms yield Chorus, and delays in the range of 10-20 ms
+result in a blend between Chorus and Flanger.
+</p>
+<p>
+<i>Contour</i> is the cutoff frequency of a high-pass filter applied
+to the now twice-delayed signal. By setting it anywhere above 20 Hz,
+you can protect the lower frequency spectral content in the original
+signal from being disturbed by the effect. Set it to somewhere in the
+range of 100-500 Hz if you feel that your bass tones get smeared or
+lose definition. Set it to somewhere between 1000-6000 Hz to have a
+Chorus/Flanger that lets the bulk of the signal through, but changes
+the sound of the cymbals, higher guitar tones, etc. This results in an
+interesting effect when applied to mixes.
+</p>
+<p>
+The <i>Dry Level</i> and <i>Wet Level</i> settings allow for a final
+tuning of the sound. The strongest effect is achieved if the two
+settings are about the same. Decreasing one of them (preferably the
+Wet Level, to mitigate any unwanted side effects) results in a subtler
+effect.
+</p>
+
+
+<h3>Summary of user controls</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th>name</th><th>min. value</th><th>default value</th><th>max. value</th></tr>
+
+<tr align="center"><td>Frequency [Hz]</td>
+<td>0</td>
+<td>1.25</td>
+<td>5</td></tr>
+<tr align="center"><td>L/R Phase Shift [deg]</td>
+<td>0</td>
+<td>90</td>
+<td>180</td></tr>
+<tr align="center"><td>Depth [%]</td>
+<td>0</td>
+<td>75</td>
+<td>100</td></tr>
+<tr align="center"><td>Delay [ms]</td>
+<td>0</td>
+<td>25</td>
+<td>100</td></tr>
+<tr align="center"><td>Contour [Hz]</td>
+<td>20</td>
+<td>100</td>
+<td>20000</td></tr>
+<tr align="center"><td>Dry Level [dB]</td>
+<td>-90</td>
+<td>0</td>
+<td>20</td></tr>
+<tr align="center"><td>Wet Level [dB]</td>
+<td>-90</td>
+<td>0</td>
+<td>20</td></tr>
+
+</table>
+
+
+<h3>Notes</h3>
+<p>
+Naturally, the two separate delays described above (one modulated and
+one constant) are realised at once, as a single delay line. This saves
+you a <i>lot</i> of CPU cycles (...but you are obliged to run other
+TAP-plugins in those cycles. Just kidding, of course.)
+</p>
+</body></html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<title>TAP-plugins</title>
+<meta name="generator" content="GNU Emacs 21.2.1">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="Tom's Audio Processing plugins for
+audio engineering on the Linux platform.">
+<meta name="keywords" content="TAP-plugins TAP Reverb Editor
+Reverberator Equalizer EQ Vibrato Tremolo Echo Tom Szilagyi LADSPA
+JACK Plugin Linux Audio">
+<meta name="author" content="Tom Szilagyi">
+</head>
+
+<body bgcolor=#ffffff>
+<table cellpadding="5" cellspacing="0" border="0" bgcolor=#ffffc0 width="100%">
+<tr><td>
+<font size="+2" color=#004060><b>TAP</b>-plugins</font><br>
+<font color=#004060>Tom's Audio Processing plugins</font><br>
+<font size="-1" color=#004060><i>for audio engineering on the Linux platform</i></font>
+</td><td>
+<center>
+<a href="../index.html">[ Home ]</a>
+<a href="../ladspa.html">[ LADSPA plugins ]</a>
+<a href="../reverbed.html">[ TAP Reverb Editor ]</a>
+</center>
+<hr>
+<center>
+<a href="releases.html">[ Releases ]</a>
+<a href="general.html">[ General Info ]</a>
+<a href="manuals.html">[ Plugin Manuals ]</a>
+</center>
+</td></tr>
+</table>
+
+<blockquote>
+<a href="autopan.html">[&nbsp;TAP&nbsp;AutoPanner&nbsp;]</a>
+<a href="chorusflanger.html">[&nbsp;TAP&nbsp;Chorus/Flanger&nbsp;]</a>
+<a href="deesser.html">[&nbsp;TAP&nbsp;DeEsser&nbsp;]</a>
+<a href="dynamics.html">[&nbsp;TAP&nbsp;Dynamics&nbsp;(Mono&nbsp;&&nbsp;Stereo)&nbsp;]</a>
+<a href="eq.html">[&nbsp;TAP&nbsp;Equalizer&nbsp;and&nbsp;TAP&nbsp;Equalizer/BW&nbsp;]</a>
+<a href="doubler.html">[&nbsp;TAP&nbsp;Fractal&nbsp;Doubler&nbsp;]</a>
+<a href="pinknoise.html">[&nbsp;TAP&nbsp;Pink/Fractal&nbsp;Noise&nbsp;]</a>
+<a href="pitch.html">[&nbsp;TAP&nbsp;Pitch&nbsp;Shifter&nbsp;]</a>
+<a href="reflector.html">[&nbsp;TAP&nbsp;Reflector&nbsp;]</a>
+<a href="reverb.html">[&nbsp;TAP&nbsp;Reverberator&nbsp;]</a>
+<a href="rotspeak.html">[&nbsp;TAP&nbsp;Rotary&nbsp;Speaker&nbsp;]</a>
+<a href="limiter.html">[&nbsp;TAP&nbsp;Scaling&nbsp;Limiter&nbsp;]</a>
+<a href="sigmoid.html">[&nbsp;TAP&nbsp;Sigmoid&nbsp;Booster&nbsp;]</a>
+<a href="echo.html">[&nbsp;TAP&nbsp;Stereo&nbsp;Echo&nbsp;]</a>
+<a href="tremolo.html">[&nbsp;TAP&nbsp;Tremolo&nbsp;]</a>
+<a href="tubewarmth.html">[&nbsp;TAP&nbsp;TubeWarmth&nbsp;]</a>
+<a href="vibrato.html">[&nbsp;TAP&nbsp;Vibrato&nbsp;]</a>
+</blockquote>
+
+<h1>LADSPA Plugin Manuals</h1>
+
+
+<p>
+This section contains detailed information, benchmarks and usage tips
+for each available LADSPA plugin. It is intended to serve as a
+reference manual for the TAP-plugins package.
+</p>
+<p>
+If you are new to TAP-plugins, please read through the plugin manuals
+to gain some basic understanding of these plugins. Some plugin
+settings can be rather tricky and you may not achieve the desired
+effect easily if you have not at least skimmed through the manuals, or
+you are not an experienced audio engineer. You have been warned.
+</p>
+<p>
+For every plugin, some general information is provided in a table. The
+<b>Unique ID</b> is an identification number that each and every
+LADSPA plugin must uniquely have. See the <a
+href="http://www.ladspa.org">LADSPA homepage</a> for details. <b>I/O
+ports</b> describes the number of input and output audio ports. A
+plugin is mono if it has 1 input and 1 output, and it is stereo if it
+has 2 inputs and 2 outputs. The <b>CPU usage</b> measures were
+explained in <a href="general.html#metrics">a previous section</a>.
+</p>
+<p>
+A plugin qualifies as <b>hard RT capable</b> (suitable for use in hard
+realtime environments) if it satisfies all of the following:
+</p>
+<ul>
+<li>it does not use <code>malloc()</code>, <code>free()</code> or
+other heap management within its buffer processing functions;</li>
+<li>does not call any library functions (except for functions in the
+ANSI standard C and C math libraries);</li>
+<li>does not access files, devices, pipes, sockets, IPC or any
+other mechanism that might result in process or thread blocking;</li>
+<li>the time needed to process a buffer can be approximated in
+the form (A+B*SampleCount) where A and B depend on the machine and
+host in use -- the time may not depend on input signals and plugin
+state.</li>
+</ul>
+<p>
+A plugin is capable of <b>in-place operation</b> if it does not get
+confused when it is asked to use the same memory buffer for both input
+and output sample data. Finally, the <b>run_adding() function</b> is
+an optional buffer processing function described in the LADSPA
+specification. When provided, this may make life of some hosts easier.
+</p>
+</body></html>

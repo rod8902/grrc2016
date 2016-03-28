@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<title>TAP-plugins</title>
+<meta name="generator" content="GNU Emacs 21.2.1">
+<meta http-equiv="Content-Type" content="text/html;
+charset=iso-8859-1">
+<meta name="description" content="Tom's Audio Processing plugins for
+audio engineering on the Linux platform.">
+<meta name="keywords" content="TAP-plugins TAP Reverb Editor
+Reverberator Equalizer EQ Vibrato Tremolo Echo Tom Szilagyi LADSPA
+JACK Plugin Linux Audio">
+<meta name="author" content="Tom Szilagyi">
+</head>
+
+<body bgcolor=#ffffff>
+<table cellpadding="5" cellspacing="0" border="0" bgcolor=#ffffc0
+width="100%">
+<tr><td>
+<font size="+2" color=#004060><b>TAP</b>-plugins</font><br>
+<font color=#004060>Tom's Audio Processing plugins</font><br>
+<font size="-1" color=#004060><i>for audio engineering on the Linux
+platform</i></font>
+</td><td>
+<center>
+<a href="../index.html">[ Home ]</a>
+<a href="../ladspa.html">[ LADSPA plugins ]</a>
+<a href="../reverbed.html">[ TAP Reverb Editor ]</a>
+</center>
+<hr>
+<center>
+<a href="releases.html">[ Releases ]</a>
+<a href="general.html">[ General Info ]</a>
+<a href="manuals.html">[ Plugin Manuals ]</a>
+</center>
+</td></tr>
+</table>
+
+<blockquote>
+<a href="autopan.html">[&nbsp;TAP&nbsp;AutoPanner&nbsp;]</a>
+<a href="chorusflanger.html">[&nbsp;TAP&nbsp;Chorus/Flanger&nbsp;]</a>
+<a href="deesser.html">[&nbsp;TAP&nbsp;DeEsser&nbsp;]</a>
+<a href="dynamics.html">[&nbsp;TAP&nbsp;Dynamics&nbsp;(Mono&nbsp;&&nbsp;Stereo)&nbsp;]</a>
+<a href="eq.html">[&nbsp;TAP&nbsp;Equalizer&nbsp;and&nbsp;TAP&nbsp;Equalizer/BW&nbsp;]</a>
+<a href="doubler.html">[&nbsp;TAP&nbsp;Fractal&nbsp;Doubler&nbsp;]</a>
+<a href="pinknoise.html">[&nbsp;TAP&nbsp;Pink/Fractal&nbsp;Noise&nbsp;]</a>
+<a href="pitch.html">[&nbsp;TAP&nbsp;Pitch&nbsp;Shifter&nbsp;]</a>
+<a href="reflector.html">[&nbsp;TAP&nbsp;Reflector&nbsp;]</a>
+<a href="reverb.html">[&nbsp;TAP&nbsp;Reverberator&nbsp;]</a>
+<a href="rotspeak.html">[&nbsp;TAP&nbsp;Rotary&nbsp;Speaker&nbsp;]</a>
+<a href="limiter.html">[&nbsp;TAP&nbsp;Scaling&nbsp;Limiter&nbsp;]</a>
+<a href="sigmoid.html">[&nbsp;TAP&nbsp;Sigmoid&nbsp;Booster&nbsp;]</a>
+<a href="echo.html">[&nbsp;TAP&nbsp;Stereo&nbsp;Echo&nbsp;]</a>
+<a href="tremolo.html">[&nbsp;TAP&nbsp;Tremolo&nbsp;]</a>
+<a href="tubewarmth.html">[&nbsp;TAP&nbsp;TubeWarmth&nbsp;]</a>
+<a href="vibrato.html">[&nbsp;TAP&nbsp;Vibrato&nbsp;]</a>
+</blockquote>
+
+<h2>TAP Pitch Shifter</h2>
+<img src="tap_pitch.png" alt="[TAP Pitch Shifter GUI as shown in Ardour]">
+<p>
+This plugin gives you the opportunity to change the pitch of
+individual tracks or full mixes, in the range of plus/minus one
+octave. Audio length (tempo) is not affected by this plugin, since
+audio is completely resampled. Besides being a special effect for
+creating foxy guitar tracks, it may come handy if your (otherwise very
+attractive) singer or chorus-girl was a bit indisposed at the time of
+recording: with the power of Ardour automation, you are given a chance
+to correct smaller pitch errors.
+</p>
+
+<h3>General information</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th align="left">Unique ID</th><td>2150</td>
+<tr><th align="left">I/O ports</th><td>1 input / 1 output</td>
+<tr><th align="left">CPU usage (44.1 kHz)</th><td>7.4%</td>
+<tr><th align="left">CPU usage (96 kHz)</th><td>16.3%</td>
+<tr><th align="left">Hard RT Capable</th><td>Yes</td></tr>
+<tr><th align="left">In-place operation</th><td>Supported</td>
+<tr><th align="left">run_adding() function</th><td>Provided</td>
+</table>
+
+
+<h3>Usage tips</h3>
+<p>
+There are two controls to set the same thing: you can set the amount
+of pitch shift by either setting the "Semitone Shift" or the "Rate
+Shift" control. The former is scaled in semitones, allowing you to set
+musically sensible pitch shift rates. The latter is scaled in
+percentage of the original pitch, so that is closer to a "physical",
+non-musical approach.
+</p>
+<p>
+The available pitch shift range is one octave up or down. One octave
+downwards (-12 semitones) corresponds to a setting of -50% of the
+"Rate Shift" control, one octave upwards (+12 semitones) corresponds
+to a "Rate Shift" setting of +100%. The "Semitone Shift" control has
+priority over the "Rate Shift" control in a way that if "Semitone
+Shift" is nonzero, it determines the amount of pitch shift in
+itself. If "Semitone Shift" is zero, then the "Rate Shift" setting
+comes into play. (Note that in Ardour, setting a control back to zero
+is as easy as shift-clicking on it.)
+</p>
+<p>
+You can achieve attractive effects by mixing the pitch-shifted signal
+together with the original: that's why the "Dry Level" and "Wet Level"
+controls are provided. By default, the dry signal is muted, and the
+wet signal is output with 0 dB, so you won't need to touch these
+contols if you don't want to create such a mix.
+</p>
+<p>
+To thicken the sound of your heavy-metal guitars even further, shift
+them down with 12 semitones and mix that with the original sound, with
+a level of 2-6 decibels lower than the original. To create harmonies
+of a vocal track (simulating another vocalist singing the same thing a
+bit lower/higher), apply a pitch shift of 3 or 5 semitones to the
+track, and mix it to the original with a slightly lower volume.
+</p>
+
+
+
+<h3>Summary of user controls</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th>name</th><th>min. value</th><th>default value</th><th>max. value</th></tr>
+
+<tr align="center"><td>Semitone Shift</td>
+<td>-12</td>
+<td>0</td>
+<td>12</td></tr>
+<tr align="center"><td>Rate Shift [%]</td>
+<td>-50%</td>
+<td>0</td>
+<td>100%</td></tr>
+<tr align="center"><td>Dry Level [dB]</td>
+<td>-90</td>
+<td>-90</td>
+<td>20</td></tr>
+<tr align="center"><td>Wet Level [dB]</td>
+<td>-90</td>
+<td>0</td>
+<td>20</td></tr>
+<tr align="center"><td>latency</td>
+<td colspan="3">varies with sample rate<br>
+and pitch shift settings</td></tr>
+
+</table>
+
+
+<h3>Notes</h3>
+<p>
+Unfortunately, this plugin is far from being perfect. (Anyone heard of
+a perfect pitch shifter?) Varying amounts of phasing effects are
+introduced at varying pitch shift rates. The good news is, if you
+settle on a particular setting, the side effects of the plugin are
+static: no parasite tremolo, vibrato, etc. effects built in, only
+static attenuation of certain frequencies due to phase
+cancellation. That's not very lovely, but still not as confusing as
+some other pitch shifters with strong, time-varying side effects.
+</p>
+</body></html>

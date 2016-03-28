@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<title>TAP-plugins</title>
+<meta name="generator" content="GNU Emacs 21.2.1">
+<meta http-equiv="Content-Type" content="text/html;
+charset=iso-8859-1">
+<meta name="description" content="Tom's Audio Processing plugins for
+audio engineering on the Linux platform.">
+<meta name="keywords" content="TAP-plugins TAP Reverb Editor
+Reverberator Equalizer EQ Vibrato Tremolo Echo Tom Szilagyi LADSPA
+JACK Plugin Linux Audio">
+<meta name="author" content="Tom Szilagyi">
+</head>
+
+<body bgcolor=#ffffff>
+<table cellpadding="5" cellspacing="0" border="0" bgcolor=#ffffc0
+width="100%">
+<tr><td>
+<font size="+2" color=#004060><b>TAP</b>-plugins</font><br>
+<font color=#004060>Tom's Audio Processing plugins</font><br>
+<font size="-1" color=#004060><i>for audio engineering on the Linux
+platform</i></font>
+</td><td>
+<center>
+<a href="../index.html">[ Home ]</a>
+<a href="../ladspa.html">[ LADSPA plugins ]</a>
+<a href="../reverbed.html">[ TAP Reverb Editor ]</a>
+</center>
+<hr>
+<center>
+<a href="releases.html">[ Releases ]</a>
+<a href="general.html">[ General Info ]</a>
+<a href="manuals.html">[ Plugin Manuals ]</a>
+</center>
+</td></tr>
+</table>
+
+<blockquote>
+<a href="autopan.html">[&nbsp;TAP&nbsp;AutoPanner&nbsp;]</a>
+<a href="chorusflanger.html">[&nbsp;TAP&nbsp;Chorus/Flanger&nbsp;]</a>
+<a href="deesser.html">[&nbsp;TAP&nbsp;DeEsser&nbsp;]</a>
+<a href="dynamics.html">[&nbsp;TAP&nbsp;Dynamics&nbsp;(Mono&nbsp;&&nbsp;Stereo)&nbsp;]</a>
+<a href="eq.html">[&nbsp;TAP&nbsp;Equalizer&nbsp;and&nbsp;TAP&nbsp;Equalizer/BW&nbsp;]</a>
+<a href="doubler.html">[&nbsp;TAP&nbsp;Fractal&nbsp;Doubler&nbsp;]</a>
+<a href="pinknoise.html">[&nbsp;TAP&nbsp;Pink/Fractal&nbsp;Noise&nbsp;]</a>
+<a href="pitch.html">[&nbsp;TAP&nbsp;Pitch&nbsp;Shifter&nbsp;]</a>
+<a href="reflector.html">[&nbsp;TAP&nbsp;Reflector&nbsp;]</a>
+<a href="reverb.html">[&nbsp;TAP&nbsp;Reverberator&nbsp;]</a>
+<a href="rotspeak.html">[&nbsp;TAP&nbsp;Rotary&nbsp;Speaker&nbsp;]</a>
+<a href="limiter.html">[&nbsp;TAP&nbsp;Scaling&nbsp;Limiter&nbsp;]</a>
+<a href="sigmoid.html">[&nbsp;TAP&nbsp;Sigmoid&nbsp;Booster&nbsp;]</a>
+<a href="echo.html">[&nbsp;TAP&nbsp;Stereo&nbsp;Echo&nbsp;]</a>
+<a href="tremolo.html">[&nbsp;TAP&nbsp;Tremolo&nbsp;]</a>
+<a href="tubewarmth.html">[&nbsp;TAP&nbsp;TubeWarmth&nbsp;]</a>
+<a href="vibrato.html">[&nbsp;TAP&nbsp;Vibrato&nbsp;]</a>
+</blockquote>
+
+<h2>TAP Tremolo</h2>
+<img src="tap_tremolo.png" alt="[TAP Tremolo GUI as shown in Ardour]">
+<p>
+The tremolo effect is probably one of the most ancient effects,
+originated in the earliest days of the history of studio recording. It
+lost some of its popularity over time (and with the emerge of more
+exciting digital effects), but you still hear this effect on newer
+recordings from time to time.
+</p>
+
+<h3>General information</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th align="left">Unique ID</th><td>2144</td>
+<tr><th align="left">I/O ports</th><td>1 input / 1 output</td>
+<tr><th align="left">CPU usage (44.1 kHz)</th><td>1.4%</td>
+<tr><th align="left">CPU usage (96 kHz)</th><td>3.2%</td>
+<tr><th align="left">Hard RT Capable</th><td>Yes</td></tr>
+<tr><th align="left">In-place operation</th><td>Supported</td>
+<tr><th align="left">run_adding() function</th><td>Provided</td>
+</table>
+
+
+<h3>Usage tips</h3>
+<p>
+This plugin sounds good mainly on acoustic or electric guitar tracks,
+and should be used only occasionally. To create a "floating" effect,
+set the frequency value to 3-6 Hz. To create a more intensive effect,
+set it to 8-15 Hz (recommended mostly on electric guitar tracks). The
+depth should be probably set somewhere between 50% and 90%.  If you
+feel that the overall loudness of the track decreases when this effect
+is applied, you can compensate this by setting the "Gain" control.
+</p>
+
+
+<h3>Summary of user controls</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th>name</th><th>min. value</th><th>default value</th><th>max. value</th></tr>
+
+<tr align="center"><td>Frequency [Hz]</td>
+<td>0</td>
+<td>0</td>
+<td>20</td></tr>
+<tr align="center"><td>Depth [%]</td>
+<td>0</td>
+<td>0</td>
+<td>100</td></tr>
+<tr align="center"><td>Gain [dB]</td>
+<td>-70</td>
+<td>0</td>
+<td>20</td></tr>
+
+</table>
+
+<h3>Notes</h3>
+<p>
+The sine function is implemented via a sine table, which is computed
+when the host loads the plugin library. This sort of implementation
+was necessary because calling <code>sinf()</code> for every sample
+proved to be way too expensive -- that very call itself doubled the
+CPU usage.
+</p>
+</body></html>

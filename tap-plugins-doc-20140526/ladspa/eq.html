@@ -1,0 +1,266 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<title>TAP-plugins</title>
+<meta name="generator" content="GNU Emacs 21.2.1">
+<meta http-equiv="Content-Type" content="text/html;
+charset=iso-8859-1">
+<meta name="description" content="Tom's Audio Processing plugins for
+audio engineering on the Linux platform.">
+<meta name="keywords" content="TAP-plugins TAP Reverb Editor
+Reverberator Equalizer EQ Vibrato Tremolo Echo Tom Szilagyi LADSPA
+JACK Plugin Linux Audio">
+<meta name="author" content="Tom Szilagyi">
+</head>
+
+<body bgcolor=#ffffff>
+<table cellpadding="5" cellspacing="0" border="0" bgcolor=#ffffc0
+width="100%">
+<tr><td>
+<font size="+2" color=#004060><b>TAP</b>-plugins</font><br>
+<font color=#004060>Tom's Audio Processing plugins</font><br>
+<font size="-1" color=#004060><i>for audio engineering on the Linux
+platform</i></font>
+</td><td>
+<center>
+<a href="../index.html">[ Home ]</a>
+<a href="../ladspa.html">[ LADSPA plugins ]</a>
+<a href="../reverbed.html">[ TAP Reverb Editor ]</a>
+</center>
+<hr>
+<center>
+<a href="releases.html">[ Releases ]</a>
+<a href="general.html">[ General Info ]</a>
+<a href="manuals.html">[ Plugin Manuals ]</a>
+</center>
+</td></tr>
+</table>
+
+<blockquote>
+<a href="autopan.html">[&nbsp;TAP&nbsp;AutoPanner&nbsp;]</a>
+<a href="chorusflanger.html">[&nbsp;TAP&nbsp;Chorus/Flanger&nbsp;]</a>
+<a href="deesser.html">[&nbsp;TAP&nbsp;DeEsser&nbsp;]</a>
+<a href="dynamics.html">[&nbsp;TAP&nbsp;Dynamics&nbsp;(Mono&nbsp;&&nbsp;Stereo)&nbsp;]</a>
+<a href="eq.html">[&nbsp;TAP&nbsp;Equalizer&nbsp;and&nbsp;TAP&nbsp;Equalizer/BW&nbsp;]</a>
+<a href="doubler.html">[&nbsp;TAP&nbsp;Fractal&nbsp;Doubler&nbsp;]</a>
+<a href="pinknoise.html">[&nbsp;TAP&nbsp;Pink/Fractal&nbsp;Noise&nbsp;]</a>
+<a href="pitch.html">[&nbsp;TAP&nbsp;Pitch&nbsp;Shifter&nbsp;]</a>
+<a href="reflector.html">[&nbsp;TAP&nbsp;Reflector&nbsp;]</a>
+<a href="reverb.html">[&nbsp;TAP&nbsp;Reverberator&nbsp;]</a>
+<a href="rotspeak.html">[&nbsp;TAP&nbsp;Rotary&nbsp;Speaker&nbsp;]</a>
+<a href="limiter.html">[&nbsp;TAP&nbsp;Scaling&nbsp;Limiter&nbsp;]</a>
+<a href="sigmoid.html">[&nbsp;TAP&nbsp;Sigmoid&nbsp;Booster&nbsp;]</a>
+<a href="echo.html">[&nbsp;TAP&nbsp;Stereo&nbsp;Echo&nbsp;]</a>
+<a href="tremolo.html">[&nbsp;TAP&nbsp;Tremolo&nbsp;]</a>
+<a href="tubewarmth.html">[&nbsp;TAP&nbsp;TubeWarmth&nbsp;]</a>
+<a href="vibrato.html">[&nbsp;TAP&nbsp;Vibrato&nbsp;]</a>
+</blockquote>
+
+<h2>TAP Equalizer</h2>
+and <b>TAP Equalizer/BW</b><br><br><br>
+<img src="tap_eq.png" alt="[TAP Equalizer GUI as shown in Ardour]">
+<p>
+This plugin is an 8-band equalizer with adjustable band center
+frequencies. It allows you to make precise adjustments to the tonal
+coloration of your tracks. The design and code of this plugin is based
+on that of the DJ EQ plugin by Steve Harris, which can be downloaded
+(among lots of other useful plugins) from <a
+href="http://plugin.org.uk">http://plugin.org.uk</a>.
+</p>
+
+<h3>General information</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th align="left">Unique ID</th><td>2141 [1]</td>
+<tr><th align="left">I/O ports</th><td>1 input / 1 output</td>
+<tr><th align="left">CPU usage (44.1 kHz)</th><td>4.0% max. (see Notes)</td>
+<tr><th align="left">CPU usage (96 kHz)</th><td>8.8% max. (see Notes)</td>
+<tr><th align="left">Hard RT Capable</th><td>No</td></tr>
+<tr><th align="left">In-place operation</th><td>Supported</td>
+<tr><th align="left">run_adding() function</th><td>Provided</td>
+</table>
+[1] Unique ID for TAP Equalizer/BW is 2151.<br>
+
+
+<h3>Usage tips</h3>
+<p>
+The TAP Equalizer is a powerful tool in the hands of a skilled mixing
+engineer. The main use of the band frequency controls is to allow to
+"tune in" various resonance frequencies of musical instruments, and by
+adjusting the gain of these frequencies, to alter the tone of an
+instrument in a desired way. For example, the sound of kick drums
+consists of two mainly distinct parts: the energy is mainly
+concentrated around 80-100 Hz (this is the "boom" part), but there is
+another component at around 2.5 kHz which gives the "edge" of the
+sound. By adjusting the level of these components, different tonal
+results can be achieved.
+</p>
+<p>
+While listening to the track (soloed or not) with this plugin applied,
+raise the gain of the appropriate band (that is, the one with the
+closest default frequency) by an amount of about 6-12 dB and adjust
+the frequency control of the same band until you feel that you "got"
+that particular resonant tone of the instrument. Then play around with
+the gain settings to achieve the tonal balance you are going for.
+</p>
+<p>
+Since you only pay (in terms of CPU usage) for the bands you actually
+use, it is recommended that you set the gains of unneeded bands to
+exactly 0 dB (you can do this in Ardour quickly by shift+clicking on
+the control fader) since processing of bands with 0 dB gain will be
+skipped. So don't leave a band gain at -0.12 dB unless you really need
+that -0.12 dB to be there.
+</p>
+
+
+<h3>Summary of user controls</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th>name</th><th>min. value</th><th>default value</th><th>max. value</th></tr>
+
+<tr align="center"><td>Band 1 Freq [Hz]</td>
+<td>40</td>
+<td>100</td>
+<td>280</td></tr>
+<tr align="center"><td>Band 1 Gain [dB]</td>
+<td>-50</td>
+<td>0</td>
+<td>+20</td></tr>
+<tr align="center"><td>Band 1 Bandwidth [octaves]  [2]</td>
+<td>0.1</td>
+<td>1</td>
+<td>5</td></tr>
+
+<tr align="center"><td>Band 2 Freq [Hz]</td>
+<td>100</td>
+<td>200</td>
+<td>500</td></tr>
+<tr align="center"><td>Band 2 Gain [dB]</td>
+<td>-50</td>
+<td>0</td>
+<td>+20</td></tr>
+<tr align="center"><td>Band 2 Bandwidth [octaves]  [2]</td>
+<td>0.1</td>
+<td>1</td>
+<td>5</td></tr>
+
+<tr align="center"><td>Band 3 Freq [Hz]</td>
+<td>200</td>
+<td>400</td>
+<td>1000</td></tr>
+<tr align="center"><td>Band 3 Gain [dB]</td>
+<td>-50</td>
+<td>0</td>
+<td>+20</td></tr>
+<tr align="center"><td>Band 3 Bandwidth [octaves]  [2]</td>
+<td>0.1</td>
+<td>1</td>
+<td>5</td></tr>
+
+<tr align="center"><td>Band 4 Freq [Hz]</td>
+<td>400</td>
+<td>1000</td>
+<td>2800</td></tr>
+<tr align="center"><td>Band 4 Gain [dB]</td>
+<td>-50</td>
+<td>0</td>
+<td>+20</td></tr>
+<tr align="center"><td>Band 4 Bandwidth [octaves]  [2]</td>
+<td>0.1</td>
+<td>1</td>
+<td>5</td></tr>
+
+<tr align="center"><td>Band 5 Freq [Hz]</td>
+<td>1000</td>
+<td>3000</td>
+<td>5000</td></tr>
+<tr align="center"><td>Band 5 Gain [dB]</td>
+<td>-50</td>
+<td>0</td>
+<td>+20</td></tr>
+<tr align="center"><td>Band 5 Bandwidth [octaves]  [2]</td>
+<td>0.1</td>
+<td>1</td>
+<td>5</td></tr>
+
+<tr align="center"><td>Band 6 Freq [Hz]</td>
+<td>3000</td>
+<td>6000</td>
+<td>9000</td></tr>
+<tr align="center"><td>Band 6 Gain [dB]</td>
+<td>-50</td>
+<td>0</td>
+<td>+20</td></tr>
+<tr align="center"><td>Band 6 Bandwidth [octaves]  [2]</td>
+<td>0.1</td>
+<td>1</td>
+<td>5</td></tr>
+
+<tr align="center"><td>Band 7 Freq [Hz]</td>
+<td>6000</td>
+<td>12000</td>
+<td>18000</td></tr>
+<tr align="center"><td>Band 7 Gain [dB]</td>
+<td>-50</td>
+<td>0</td>
+<td>+20</td></tr>
+<tr align="center"><td>Band 7 Bandwidth [octaves]  [2]</td>
+<td>0.1</td>
+<td>1</td>
+<td>5</td></tr>
+
+<tr align="center"><td>Band 8 Freq [Hz]</td>
+<td>10000</td>
+<td>15000</td>
+<td>20000</td></tr>
+<tr align="center"><td>Band 8 Gain [dB]</td>
+<td>-50</td>
+<td>0</td>
+<td>+20</td></tr>
+<tr align="center"><td>Band 8 Bandwidth [octaves]  [2]</td>
+<td>0.1</td>
+<td>1</td>
+<td>5</td></tr>
+
+</table>
+[2] These controls appear only in the TAP Equalizer/BW implementation.<br>
+
+
+<h3>Notes</h3>
+<p>
+This plugin consists of 8 Peaking EQ filters (which are IIR filters
+with an order of two). Filter coefficients are re-computed if and only
+if the user changed a control value since the last buffer
+run. Furthermore, those filters that are left at 0 dB gain are not
+processed at all. For this reason, the CPU demand of this plugin is a
+function of the control settings, hence it is not hard RT
+capable. However, the CPU demand is still somewhat predictable: moving
+all gains away from 0 dB will switch every filter on. The CPU usage
+measured in this state will not increase significantly when filter
+coefficients are re-computed in response to a changed control. Of
+course, if the user sets a gain back to 0 dB, that filter will be
+switched off, freeing CPU power. The CPU usage values displayed in the
+above table were measured with all filters working.
+</p>
+<p>
+The bandwidth of the Peaking EQ filters is fixed to 1 octave in the
+TAP Equalizer implementation. However, because setting individual
+bandwidth values may be needed in certain cases, another
+implementation called TAP Equalizer/BW is also provided. Using that
+plugin, you can set the bandwidth of every filter between 0.1 and 5
+octaves. The reason for keeping TAP Equalizer around as well is that
+you don't always need the ability to set bandwidth values, and TAP
+Equalizer/BW has a large amount of controls which may be disturbing in
+this case.
+</p>
+<p>
+Below you can see a Bode diagram of the filter that makes up this
+plugin. The three frequencies are 100 Hz, 1 kHz and 10 kHz, with gain
+values of -20 and +20 dB and a sampling rate of 44.1 kHz. Bandwidth
+was set to 1 octave (which is the default). This plot is also
+available as an <a href="tap_eq_bode.eps">EPS file</a>.
+</p>
+<img src="tap_eq_bode.png" alt="[TAP Equalizer filter Bode diagram]">
+</body></html>

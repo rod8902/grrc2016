@@ -1,0 +1,25 @@
+Date: Fri, 1 May 2009 09:49:34 +0100
+Subject: Praise be to TAP!
+From: Ben Jones
+To: tszilagyi@users.sourceforge.net
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 7bit
+
+Yes, this is really just fan mail. But having spent hours and hours fiddling
+around with inferior dynamics processors in an attempt to convincingly
+self-master some acoustic recordings I made, and getting mediocre results,
+it was a revelation to discover your TAP scaling limiter plugin. It does a
+phenomenal job!
+
+I'm certainly not a proponent of gratuitous loudness, but this thing makes
+trimming out those pesky low-energy transients so easy that I don't even
+need to think about it any more. So I just had to say thanks for creating
+such a simple, solid and effective tool. :)
+
+And the rest of the plugins (particularly the 'verb) are great too. In fact,
+for most of my Ardour sessions I hardly need anything else...
+
+Cheers!
+
+-- 
+         -Ben-

@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<title>TAP-plugins</title>
+<meta name="generator" content="GNU Emacs 21.2.1">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="Tom's Audio Processing plugins for
+audio engineering on the Linux platform.">
+<meta name="keywords" content="TAP-plugins TAP Reverb Editor
+Reverberator Equalizer EQ Vibrato Tremolo Echo Tom Szilagyi LADSPA
+JACK Plugin Linux Audio">
+<meta name="author" content="Tom Szilagyi">
+</head>
+
+<body bgcolor=#ffffff>
+<table cellpadding="5" cellspacing="0" border="0" bgcolor=#ffffc0 width="100%">
+<tr><td>
+<font size="+2" color=#004060><b>TAP</b>-plugins</font><br>
+<font color=#004060>Tom's Audio Processing plugins</font><br>
+<font size="-1" color=#004060><i>for audio engineering on the Linux platform</i></font>
+</td><td>
+<center>
+<a href="../index.html">[ Home ]</a>
+<a href="../ladspa.html">[ LADSPA plugins ]</a>
+<a href="../reverbed.html">[ TAP Reverb Editor ]</a>
+</center>
+<hr>
+<center>
+<a href="releases.html">[ Releases ]</a>
+<a href="general.html">[ General Info ]</a>
+<a href="manuals.html">[ Plugin Manuals ]</a>
+</center>
+</td></tr>
+</table>
+
+<h1>General Information</h1>
+
+<h2>Installation</h2>
+<p>
+Should be pretty easy. Download and untar the archive and
+<code>cd</code> into the resulting directory
+<code>tap-plugins-<i>x</i>.<i>y</i>.<i>z</i></code>. If you store
+your plugin <code>.so</code> files in a different directory than
+<code>/usr/local/lib/ladspa</code> (which is the default) then please
+edit the top of the <code>Makefile</code> first of all. There is a
+default place also for RDF metadata. Set it according to your own
+needs. Because the plugins do not require any special library (apart
+from the standard GNU C library), there is no <code>./configure</code>
+script. All you have to do is issue a <code>make</code> and (as root)
+a <code>make install</code>. If you don't get any errors (you
+shouldn't), fire up your host and check out your new plugins. You may
+also want to check the <code>README</code> file for additional
+information.
+</p>
+
+<a name="routing">
+<h2>A few words about signal routing</h2>
+<p>
+When connecting plugins to audio inputs/outputs and to each other in
+order to build a digital audio processing chain, it is important to
+understand how audio is actually routed between individual
+input/output ports. Plugins can have a different number of audio
+inputs and outputs, and routing is handled by the host.
+</p>
+<p>
+The TAP-plugins have either 1 input and 1 output (mono plugins) or 2
+inputs and 2 outputs (stereo plugins). No other combinations are used,
+although it would be perfectly legal for a plugin to have 1 input and
+2 outputs, for example.
+</p>
+<p>
+When you apply a mono plugin to a mono track, everything is clear. The
+one and only input of the plugin gets connected to the mono signal,
+and the single plugin output is routed back somewhere (to the input of
+another plugin, or to a master out, etc). Another simple case is when
+you apply a stereo (2 in / 2 out) plugin to a stereo track. Here
+again, everything gets connected as you would expect.
+</p>
+<p>
+But what happens if you apply a mono plugin to a stereo track (or put
+it in a chain of plugins after a plugin with stereo outputs)? In this
+case, actually two instances are created of the same plugin, and the
+two input channels are processed by these two separate plugins to get
+two output channels. The two instances are binded to the same GUI
+controls, so you see and adjust only one plugin GUI. But keep in mind
+that it's actually two plugins running in the background, consuming
+twice as much memory and CPU power as one single plugin would
+cost. The CPU usage metrics (provided as part of the <a
+href="manuals.html">plugin manuals</a>) for mono plugins assume you
+are actually using only one instance, so you should double the figures
+when applying them to a stereo track.
+</p>
+<p>
+The last possible arrangement is when you apply a stereo plugin to a
+mono track (or put it in a chain of plugins after a plugin with only
+one output). Here the stereo plugin receives the same data on both
+input channels. This can be an important issue because there are some
+effects requiring that audio is received on only one input and the
+other input muted (i.e. feeded with zeroes) if the input is actually
+mono. (See the <i>Haas effect</i> switch of the <a
+href="echo.html">TAP Stereo Echo</a> plugin for an example).
+</p>
+<p>
+Given the above routing behaviour, TAP-plugins have been written in a
+manner that minimizes the number of stereo plugins. If the stereo
+version of a plugin would process two input signals identically and
+separately, then there is no stereo version of the plugin since
+applying the mono plugin to a stereo track yields the exact same
+effect. A plugin is implemented as stereo if and only if it uses an
+algorithm that results in differences between the output channels even
+with identical input data (echoing and reverberation algorithms are an
+example of this). If one of the input channels needs to be muted to
+achieve a particular effect when the inputs are identical, there is a
+user controllable toggle button built in the plugin to achieve this.
+</p>
+
+<a name="metrics">
+<h2>About CPU usage metrics</h2>
+<p>
+CPU usage metrics are provided for each plugin. This is not a very
+accurate way to tell how much a plugin setup costs, but it should
+provide a general idea about how expensive each plugin is, and it is
+better than nothing. Please don't rely on these figures when you need
+to predict the system load in a situation where the results of system
+overload (stopping of the transport, falling out of sync, etc) are
+unacceptable. For example, if you are recording a live show or doing
+live PA work, never ever go into calculations that result in saying
+that you will need only 98% of your CPU power when using such-and-such
+plugins. This is extremely dangerous, and there are much easier ways
+to commit suicide as well.
+</p>
+<p>
+The CPU usage figures were measured running the plugins within Ardour,
+and recording the increase of "DSP Load" indicated at the top of the
+Ardour Editor window. The machine used for measurements was a
+uniprocessor Pentium IV machine with a processing power of
+approximately 3395 BogoMIPS. Mono plugins were applied to mono tracks,
+and stereo plugins were applied to stereo tracks (read the above
+section about <a href="#routing">routing</a> to understand why this is
+important). Measurements were made at both 44.1 kHz and 96 kHz
+sampling frequencies. CPU usage is proportional to the sampling rate
+(at least in theory), so at 48 kHz you should expect somewhat greater
+CPU demand than at 44.1 kHz, and at 192 kHz expect roughly twice as
+much CPU usage as the value at 96 kHz. The actual figures are provided
+as part of the <a href="manuals.html">plugin manuals</a>.
+</p>
+
+<h2>About latency issues</h2>
+<p>
+To be able to perform complex tasks, several plugins have some
+latency. The value of latency means the number of samples the output
+is "late" when compared to the input. You can tell if a plugin has
+latency, because it is always indicated in the "Summary of user
+controls" table of the plugin manual. Certain plugins have a latency
+of fixed samples, others have a fixed time of latency, which yields
+different latency values at different sample rates. And there are
+plugins that have latency values dependent on user settings.
+</p>
+<p>
+A latency value of a few hundred samples is not a long time (when you
+are waiting for a bus, for example), but there may be situations where
+latency causes problems. One possible case is when you have multiple
+channels containing some of the same sound source (a live drum
+recording for example, with a great amount of snare leakage into
+cymbal microphones). It can happen that the time shift introduces
+phasing effects when you place a latent plugin on one of these tracks.
+</p>
+<p>
+The control output named "latency" is provided to solve this problem.
+The exact amount of latency is always written to this output during
+operation. Advanced hosts can shift the entire track backwards in
+time, based on this value. Or they may delay other tracks artificially
+so there is no time shift error between tracks. <b>This compensation
+of LADSPA plugin latency works well in Ardour, so if you are an Ardour
+user, you have nothing to do with latency.</b> Note that contrary to
+other control outputs, Ardour does not display the one named
+"latency" -- so you won't actually see the latency output.
+</p>
+<p>
+If you are using another host, you may want to check if your host
+supports this kind of latency compensation. If not, it is recommended
+to shift the track backwards manually, by the number of samples
+indicated by the "latency" output (provided that your host displays
+this output, which is likely if it does not use it). Fortunately,
+latency is not an issue when using a plugin on master outputs or
+processing separate tracks outside the context of a mix.
+</p>
+</body></html>

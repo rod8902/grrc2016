@@ -1,0 +1,226 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<title>TAP-plugins</title>
+<meta name="generator" content="GNU Emacs 21.2.1">
+<meta http-equiv="Content-Type" content="text/html;
+charset=iso-8859-1">
+<meta name="description" content="Tom's Audio Processing plugins for
+audio engineering on the Linux platform.">
+<meta name="keywords" content="TAP-plugins TAP Reverb Editor
+Reverberator Equalizer EQ Vibrato Tremolo Echo Tom Szilagyi LADSPA
+JACK Plugin Linux Audio">
+<meta name="author" content="Tom Szilagyi">
+</head>
+
+<body bgcolor=#ffffff>
+<table cellpadding="5" cellspacing="0" border="0" bgcolor=#ffffc0
+width="100%">
+<tr><td>
+<font size="+2" color=#004060><b>TAP</b>-plugins</font><br>
+<font color=#004060>Tom's Audio Processing plugins</font><br>
+<font size="-1" color=#004060><i>for audio engineering on the Linux
+platform</i></font>
+</td><td>
+<center>
+<a href="../index.html">[ Home ]</a>
+<a href="../ladspa.html">[ LADSPA plugins ]</a>
+<a href="../reverbed.html">[ TAP Reverb Editor ]</a>
+</center>
+<hr>
+<center>
+<a href="releases.html">[ Releases ]</a>
+<a href="general.html">[ General Info ]</a>
+<a href="manuals.html">[ Plugin Manuals ]</a>
+</center>
+</td></tr>
+</table>
+
+<blockquote>
+<a href="autopan.html">[&nbsp;TAP&nbsp;AutoPanner&nbsp;]</a>
+<a href="chorusflanger.html">[&nbsp;TAP&nbsp;Chorus/Flanger&nbsp;]</a>
+<a href="deesser.html">[&nbsp;TAP&nbsp;DeEsser&nbsp;]</a>
+<a href="dynamics.html">[&nbsp;TAP&nbsp;Dynamics&nbsp;(Mono&nbsp;&&nbsp;Stereo)&nbsp;]</a>
+<a href="eq.html">[&nbsp;TAP&nbsp;Equalizer&nbsp;and&nbsp;TAP&nbsp;Equalizer/BW&nbsp;]</a>
+<a href="doubler.html">[&nbsp;TAP&nbsp;Fractal&nbsp;Doubler&nbsp;]</a>
+<a href="pinknoise.html">[&nbsp;TAP&nbsp;Pink/Fractal&nbsp;Noise&nbsp;]</a>
+<a href="pitch.html">[&nbsp;TAP&nbsp;Pitch&nbsp;Shifter&nbsp;]</a>
+<a href="reflector.html">[&nbsp;TAP&nbsp;Reflector&nbsp;]</a>
+<a href="reverb.html">[&nbsp;TAP&nbsp;Reverberator&nbsp;]</a>
+<a href="rotspeak.html">[&nbsp;TAP&nbsp;Rotary&nbsp;Speaker&nbsp;]</a>
+<a href="limiter.html">[&nbsp;TAP&nbsp;Scaling&nbsp;Limiter&nbsp;]</a>
+<a href="sigmoid.html">[&nbsp;TAP&nbsp;Sigmoid&nbsp;Booster&nbsp;]</a>
+<a href="echo.html">[&nbsp;TAP&nbsp;Stereo&nbsp;Echo&nbsp;]</a>
+<a href="tremolo.html">[&nbsp;TAP&nbsp;Tremolo&nbsp;]</a>
+<a href="tubewarmth.html">[&nbsp;TAP&nbsp;TubeWarmth&nbsp;]</a>
+<a href="vibrato.html">[&nbsp;TAP&nbsp;Vibrato&nbsp;]</a>
+</blockquote>
+
+<h2>TAP Stereo Echo</h2>
+<img src="tap_echo.png" alt="[TAP Stereo Echo GUI as shown in Ardour]">
+<p>
+This plugin supports conventional mono and stereo delays, ping-pong
+delays and the Haas effect (also known as Cross Delay Stereo). A
+relatively simple yet quite effective plugin.
+</p>
+
+<h3>General information</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th align="left">Unique ID</th><td>2143</td>
+<tr><th align="left">I/O ports</th><td>2 inputs / 2 outputs</td>
+<tr><th align="left">CPU usage (44.1 kHz)</th><td>0.4%</td>
+<tr><th align="left">CPU usage (96 kHz)</th><td>0.8%</td>
+<tr><th align="left">Hard RT Capable</th><td>Yes</td></tr>
+<tr><th align="left">In-place operation</th><td>Supported</td>
+<tr><th align="left">run_adding() function</th><td>Provided</td>
+</table>
+
+
+<h3>Usage tips</h3>
+<p>
+If you want to create a conventional mono or stereo delay, all you
+have to do is set the delay times and feedback ratios for the two
+input channels. If the feedback is set to zero, then only one delay of
+the input is created (as if a traditional tape delay was used). When
+feedback is greater than zero, the same bit of audio is sent back and
+delayed over and over again, with decreasing amplitudes. In this case
+the decay time is dependent of the feedback value.
+</p>
+<p>
+When you turn the Cross Mode switch on, the feedback loops are being
+feeded by the delayed signal of the opposite input channel. A sound
+coming from the left input channel will be delayed by the Left Delay
+time value, but the output of the left delay ringbuffer will be sent
+back to the right input (instead of the left) with regard to the right
+channel's feedback setting. In Cross mode, a sound appearing at one
+input will be bouncing between the two output channels, hence the
+popular name "ping-pong delay". If you use this effect with high delay
+times and feedback values, even the dumbest listener will notice that
+your mix is stereo.
+</p>
+<p>
+A third effect achievable with this plugin is the so-called Haas
+effect. This effect is founded by the following psycho-acoustic
+experience: if a sound reaches one ear, and the same sound reaches the
+other ear but with a time shift of 15-40 milliseconds, only one sound
+is heard, but with a spatial feeling. The Haas effect (also known as
+Cross Delay Stereo, which refers to the means by which the effect is
+created) is widely used by mixing engineers to avoid their mixes being
+"pan-potted mono", or to "stretch out" their otherwise mono guitar,
+vocal etc. tracks in space.  This effect is a great alternative to
+reverberation (although it produces a noticeably different quality).
+</p>
+
+
+
+<br><br>
+<table cellspacing="0" cellpadding="5" border"1" bgcolor="#f0f0f0">
+<tr><td>
+<h3>How to create the Haas effect</h3>
+<p>
+It only makes sense to create the Haas effect on a mono track. On a
+stereo track, you should apply a cross or normal stereo echo instead.
+</p>
+<p>
+To create the Haas effect on a mono track, follow these steps.
+</p>
+<p>
+1. Switch on the "Cross Mode" and "Haas Effect" controls of the
+plugin. The "Haas Effect" switch will mute the second (right) input
+channel, because when applied to a mono track, the plugin receives the
+same mono data on both inputs and this would kill the Haas effect
+(this topic was discussed in the section about
+<a href="general.html#routing">signal routing</a>).<br>
+2. Set the "R/Haas Delay" time to 15-40 milliseconds. The bigger this
+setting, the wider the mono track will "stretch out". But if you
+increase the Haas delay above a certain threshold, the listener will begin
+to hear two separate sounds shifted in time instead of the Haas effect
+(which is actually the case at lower delays as well, but the feeling is
+something completely different).<br>
+3. Set the "R/Haas Feedback" near 100% (above 80% will do).<br>
+4. "Left Feedback" shouldn't be very large (stay below 50%) or the
+ping-pong delay which makes up the Haas effect will not decay in a
+short time, and this will create a very unpleasant sound.<br>
+5. Set the "L Delay" time as you see fit.<br>
+6. The sound of a mono track "streched out" in space with the Haas
+effect tends to have some directionality (the listener feels the
+sound source is a bit nearer to the right side than the left, or vice
+versa). If the sound of the track would fit into your overall mix better
+with the left and right sides swapped, you can do this by switching
+"Swap Outputs" on.<br>
+7. Mute the direct sound (set "Dry Level" to -70 dB). It is not needed
+in this scenario.
+</p>
+</td></tr>
+</table>
+
+
+
+<br>
+<h3>Summary of user controls</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th>name</th><th>min. value</th><th>default value</th><th>max. value</th></tr>
+
+<tr align="center"><td>L Delay [ms]</td>
+<td>0</td>
+<td>100</td>
+<td>2000</td></tr>
+<tr align="center"><td>L Feedback [%]</td>
+<td>0</td>
+<td>0</td>
+<td>100</td></tr>
+
+<tr align="center"><td>R/Haas Delay [ms]</td>
+<td>0</td>
+<td>100</td>
+<td>2000</td></tr>
+<tr align="center"><td>R/Haas Feedback [%]</td>
+<td>0</td>
+<td>0</td>
+<td>100</td></tr>
+
+<tr align="center"><td>L Echo Level [dB]</td>
+<td>-70</td>
+<td>0</td>
+<td>+10</td></tr>
+<tr align="center"><td>R Echo Level [dB]</td>
+<td>-70</td>
+<td>0</td>
+<td>+10</td></tr>
+<tr align="center"><td>Dry Level [dB]</td>
+<td>-70</td>
+<td>0</td>
+<td>+10</td></tr>
+
+<tr align="center"><td>Cross Mode</td>
+<td>OFF</td>
+<td>OFF</td>
+<td>ON</td></tr>
+<tr align="center"><td>Haas Effect</td>
+<td>OFF</td>
+<td>OFF</td>
+<td>ON</td></tr>
+<tr align="center"><td>Swap Outputs</td>
+<td>OFF</td>
+<td>OFF</td>
+<td>ON</td></tr>
+
+</table>
+
+<h3>Notes</h3>
+<p>
+The maximum delay time (which is currently 2000 ms) can be set to a
+greater value in <code>tap_echo.c</code> if needed. When activating
+the plugin, memory is allocated for a ringbuffer which is large enough
+to contain audio as long as this value. Because this amount of memory
+is proportional to the maximum delay, it is not desirable to set it to
+a very large value if you don't want to actually use it since you will
+be only wasting memory. (This waste will be temporary of course, since
+memory is freed when the host deactivates the plugin -- that is, when
+you remove it from the mixer/patchbay/whatever your host has.)
+</p>
+</body></html>

@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<title>TAP-plugins</title>
+<meta name="generator" content="GNU Emacs 21.2.1">
+<meta http-equiv="Content-Type" content="text/html;
+charset=iso-8859-1">
+<meta name="description" content="Tom's Audio Processing plugins for
+audio engineering on the Linux platform.">
+<meta name="keywords" content="TAP-plugins TAP Reverb Editor
+Reverberator Equalizer EQ Vibrato Tremolo Echo Tom Szilagyi LADSPA
+JACK Plugin Linux Audio">
+<meta name="author" content="Tom Szilagyi">
+</head>
+
+<body bgcolor=#ffffff>
+<table cellpadding="5" cellspacing="0" border="0" bgcolor=#ffffc0
+width="100%">
+<tr><td>
+<font size="+2" color=#004060><b>TAP</b>-plugins</font><br>
+<font color=#004060>Tom's Audio Processing plugins</font><br>
+<font size="-1" color=#004060><i>for audio engineering on the Linux
+platform</i></font>
+</td><td>
+<center>
+<a href="../index.html">[ Home ]</a>
+<a href="../ladspa.html">[ LADSPA plugins ]</a>
+<a href="../reverbed.html">[ TAP Reverb Editor ]</a>
+</center>
+<hr>
+<center>
+<a href="releases.html">[ Releases ]</a>
+<a href="general.html">[ General Info ]</a>
+<a href="manuals.html">[ Plugin Manuals ]</a>
+</center>
+</td></tr>
+</table>
+
+<blockquote>
+<a href="autopan.html">[&nbsp;TAP&nbsp;AutoPanner&nbsp;]</a>
+<a href="chorusflanger.html">[&nbsp;TAP&nbsp;Chorus/Flanger&nbsp;]</a>
+<a href="deesser.html">[&nbsp;TAP&nbsp;DeEsser&nbsp;]</a>
+<a href="dynamics.html">[&nbsp;TAP&nbsp;Dynamics&nbsp;(Mono&nbsp;&&nbsp;Stereo)&nbsp;]</a>
+<a href="eq.html">[&nbsp;TAP&nbsp;Equalizer&nbsp;and&nbsp;TAP&nbsp;Equalizer/BW&nbsp;]</a>
+<a href="doubler.html">[&nbsp;TAP&nbsp;Fractal&nbsp;Doubler&nbsp;]</a>
+<a href="pinknoise.html">[&nbsp;TAP&nbsp;Pink/Fractal&nbsp;Noise&nbsp;]</a>
+<a href="pitch.html">[&nbsp;TAP&nbsp;Pitch&nbsp;Shifter&nbsp;]</a>
+<a href="reflector.html">[&nbsp;TAP&nbsp;Reflector&nbsp;]</a>
+<a href="reverb.html">[&nbsp;TAP&nbsp;Reverberator&nbsp;]</a>
+<a href="rotspeak.html">[&nbsp;TAP&nbsp;Rotary&nbsp;Speaker&nbsp;]</a>
+<a href="limiter.html">[&nbsp;TAP&nbsp;Scaling&nbsp;Limiter&nbsp;]</a>
+<a href="sigmoid.html">[&nbsp;TAP&nbsp;Sigmoid&nbsp;Booster&nbsp;]</a>
+<a href="echo.html">[&nbsp;TAP&nbsp;Stereo&nbsp;Echo&nbsp;]</a>
+<a href="tremolo.html">[&nbsp;TAP&nbsp;Tremolo&nbsp;]</a>
+<a href="tubewarmth.html">[&nbsp;TAP&nbsp;TubeWarmth&nbsp;]</a>
+<a href="vibrato.html">[&nbsp;TAP&nbsp;Vibrato&nbsp;]</a>
+</blockquote>
+
+<h2>TAP DeEsser</h2>
+<img src="tap_deesser.png" alt="[TAP DeEsser GUI as shown in Ardour]">
+<p>
+<b>TAP DeEsser</b> is a plugin for attenuating higher pitched
+frequencies in vocals such as those found in 'ess', 'shh' and 'chh'
+sounds. Almost any vocal recording will contain 'ess' sounds, whether
+a strong vocal delivery, from bad recording, speech impediments or
+simply many 'ess' words spoken together. Wind instruments and other
+musical instruments can also create shrill high-pitched noises. Audio
+engineers need to control these harsh 'ess' sounds in most recordings.
+</p>
+
+<h3>General information</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th align="left">Unique ID</th><td>2147</td>
+<tr><th align="left">I/O ports</th><td>1 input / 1 output</td>
+<tr><th align="left">CPU usage (44.1 kHz)</th><td>5.9%</td>
+<tr><th align="left">CPU usage (96 kHz)</th><td>12.8%</td>
+<tr><th align="left">Hard RT Capable</th><td>No (see Notes)</td></tr>
+<tr><th align="left">In-place operation</th><td>Supported</td>
+<tr><th align="left">run_adding() function</th><td>Provided</td>
+</table>
+
+
+<h3>Usage tips</h3>
+<p>
+Audio input is fed into the audio path and the so-called Sidechain. In
+the Sidechain, the signal is filtered and then an attenuation value is
+computed based on the filter output. This computation is done using a
+hard-knee compressor characteristic with a threshold level set by the
+"Threshold" control and a compression ratio of 1:2. The compressor
+attack/release time is 10 ms for instant operation.
+</p>
+<p>
+The filter applied to the Sidechain signal has two modes of operation:
+Highpass and Bandpass. Highpass mode is useful for attenuating several
+different 'ess' sounds. Bandpass mode is more suitable for attenuating
+a specific high frequency. The chosen filter's frequency is set by the
+"Frequency" control.
+</p>
+<p>
+General advice about setting the "Frequency" control: The sounds
+attenuated by this plugin can be fit into four categories: male 'ess',
+male 'ssh', female 'ess' and female 'ssh' sounds. 'Shh' settings are
+quite applicable for 'ch', 'th', and hard consonants, such as 't',
+'d', and 'k' as well. The following table lists frequencies for these
+four types of sounds. Note that these are only provided as a starting
+point for your own experimentations, as the characteristic frequencies
+of individual vocalists can vary in a suprisingly wide range. Use your
+ears!
+</p>
+
+<h3>Recommended frequency values</h3>
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><td>Male 'ess'</td><td>4500 Hz</td></tr>
+<tr><td>Male 'ssh'</td><td>3400 Hz</td></tr>
+<tr><td>Female 'ess'</td><td>6800 Hz</td></tr>
+<tr><td>Female 'ssh'</td><td>5100 Hz</td></tr>
+</table>
+
+<p>
+Generally, female 'ess' and 'shh' sounds vary more in frequency than
+those of males. Due to this situation, you may find that using the
+Sidechain filter in the Highpass mode may be more responsive.
+Otherwise, with the Sidechain filter in Bandpass mode, only a narrow
+frequency area is being responded to. So if a singer has esses with
+varying frequency, try the Highpass mode of the Sidechain.
+</p>
+<p>
+When choosing between Sidechain modes (e.g. Highpass or Bandpass) and
+setting the "Frequency" it may be very helpful to hear the Sidechain
+signal, which controls the compression of the through-passing audio:
+this is why the Monitor control is provided. While listening to the
+Sidechain signal, try to set the controls so that almost everything
+you want attenuated can be well heard, and even more importantly,
+almost everything you want to keep intact doesn't show up in the
+Sidechain sound.
+</p>
+<p>
+Another aid in setting the plugin is the "Attenuation" output meter:
+this shows the momentary attenuation applied to the signal. It
+shouldn't show a significant attenuation all the time. Instead, it
+should indicate that attenuation springs into action only
+occassionally.
+</p>
+
+
+<h3>Summary of user controls</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th>name</th><th>min. value</th><th>default value</th><th>max. value</th></tr>
+
+<tr align="center"><td>Threshold Level [dB]</td>
+<td>-50</td>
+<td>0</td>
+<td>10</td></tr>
+<tr align="center"><td>Frequency [Hz]</td>
+<td>2000</td>
+<td>5500</td>
+<td>16000</td></tr>
+
+<tr align="center"><td>Sidechain Filter</td>
+<td>Highpass</td>
+<td>Highpass</td>
+<td>Bandpass</td></tr>
+<tr align="center"><td>Monitor</td>
+<td>Audio</td>
+<td>Audio</td>
+<td>Sidechain</td></tr>
+
+</table>
+
+
+<h3>Notes</h3>
+<p>
+Setting the "Threshold" too low will result in an unpleasant muffled
+sound. Also, if the singer starts sounding as if she had suddenly lost
+her teeth, take this as a sure sign that your "Threshold" setting is
+way too low. Use the ever popular Bypass button and watch out for side
+effects like this.
+</p>
+<p>
+This plugin is best on vocal tracks, although it can be applied to
+mixed tracks as well. However, you should expect an increased amount
+of side effects (especially muffling and pumping of the sound) when
+attempting to de-ess the vocals of a mixed track.
+</p>
+<p>
+Internal variables that depend on user settings are re-computed only
+when the corresponding user settings are changed. This keeps the
+plugin from being hard RT capable, although the effect of this
+occassional re-computation is not really noticeable when looking at
+CPU usage measures.
+</p>
+<p>
+Because the Sidechain processing algorithm involves converting from
+linear to decibel values for every sample, a custom, very fast lin2db
+function was implemented via a log10 table, which is computed and
+stored when the plugin library is loaded by the host. Without this
+hack (that is, calling <code>log10f()</code> for every sample), CPU
+usage would be almost exactly twice this much.
+</p>
+</body></html>

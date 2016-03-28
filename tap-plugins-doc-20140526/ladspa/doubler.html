@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<title>TAP-plugins</title>
+<meta name="generator" content="GNU Emacs 21.2.1">
+<meta http-equiv="Content-Type" content="text/html;
+charset=iso-8859-1">
+<meta name="description" content="Tom's Audio Processing plugins for
+audio engineering on the Linux platform.">
+<meta name="keywords" content="TAP-plugins TAP Reverb Editor
+Reverberator Equalizer EQ Vibrato Tremolo Echo Tom Szilagyi LADSPA
+JACK Plugin Linux Audio">
+<meta name="author" content="Tom Szilagyi">
+</head>
+
+<body bgcolor=#ffffff>
+<table cellpadding="5" cellspacing="0" border="0" bgcolor=#ffffc0
+width="100%">
+<tr><td>
+<font size="+2" color=#004060><b>TAP</b>-plugins</font><br>
+<font color=#004060>Tom's Audio Processing plugins</font><br>
+<font size="-1" color=#004060><i>for audio engineering on the Linux
+platform</i></font>
+</td><td>
+<center>
+<a href="../index.html">[ Home ]</a>
+<a href="../ladspa.html">[ LADSPA plugins ]</a>
+<a href="../reverbed.html">[ TAP Reverb Editor ]</a>
+</center>
+<hr>
+<center>
+<a href="releases.html">[ Releases ]</a>
+<a href="general.html">[ General Info ]</a>
+<a href="manuals.html">[ Plugin Manuals ]</a>
+</center>
+</td></tr>
+</table>
+
+<blockquote>
+<a href="autopan.html">[&nbsp;TAP&nbsp;AutoPanner&nbsp;]</a>
+<a href="chorusflanger.html">[&nbsp;TAP&nbsp;Chorus/Flanger&nbsp;]</a>
+<a href="deesser.html">[&nbsp;TAP&nbsp;DeEsser&nbsp;]</a>
+<a href="dynamics.html">[&nbsp;TAP&nbsp;Dynamics&nbsp;(Mono&nbsp;&&nbsp;Stereo)&nbsp;]</a>
+<a href="eq.html">[&nbsp;TAP&nbsp;Equalizer&nbsp;and&nbsp;TAP&nbsp;Equalizer/BW&nbsp;]</a>
+<a href="doubler.html">[&nbsp;TAP&nbsp;Fractal&nbsp;Doubler&nbsp;]</a>
+<a href="pinknoise.html">[&nbsp;TAP&nbsp;Pink/Fractal&nbsp;Noise&nbsp;]</a>
+<a href="pitch.html">[&nbsp;TAP&nbsp;Pitch&nbsp;Shifter&nbsp;]</a>
+<a href="reflector.html">[&nbsp;TAP&nbsp;Reflector&nbsp;]</a>
+<a href="reverb.html">[&nbsp;TAP&nbsp;Reverberator&nbsp;]</a>
+<a href="rotspeak.html">[&nbsp;TAP&nbsp;Rotary&nbsp;Speaker&nbsp;]</a>
+<a href="limiter.html">[&nbsp;TAP&nbsp;Scaling&nbsp;Limiter&nbsp;]</a>
+<a href="sigmoid.html">[&nbsp;TAP&nbsp;Sigmoid&nbsp;Booster&nbsp;]</a>
+<a href="echo.html">[&nbsp;TAP&nbsp;Stereo&nbsp;Echo&nbsp;]</a>
+<a href="tremolo.html">[&nbsp;TAP&nbsp;Tremolo&nbsp;]</a>
+<a href="tubewarmth.html">[&nbsp;TAP&nbsp;TubeWarmth&nbsp;]</a>
+<a href="vibrato.html">[&nbsp;TAP&nbsp;Vibrato&nbsp;]</a>
+</blockquote>
+
+<h2>TAP Fractal Doubler</h2>
+<img src="tap_doubler.png" alt="[TAP Fractal Doubler GUI as shown in Ardour]">
+<p>
+Originally developed to do vocal doubling, this plugin is suitable for
+doubling tracks with vocals, acoustic/electric guitars, bass and just
+about any other instrument on them. The effect is created by applying
+small changes to the pitch and timing of the incoming signal. These
+changes are created by one-dimensional random fractal lines producing
+<a href="pinknoise.html">pink noise</a>.
+</p>
+
+<h3>General information</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th align="left">Unique ID</th><td>2156</td>
+<tr><th align="left">I/O ports</th><td>2 inputs / 2 outputs</td>
+<tr><th align="left">CPU usage (44.1 kHz)</th><td>2.6%</td>
+<tr><th align="left">CPU usage (96 kHz)</th><td>5.6%</td>
+<tr><th align="left">Hard RT Capable</th><td>No</td></tr>
+<tr><th align="left">In-place operation</th><td>Supported</td>
+<tr><th align="left">run_adding() function</th><td>Provided</td>
+</table>
+
+
+<h3>Usage tips</h3>
+<p>
+As it is well known, pink noise -- being between white and brown noise
+in terms of spectral density and other stochastic characteristics --
+is the closest to musical patterns in general. Therefore it is a
+natural choice to use pink noise to modulate small differences into
+the pitch and timing of the incoming signal. This way a second voice
+is obtained that sounds almost the same as the original. By mixing
+these two voices together, the desired effect can be achieved.
+</p>
+<p>
+This plugin uses two separate fractal lines to generate changes in
+pitch and timing. The controls <i>Time Tracking</i> and <i>Pitch
+Tracking</i> determine how "rough" and how big these changes are. When
+set to 0, changes are bigger and more chaotic ("bad backup
+singer"). When set to 1, changes are smaller and smoother ("better
+tracking of the original").
+</p>
+<p>
+The level of the two voices should be roughly the same. If the <i>Dry
+Level</i> and <i>Wet Level</i> settings are not equal, preferably the
+Dry Level should be higher (to mitigate any side-effects). If you set
+both levels to -3 dB, the resulting output level will match the input
+level, therefore giving you perfect conditions to do comparisons via
+the Bypass button.
+</p>
+<p>
+In addition to setting the levels of the two voices, you may add
+spatial separation between them by using the panner controls
+<i>Dry Left Position</i>, <i>Dry Right Position</i>,
+<i>Wet Left Position</i> and <i>Wet Right Position</i>. These controls
+range between 0 and 1, 0 meaning hard left and 1 meaning hard right
+position. The two voices each have a left and a right output, which
+you can independently pan into the stereo image of the plugin output
+using these controls.  For example, with the settings shown in the
+above screenshot, the dry voice is panned slightly to the left and the
+wet voice slightly to the right.
+</p>
+
+
+<h3>Summary of user controls</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th>name</th><th>min. value</th><th>default value</th><th>max. value</th></tr>
+
+<tr align="center"><td>Time Tracking</td>
+<td>0</td>
+<td>0.5</td>
+<td>1</td></tr>
+<tr align="center"><td>Pitch Tracking</td>
+<td>0</td>
+<td>0.5</td>
+<td>1</td></tr>
+<tr align="center"><td>Dry Level [dB]</td>
+<td>-90</td>
+<td>0</td>
+<td>20</td></tr>
+<tr align="center"><td>Dry Left Position</td>
+<td>0</td>
+<td>0</td>
+<td>1</td></tr>
+<tr align="center"><td>Dry Right Position</td>
+<td>0</td>
+<td>1</td>
+<td>1</td></tr>
+<tr align="center"><td>Wet Level [dB]</td>
+<td>-90</td>
+<td>0</td>
+<td>20</td></tr>
+<tr align="center"><td>Wet Left Position</td>
+<td>0</td>
+<td>0</td>
+<td>1</td></tr>
+<tr align="center"><td>Wet Right Position</td>
+<td>0</td>
+<td>1</td>
+<td>1</td></tr>
+
+</table>
+
+
+<h3>Notes</h3>
+<p>
+Samples of fractal lines are never reused. That is, not a single
+N-point fractal line is looped again and again, but a new fractal is
+generated when the old one has ended. For this reason, the plugin is
+not hard RT capable, since fractals are re-generated in a periodical
+manner, with a period that does not necessarily match the LADSPA
+buffer period. Also, every time the user adjusts one of the Tracking
+parameters, the corresponding fractal is regenerated with respect to
+the new setting.
+</p>
+<p>
+Please keep in mind that this plugin is only a replacement of real
+doubling, which (when properly done) yields much more enjoyable
+results. It's perfect to use the plugin as a tonal/spatial enhancer,
+but if you want a real doubing effect and you can afford it, please
+consider doing another real recording of the same vocal/instrument,
+possibly with subtle changes in microphone placement and/or tonal
+settings. No DSP can bring you the Real Thing.
+</p>
+</body></html>

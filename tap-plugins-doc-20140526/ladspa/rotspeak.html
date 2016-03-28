@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<title>TAP-plugins</title>
+<meta name="generator" content="GNU Emacs 21.2.1">
+<meta http-equiv="Content-Type" content="text/html;
+charset=iso-8859-1">
+<meta name="description" content="Tom's Audio Processing plugins for
+audio engineering on the Linux platform.">
+<meta name="keywords" content="TAP-plugins TAP Reverb Editor
+Reverberator Equalizer EQ Vibrato Tremolo Echo Tom Szilagyi LADSPA
+JACK Plugin Linux Audio">
+<meta name="author" content="Tom Szilagyi">
+</head>
+
+<body bgcolor=#ffffff>
+<table cellpadding="5" cellspacing="0" border="0" bgcolor=#ffffc0
+width="100%">
+<tr><td>
+<font size="+2" color=#004060><b>TAP</b>-plugins</font><br>
+<font color=#004060>Tom's Audio Processing plugins</font><br>
+<font size="-1" color=#004060><i>for audio engineering on the Linux
+platform</i></font>
+</td><td>
+<center>
+<a href="../index.html">[ Home ]</a>
+<a href="../ladspa.html">[ LADSPA plugins ]</a>
+<a href="../reverbed.html">[ TAP Reverb Editor ]</a>
+</center>
+<hr>
+<center>
+<a href="releases.html">[ Releases ]</a>
+<a href="general.html">[ General Info ]</a>
+<a href="manuals.html">[ Plugin Manuals ]</a>
+</center>
+</td></tr>
+</table>
+
+<blockquote>
+<a href="autopan.html">[&nbsp;TAP&nbsp;AutoPanner&nbsp;]</a>
+<a href="chorusflanger.html">[&nbsp;TAP&nbsp;Chorus/Flanger&nbsp;]</a>
+<a href="deesser.html">[&nbsp;TAP&nbsp;DeEsser&nbsp;]</a>
+<a href="dynamics.html">[&nbsp;TAP&nbsp;Dynamics&nbsp;(Mono&nbsp;&&nbsp;Stereo)&nbsp;]</a>
+<a href="eq.html">[&nbsp;TAP&nbsp;Equalizer&nbsp;and&nbsp;TAP&nbsp;Equalizer/BW&nbsp;]</a>
+<a href="doubler.html">[&nbsp;TAP&nbsp;Fractal&nbsp;Doubler&nbsp;]</a>
+<a href="pinknoise.html">[&nbsp;TAP&nbsp;Pink/Fractal&nbsp;Noise&nbsp;]</a>
+<a href="pitch.html">[&nbsp;TAP&nbsp;Pitch&nbsp;Shifter&nbsp;]</a>
+<a href="reflector.html">[&nbsp;TAP&nbsp;Reflector&nbsp;]</a>
+<a href="reverb.html">[&nbsp;TAP&nbsp;Reverberator&nbsp;]</a>
+<a href="rotspeak.html">[&nbsp;TAP&nbsp;Rotary&nbsp;Speaker&nbsp;]</a>
+<a href="limiter.html">[&nbsp;TAP&nbsp;Scaling&nbsp;Limiter&nbsp;]</a>
+<a href="sigmoid.html">[&nbsp;TAP&nbsp;Sigmoid&nbsp;Booster&nbsp;]</a>
+<a href="echo.html">[&nbsp;TAP&nbsp;Stereo&nbsp;Echo&nbsp;]</a>
+<a href="tremolo.html">[&nbsp;TAP&nbsp;Tremolo&nbsp;]</a>
+<a href="tubewarmth.html">[&nbsp;TAP&nbsp;TubeWarmth&nbsp;]</a>
+<a href="vibrato.html">[&nbsp;TAP&nbsp;Vibrato&nbsp;]</a>
+</blockquote>
+
+<h2>TAP Rotary Speaker</h2>
+<img src="tap_rotspeak.png" alt="[TAP Rotary Speaker GUI as shown in Ardour]">
+<p>
+This plugin simulates the sound of rotating speakers. Two pairs of
+rotating speakers are simulated, each pair fixed on a vertical axis,
+with their horns spreading the sound in opposite directions. The two
+pairs of speakers are rotating with different revolutions
+(frequencies). The incoming sound is split into a low and a high part
+(with a low-pass and a high-pass filter, using a crossover frequency
+of 1 kHz). The low part is fed into the "Rotor" pair of speakers, and
+the high part into the "Horn" pair. A pair of horizontally aligned
+microphones is used to pick up the resulting sound. The distance of
+the microphones (the width of the stereo image of the effect) is
+adjustable.
+</p>
+
+<h3>General information</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th align="left">Unique ID</th><td>2149</td>
+<tr><th align="left">I/O ports</th><td>2 inputs / 2 outputs</td>
+<tr><th align="left">CPU usage (44.1 kHz)</th><td>8.5%</td>
+<tr><th align="left">CPU usage (96 kHz)</th><td>19%</td>
+<tr><th align="left">Hard RT Capable</th><td>Yes</td></tr>
+<tr><th align="left">In-place operation</th><td>Supported</td>
+<tr><th align="left">run_adding() function</th><td>Provided</td>
+</table>
+
+
+<h3>Usage tips</h3>
+<p>
+For every speaker pair, two physical effects are simulated. First, in
+the situation when one speaker is behind the other one (from our point
+of view), the speaker that is behind has lower volume (because of the
+distance), the one in front of us has higher volume. At this moment,
+the speakers have no velocity in our direction, so no pitch shift is
+perceived. Second, when the two speakers are at the same distance from
+us (after a 90 degree turn), they have the greatest velocity in our
+direction. One is rolling away, resulting in its pitch lowering caused
+by the Doppler effect. The other one is coming near, so its pitch will
+be perceived to be higher.
+</p>
+<p>
+To set the rotating speed of the "Rotor" and the "Horn" pair of
+speakers, use the "Rotor Frequency" and "Horn Frequency"
+controls. Remember that sounds under 1 kHz will be fed (mostly) into
+the "Rotor" pair, and sounds higher than 1 kHz will go (mostly) into
+the "Horn" pair.  You can adjust the stereo width of the effect via
+the "Mic Distance" control. The higher this setting, the wider the
+stereo image will be. Finally, you may adjust the mix of sounds coming
+from the "Horn" and "Rotor" parts with the "Rotor/Horn Mix"
+control. At a setting of zero, only the sound coming from the "Rotor"
+is heard; when set to 1, only the "Horn" sound is heard. The default
+setting of 0.5 yields an equal mix of "Rotor" and "Horn" sounds.
+</p>
+<p>
+The settings shown in the above screenshot should provide a good
+starting point for your own experimentation.
+</p>
+
+
+
+<h3>Summary of user controls</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th>name</th><th>min. value</th><th>default value</th><th>max. value</th></tr>
+<tr align="center"><td>Rotor Frequency [Hz]</td>
+<td>0</td>
+<td>0</td>
+<td>30</td></tr>
+<tr align="center"><td>Horn Frequency [Hz]</td>
+<td>0</td>
+<td>0</td>
+<td>30</td></tr>
+<tr align="center"><td>Mic Distance [%]</td>
+<td>0</td>
+<td>25</td>
+<td>100</td></tr>
+<tr align="center"><td>Rotor/Horn Mix</td>
+<td>0</td>
+<td>0.5</td>
+<td>1</td></tr>
+<tr align="center"><td>latency</td>
+<td colspan="3">latency time is 48 ms,<br>
+value depends on sample rate</td></tr>
+</table>
+
+<h3>Notes</h3>
+<p>
+Rotary speaker effects usually deal with the finite mass of real
+speakers, so when the user changes a speed setting, gradual
+acceleration of the corresponding speaker pair is simulated. TAP
+Rotary Speaker does not implement this, because if needed, this effect
+can easily be produced on a mix using Ardour automation.
+</p>
+</body></html>

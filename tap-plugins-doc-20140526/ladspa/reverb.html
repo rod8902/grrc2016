@@ -1,0 +1,311 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<title>TAP-plugins</title>
+<meta name="generator" content="GNU Emacs 21.2.1">
+<meta http-equiv="Content-Type" content="text/html;
+charset=iso-8859-1">
+<meta name="description" content="Tom's Audio Processing plugins for
+audio engineering on the Linux platform.">
+<meta name="keywords" content="TAP-plugins TAP Reverb Editor
+Reverberator Equalizer EQ Vibrato Tremolo Echo Tom Szilagyi LADSPA
+JACK Plugin Linux Audio">
+<meta name="author" content="Tom Szilagyi">
+</head>
+
+<body bgcolor=#ffffff>
+<table cellpadding="5" cellspacing="0" border="0" bgcolor=#ffffc0
+width="100%">
+<tr><td>
+<font size="+2" color=#004060><b>TAP</b>-plugins</font><br>
+<font color=#004060>Tom's Audio Processing plugins</font><br>
+<font size="-1" color=#004060><i>for audio engineering on the Linux
+platform</i></font>
+</td><td>
+<center>
+<a href="../index.html">[ Home ]</a>
+<a href="../ladspa.html">[ LADSPA plugins ]</a>
+<a href="../reverbed.html">[ TAP Reverb Editor ]</a>
+</center>
+<hr>
+<center>
+<a href="releases.html">[ Releases ]</a>
+<a href="general.html">[ General Info ]</a>
+<a href="manuals.html">[ Plugin Manuals ]</a>
+</center>
+</td></tr>
+</table>
+
+<blockquote>
+<a href="autopan.html">[&nbsp;TAP&nbsp;AutoPanner&nbsp;]</a>
+<a href="chorusflanger.html">[&nbsp;TAP&nbsp;Chorus/Flanger&nbsp;]</a>
+<a href="deesser.html">[&nbsp;TAP&nbsp;DeEsser&nbsp;]</a>
+<a href="dynamics.html">[&nbsp;TAP&nbsp;Dynamics&nbsp;(Mono&nbsp;&&nbsp;Stereo)&nbsp;]</a>
+<a href="eq.html">[&nbsp;TAP&nbsp;Equalizer&nbsp;and&nbsp;TAP&nbsp;Equalizer/BW&nbsp;]</a>
+<a href="doubler.html">[&nbsp;TAP&nbsp;Fractal&nbsp;Doubler&nbsp;]</a>
+<a href="pinknoise.html">[&nbsp;TAP&nbsp;Pink/Fractal&nbsp;Noise&nbsp;]</a>
+<a href="pitch.html">[&nbsp;TAP&nbsp;Pitch&nbsp;Shifter&nbsp;]</a>
+<a href="reflector.html">[&nbsp;TAP&nbsp;Reflector&nbsp;]</a>
+<a href="reverb.html">[&nbsp;TAP&nbsp;Reverberator&nbsp;]</a>
+<a href="rotspeak.html">[&nbsp;TAP&nbsp;Rotary&nbsp;Speaker&nbsp;]</a>
+<a href="limiter.html">[&nbsp;TAP&nbsp;Scaling&nbsp;Limiter&nbsp;]</a>
+<a href="sigmoid.html">[&nbsp;TAP&nbsp;Sigmoid&nbsp;Booster&nbsp;]</a>
+<a href="echo.html">[&nbsp;TAP&nbsp;Stereo&nbsp;Echo&nbsp;]</a>
+<a href="tremolo.html">[&nbsp;TAP&nbsp;Tremolo&nbsp;]</a>
+<a href="tubewarmth.html">[&nbsp;TAP&nbsp;TubeWarmth&nbsp;]</a>
+<a href="vibrato.html">[&nbsp;TAP&nbsp;Vibrato&nbsp;]</a>
+</blockquote>
+
+<h2>TAP Reverberator</h2>
+<img src="tap_reverb.png" alt="[TAP Reverberator GUI as shown in Ardour]">
+<p>
+<b>TAP Reverberator</b> is unique among reverberators freely available
+on the Linux platform. It supports creating no less than 43
+reverberation effects, but its design permits this to be extended even
+further by the user, without doing any actual programming. Please take
+a look at <a href="../reverbed.html">TAP Reverb Editor</a>, a separate
+JACK application for more information about this.
+</p>
+<p>
+The design is based on the comb/allpass filter model. Comb filters
+create early reflections and allpass filters add to this by creating a
+dense reverberation effect. The output of the set of comb and allpass
+filters (also called the reverberator chamber) is processed further by
+sending it through a bandpass filter. The resulting band-limited
+reverberation is very similar to the natural reverberation that occurs
+in acoustic rooms. To achieve an even more natural-sounding effect,
+all comb filters have high-frequency compensation in their feedback
+loop. This is to model that the reflection ratio of acoustic surfaces
+is the function of frequency: higher frequencies are attenuated more,
+and thus decay time of higher frequency components is significantly
+shorter.
+</p>
+<p>
+To enhance the reverberation sound even further, a special option
+called <i>Enhanced Stereo</i> is provided. When turned on (which is
+the default), it results in an added spatial spread of the reverb
+sound. This feature is most noticeable when applying the plugin to
+mono tracks: the sound of these tracks will "open up" in space.
+</p>
+
+
+
+<h3>General information</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th align="left">Unique ID</th><td>2142</td>
+<tr><th align="left">I/O ports</th><td>2 inputs / 2 outputs</td>
+<tr><th align="left">CPU usage (44.1 kHz)</th><td>10.7% max. (see Notes)</td>
+<tr><th align="left">CPU usage (96 kHz)</th><td>24.8% max. (see Notes)</td>
+<tr><th align="left">Hard RT Capable</th><td>No</td></tr>
+<tr><th align="left">In-place operation</th><td>Supported</td>
+<tr><th align="left">run_adding() function</th><td>Provided</td>
+</table>
+
+
+<h3>Usage tips</h3>
+<p>
+Despite the rather complex algorithm of this plugin, usage is
+relatively simple and the user is required to adjust only a limited
+number of global controls. This is achieved by defining "presets"
+called Reverb Types which actually mean larger sets of internal
+control values. When choosing a Reverb Type, the plugin loads all
+values associated to that type, and operates according to the newly
+loaded values. (If you want access to the internals of a Reverb Type,
+please check out <a href="../reverbed.html">TAP Reverb Editor</a>.)
+</p>
+<p>
+The most important global variable of the whole effect is the decay
+time.  By adjusting this, you can create the feel of a larger acoustic
+space (set the decay to more than 2-3 seconds for this), as well as a
+"tight", relatively dry effect (for which you should set a much lower
+value).  But you should be aware of the fact that not every
+reverberation type sounds good at any decay setting (see the table
+below for recommended decay values). For example, a <i>Room
+(Small)</i> will not sound too good when you set the decay to a very
+large value, and vice versa, a <i>Hall (Large)</i> will not sound
+optimal at very small decay settings. However, when choosing a more
+artificial type of reverberation (<i>Afterburn</i>,
+<i>Pulse Chamber (Reverse)</i> or <i>Warble Chamber</i>, for example),
+there is no "natural" decay time: set it as you see fit according to
+the effect you are trying to achieve.
+</p>
+<p>
+General advice about adjusting the dry and wet signal levels: the wet
+level should be about 3 to 15 dB lower than the dry level, according
+to the reverb type you are using. Of course if you want to create an
+artificial sounding effect, you can decrease the dry level, even down
+to -70 dB if that is what you want. However, one thing to know is that
+you shouldn't set the wet level to a very high value (generally not
+above 0 dB) because the output level of the plugin may become too high
+and you may overdrive the next plugin in the chain, or you may cause
+signal clipping in the master output of your multitrack. Furthermore,
+because the wet signal is added to the incoming dry signal, you should
+decrease the dry level as well by a few dB-s (and then set the wet
+level according to this) so as not to raise the overall loudness of
+the track.
+</p>
+<p>
+Usually, when trying to create a natural-sounding reverberation
+effect, all components (comb filters, allpass filters, the bandpass
+filter and the stereo enhancement mode) should be switched
+on. However, to create artificial effects, it is possible to turn off
+any of these components. For example, if you only want the sound of
+multiple echoes, you can turn off everything but the comb filters; if
+you want to create a more unnatural, harsh effect, turn off the
+bandpass filter processing. (Also note that bandpass filters of
+different Reverb Types have different low and high cutoff frequencies,
+since this filtering also affects the nature of the reverberated sound
+very much.) Naturally, components that are switched off don't consume
+CPU power.
+</p>
+<p>
+As mentioned earlier, not all Reverb Types sound good with any decay
+setting. The following table contains decay time settings adequate for
+particular Reverb Types. Decay times are shown in seconds. As a rule of
+thumb, when decay times are above 3 seconds, the "Wet Level" should be
+at least 6 or more decibels below the "Dry Level". <i>The values
+below are only general advice, and they are provided merely as a
+starting point for your experimentation. You are free to use any value
+that sounds good for your mix.</i>
+</p>
+
+<h3>Recommended decay times</h3>
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th>Reverb Type</th><th>Decay Time</th></tr>
+<tr><td>AfterBurn</td><td>2.8</td></tr>
+<tr><td>AfterBurn (Long)</td><td>4.8</td></tr>
+<tr><td>Ambience</td><td>1.1</td></tr>
+<tr><td>Ambience (Thick)</td><td>1.2</td></tr>
+<tr><td>Ambience (Thick) - HD</td><td>1.2</td></tr>
+<tr><td>Cathedral</td><td>10</td></tr>
+<tr><td>Cathedral - HD</td><td>10</td></tr>
+<tr><td>Drum Chamber</td><td>3.6</td></tr>
+<tr><td>Garage</td><td>2.3</td></tr>
+<tr><td>Garage (Bright)</td><td>2.3</td></tr>
+<tr><td>Gymnasium</td><td>5.9</td></tr>
+<tr><td>Gymnasium (Bright)</td><td>5.9</td></tr>
+<tr><td>Gymnasium (Bright) - HD</td><td>5.9</td></tr>
+<tr><td>Hall (Small)</td><td>2.0</td></tr>
+<tr><td>Hall (Medium)</td><td>3.0</td></tr>
+<tr><td>Hall (Large)</td><td>5.1</td></tr>
+<tr><td>Hall (Large) - HD</td><td>5.1</td></tr>
+<tr><td>Plate (Small)</td><td>1.7</td></tr>
+<tr><td>Plate (Medium)</td><td>2.6</td></tr>
+<tr><td>Plate (Large)</td><td>5.7</td></tr>
+<tr><td>Plate (Large) - HD</td><td>5.7</td></tr>
+<tr><td>Pulse Chamber</td><td>3.1</td></tr>
+<tr><td>Pulse Chamber (Reverse)</td><td>3.1</td></tr>
+<tr><td>Resonator (96 ms)</td><td>4.0</td></tr>
+<tr><td>Resonator (152 ms)</td><td>4.2</td></tr>
+<tr><td>Resonator (208 ms)</td><td>5.1</td></tr>
+<tr><td>Room (Small)</td><td>1.9</td></tr>
+<tr><td>Room (Medium)</td><td>2.8</td></tr>
+<tr><td>Room (Large)</td><td>4.4</td></tr>
+<tr><td>Room (Large) - HD</td><td>4.4</td></tr>
+<tr><td>Slap Chamber</td><td>2.3</td></tr>
+<tr><td>Slap Chamber - HD</td><td>2.9</td></tr>
+<tr><td>Slap Chamber (Bright)</td><td>3.4</td></tr>
+<tr><td>Slap Chamber (Bright) - HD</td><td>3.7</td></tr>
+<tr><td>Smooth Hall (Small)</td><td>1.8</td></tr>
+<tr><td>Smooth Hall (Medium)</td><td>3.0</td></tr>
+<tr><td>Smooth Hall (Large)</td><td>5.9</td></tr>
+<tr><td>Smooth Hall (Large) - HD</td><td>5.9</td></tr>
+<tr><td>Vocal Plate</td><td>3.1</td></tr>
+<tr><td>Vocal Plate - HD</td><td>3.1</td></tr>
+<tr><td>Warble Chamber</td><td>4.0</td></tr>
+<tr><td>Warehouse</td><td>6.0</td></tr>
+<tr><td>Warehouse - HD</td><td>6.0</td></tr>
+</table>
+
+
+<br>
+<p>
+<b>Q:</b> <i>What is that HD in the name of some Reverb Types?</i>
+</p>
+<p>
+<b>A:</b> HD stands for <i>High Density</i>. Reverb Types marked with
+this are enhanced versions of other types, for example <i>Hall (Large)
+- HD</i> is derived from <i>Hall (Large)</i>. Enhancement means
+additional comb and/or allpass filters, which result in an even
+smoother reverberation effect. However, more filters mean more CPU
+usage, so it's up to you to decide whether to choose them or not. If
+CPU usage is not a great concern, it is recommended to use the HD
+versions where available.
+</p>
+
+
+<h3>Summary of user controls</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th>name</th><th>min. value</th><th>default value</th><th>max. value</th></tr>
+
+<tr align="center"><td>Decay [ms]</td>
+<td>0</td>
+<td>2500</td>
+<td>10000</td></tr>
+<tr align="center"><td>Dry Level [dB]</td>
+<td>-70</td>
+<td>0</td>
+<td>+10</td></tr>
+<tr align="center"><td>Wet Level [dB]</td>
+<td>-70</td>
+<td>0</td>
+<td>+10</td></tr>
+<tr align="center"><td>Comb Filters</td>
+<td>OFF</td>
+<td>ON</td>
+<td>ON</td></tr>
+<tr align="center"><td>Allpass Filters</td>
+<td>OFF</td>
+<td>ON</td>
+<td>ON</td></tr>
+<tr align="center"><td>Bandpass Filter</td>
+<td>OFF</td>
+<td>ON</td>
+<td>ON</td></tr>
+<tr align="center"><td>Enhanced Stereo</td>
+<td>OFF</td>
+<td>ON</td>
+<td>ON</td></tr>
+<tr align="center"><td>Reverb Type</td>
+<td>0</td>
+<td>0</td>
+<td>42</td></tr>
+
+</table>
+
+
+<h3>Notes</h3>
+<p>
+The maximum number of filters is 20 combs and 20 allpass
+filters. Actually it is double this much because every filter exists
+in two instances for the two channels.  This amount allows for the
+creation of very dense, very smooth-sounding Reverb Types.
+</p>
+<p>
+Comb filters are implemented as first-order IIR filters with a
+biquadratic low-pass filter in the feedback loop, which has its cutoff
+frequency determined by the frequency response parameter of the comb
+filter. Allpass filters are implemented as ordinary first-order IIR
+filters.
+</p>
+<p>
+When <i>Enhanced Stereo</i> is enabled, parameters of the two
+instances of the same filter are set to slightly different values.
+Without this option, the two input channels are processed in the exact
+same way. It is absolutely recommended to turn this on when applying
+the plugin to mono tracks, but it is also useful on stereo tracks.
+</p>
+<p>
+Because the varying complexity of Reverb Types and the fact that
+options can be switched on/off individually, CPU usage is a function
+of user settings. For this reason, this plugin is not hard RT
+capable. The CPU usage was measured with all options turned on, and
+the Reverb Type set to <i>Ambience (Thick) - HD</i>, which is the most
+complex one at the moment. Other Reverb Types with fewer
+comb/allpass filters utilize proportionately less CPU.
+</p>
+</body></html>

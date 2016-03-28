@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<title>TAP-plugins</title>
+<meta name="generator" content="GNU Emacs 21.2.1">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="description" content="Tom's Audio Processing plugins for
+audio engineering on the Linux platform.">
+<meta name="keywords" content="TAP-plugins TAP Reverb Editor
+Reverberator Equalizer EQ Vibrato Tremolo Echo Tom Szilagyi LADSPA
+JACK Plugin Linux Audio">
+<meta name="author" content="Tom Szilagyi">
+</head>
+
+<body bgcolor=#ffffff>
+<table cellpadding="5" cellspacing="0" border="0" bgcolor=#ffffc0 width="100%">
+<tr><td>
+<font size="+2" color=#004060><b>TAP</b>-plugins</font><br>
+<font color=#004060>Tom's Audio Processing plugins</font><br>
+<font size="-1" color=#004060><i>for audio engineering on the Linux platform</i></font>
+</td><td>
+<center>
+<a href="../index.html">[ Home ]</a>
+<a href="../ladspa.html">[ LADSPA plugins ]</a>
+<a href="../reverbed.html">[ TAP Reverb Editor ]</a>
+</center>
+<hr>
+<center>
+<a href="install.html">[ Compiling & installing ]</a>
+<a href="manual.html">[ User Manual ]</a>
+</center>
+</td></tr>
+</table>
+
+<br><br>
+<font size="6"><b>Compiling and installing</b></font><br>
+<font size="5">TAP Reverb Editor</font>
+
+<p>
+You need the following libraries to compile TAP Reverb Editor:
+</p>
+<ul>
+<li>JACK: <a href="http://jackaudio.org">http://jackaudio.org</a></li>
+<li>GTK+-2.0: <a href="http://www.gtk.org">http://www.gtk.org</a></li>
+</ul>
+
+<p>
+You also need to have:
+</p>
+<ul>
+<li>pkgconfig: <a
+href="http://www.freedesktop.org/wiki/Software/pkg-config">http://www.freedesktop.org/wiki/Software/pkg-config</a></li>
+</ul>
+
+<p>
+If you have all these, just go on and type <code>./configure</code>,
+then <code>make</code>. The <code>configure</code> script will
+complain if anything is missing. Note: when you install packages like
+JACK from source, always specify the correct prefix parameter to the
+package's configure script; this way you can be sure the package will
+be installed in the right location (the question is usually whether
+the <code>local</code> path should be used,
+eg. <code>/usr/local</code> vs. <code>/usr</code>).
+</p>
+
+<p>
+After a clean <code>make</code>, type <code>make install</code> (as
+root) to install the executable. If you want to change the default
+place (which depends on your system, but is usually something like
+<code>/usr/local/bin</code>), please pass the appropriate
+<code>--prefix</code> option to <code>./configure</code>.
+</p>
+
+<p>
+<b>IMPORTANT:</b> TAP Reverb Editor writes to and reads from a file
+named <code>.reverbed</code>, which is always expected to be found in
+the home directory of the user who runs the program. TAP Reverb Editor
+comes with a default <code>.reverbed</code> file (located in the
+<code>src/</code> subdirectory along with the source code), which you
+should manually copy to all those user's home directories who will
+want to use the program -- <i>'make install' does not do this for
+you!</i> Don't forget to set the file permissions so that the user who
+will run the program has read and write permissions on his/her copy.
+Finally (if everything went fine) you can start the program by typing
+<code>reverbed</code>. You need an already running JACK server of
+course.
+</p>
+</body></html>

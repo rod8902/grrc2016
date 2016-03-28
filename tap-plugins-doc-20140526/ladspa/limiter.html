@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+<title>TAP-plugins</title>
+<meta name="generator" content="GNU Emacs 21.2.1">
+<meta http-equiv="Content-Type" content="text/html;
+charset=iso-8859-1">
+<meta name="description" content="Tom's Audio Processing plugins for
+audio engineering on the Linux platform.">
+<meta name="keywords" content="TAP-plugins TAP Reverb Editor
+Reverberator Equalizer EQ Vibrato Tremolo Echo Tom Szilagyi LADSPA
+JACK Plugin Linux Audio">
+<meta name="author" content="Tom Szilagyi">
+</head>
+
+<body bgcolor=#ffffff>
+<table cellpadding="5" cellspacing="0" border="0" bgcolor=#ffffc0
+width="100%">
+<tr><td>
+<font size="+2" color=#004060><b>TAP</b>-plugins</font><br>
+<font color=#004060>Tom's Audio Processing plugins</font><br>
+<font size="-1" color=#004060><i>for audio engineering on the Linux
+platform</i></font>
+</td><td>
+<center>
+<a href="../index.html">[ Home ]</a>
+<a href="../ladspa.html">[ LADSPA plugins ]</a>
+<a href="../reverbed.html">[ TAP Reverb Editor ]</a>
+</center>
+<hr>
+<center>
+<a href="releases.html">[ Releases ]</a>
+<a href="general.html">[ General Info ]</a>
+<a href="manuals.html">[ Plugin Manuals ]</a>
+</center>
+</td></tr>
+</table>
+
+<blockquote>
+<a href="autopan.html">[&nbsp;TAP&nbsp;AutoPanner&nbsp;]</a>
+<a href="chorusflanger.html">[&nbsp;TAP&nbsp;Chorus/Flanger&nbsp;]</a>
+<a href="deesser.html">[&nbsp;TAP&nbsp;DeEsser&nbsp;]</a>
+<a href="dynamics.html">[&nbsp;TAP&nbsp;Dynamics&nbsp;(Mono&nbsp;&&nbsp;Stereo)&nbsp;]</a>
+<a href="eq.html">[&nbsp;TAP&nbsp;Equalizer&nbsp;and&nbsp;TAP&nbsp;Equalizer/BW&nbsp;]</a>
+<a href="doubler.html">[&nbsp;TAP&nbsp;Fractal&nbsp;Doubler&nbsp;]</a>
+<a href="pinknoise.html">[&nbsp;TAP&nbsp;Pink/Fractal&nbsp;Noise&nbsp;]</a>
+<a href="pitch.html">[&nbsp;TAP&nbsp;Pitch&nbsp;Shifter&nbsp;]</a>
+<a href="reflector.html">[&nbsp;TAP&nbsp;Reflector&nbsp;]</a>
+<a href="reverb.html">[&nbsp;TAP&nbsp;Reverberator&nbsp;]</a>
+<a href="rotspeak.html">[&nbsp;TAP&nbsp;Rotary&nbsp;Speaker&nbsp;]</a>
+<a href="limiter.html">[&nbsp;TAP&nbsp;Scaling&nbsp;Limiter&nbsp;]</a>
+<a href="sigmoid.html">[&nbsp;TAP&nbsp;Sigmoid&nbsp;Booster&nbsp;]</a>
+<a href="echo.html">[&nbsp;TAP&nbsp;Stereo&nbsp;Echo&nbsp;]</a>
+<a href="tremolo.html">[&nbsp;TAP&nbsp;Tremolo&nbsp;]</a>
+<a href="tubewarmth.html">[&nbsp;TAP&nbsp;TubeWarmth&nbsp;]</a>
+<a href="vibrato.html">[&nbsp;TAP&nbsp;Vibrato&nbsp;]</a>
+</blockquote>
+
+<h2>TAP Scaling Limiter</h2>
+<img src="tap_limiter.png" alt="[TAP Scaling Limiter GUI as shown in Ardour]">
+<p>
+You want to maximize the loudness of your master tracks. Your drummer
+has the habit of playing with varying velocity. You want to squeeze
+high transient spikes down into the bulk of the audio. You want a
+limiter with transparent sound, but without distortion. This is for
+you, then. The unique design of this innocent looking plugin results
+in the ability to achieve signal level limiting <i>without audible
+artifacts</i>.
+</p>
+<p>
+Most limiters operate on the same basis as compressors: they monitor
+the signal level, and when it gets above a threshold level they reduce
+the gain on a momentary basis, resulting in an unpleasant "pumping"
+effect. Or even worse, they chop the signal at the top. This plugin
+actually <i>scales each half-cycle individually</i> down to a smaller
+level so the peak is placed exactly at the limit level. This operation
+(from zero-cross to zero-cross) results in an instantaneous blending
+of peaks and transient spikes down into the bulk of the audio.
+</p>
+
+<h3>General information</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th align="left">Unique ID</th><td>2145</td>
+<tr><th align="left">I/O ports</th><td>1 input / 1 output</td>
+<tr><th align="left">CPU usage (44.1 kHz)</th><td>0.5% (see Notes)</td>
+<tr><th align="left">CPU usage (96 kHz)</th><td>1.1% (see Notes)</td>
+<tr><th align="left">Hard RT Capable</th><td>No</td></tr>
+<tr><th align="left">In-place operation</th><td>Supported</td>
+<tr><th align="left">run_adding() function</th><td>Provided</td>
+</table>
+
+
+<h3>Usage tips</h3>
+<p>
+Although this limiter is an exceptionally clean sounding one, it is
+possible to introduce distortion by setting the limit level down into
+the bulk of the audio. Only transients, drum beats and such things
+(which "stand out" of the waveform) should be attacked. To illustrate
+the optimal setting of this plugin, let's look at the following
+waveforms (seemingly some unmastered rock music):
+</p>
+<img src="limiter1.png" alt="[Before/After Limiter Waveforms 1]">
+<p>
+As you can see, no signal gets above the limit level, so this plugin
+acts as a brickwall limiter (with a compression ratio of inf:1 above
+the limit level). But the two waveforms above sound exactly the
+same! This is possible because transients last for a very short amount
+of time, and despite their high level, they don't carry very much
+energy compared to the bulk of the audio. Now let's take a closer look
+at the same waveforms:
+</p>
+<img src="limiter2.png" alt="[Before/After Limiter Waveforms 2]">
+<p>
+As it can be seen, the waveform does not lose any of its details,
+because half-cycles (from zero-cross to zero-cross) are individually
+scaled down to the limit level (only those that have peaks above the
+limit, of course).
+</p>
+<p>
+When setting the "Limit Level", you should not go more than 7-8 dB
+below the average peak level of the signal, which should be observed
+via some peak-holding level meter. When using this plugin in Ardour,
+this can be done very easily because the meters of the mixer strips
+provide an excellent way to monitor exact peak values. Assuming an
+unmastered mix of some rock music with drums, bass, guitars etc. you
+can usually get down to the point where the Ardour level meter doesn't
+move very much.  Without hearing any distortion, of course.  Because
+high transients are squeezed down, the overall signal level can be
+raised with the "Output Volume" control. Thus, this plugin is a very
+effective way to transparently maximize the loudness of your mixes.
+</p>
+
+<h3>Summary of user controls</h3>
+
+<table cellspacing="0" cellpadding="5" border="1">
+<tr><th>name</th><th>min. value</th><th>default value</th><th>max. value</th></tr>
+
+<tr align="center"><td>Limit Level [dB]</td>
+<td>-30</td>
+<td>0</td>
+<td>+20</td></tr>
+<tr align="center"><td>Output Volume [dB]</td>
+<td>-30</td>
+<td>0</td>
+<td>+20</td></tr>
+<tr align="center"><td>latency</td>
+<td colspan="3">latency time is 12.5 ms,<br>
+value depends on sample rate</td>
+</tr>
+
+</table>
+
+<h3>Notes</h3>
+<p>
+This plugin has a processing function that examines the input audio
+signal and makes decisions based on sample values. So by definition,
+this plugin cannot qualify as hard RT capable, although CPU demand
+tends to be fairly constant during usage.
+</p>
+</body></html>
