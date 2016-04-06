@@ -1,0 +1,193 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+A	IIRFilterCode.h	/^ struct TSPlaneCoeff { double A[ARRAY_DIM]; double B[ARRAY_DIM]; double C[ARRAY_DIM];$/;"	m	struct:TSPlaneCoeff
+ARRAY_DIM	IIRFilterCode.h	6;"	d
+AdjGaussDenominator	FilterCoefficients.hpp	/^ const double AdjGaussDenominator[41][9][30] = {$/;"	v
+Alpha	NewParksMcClellan.cpp	/^double LeGrangeD[PARKS_SMALL], Alpha[PARKS_SMALL], CosOfGrid[PARKS_SMALL], DesPlus[PARKS_SMALL];$/;"	v
+B	IIRFilterCode.h	/^ struct TSPlaneCoeff { double A[ARRAY_DIM]; double B[ARRAY_DIM]; double C[ARRAY_DIM];$/;"	m	struct:TSPlaneCoeff
+BandMag	NewParksMcClellan.cpp	/^double Coeff[PARKS_SMALL], Edge[PARKS_SMALL], BandMag[PARKS_SMALL], InitWeight[PARKS_SMALL];$/;"	v
+BasicFIR	FIRFilterCode.cpp	/^void BasicFIR(double *FirCoeff, int NumTaps, TFIRPassTypes PassType, double OmegaC, double BW, TWindowType WindowType, double WinBeta)$/;"	f
+Bessel	FFTCode.cpp	/^double Bessel(double x)$/;"	f
+BesselDenominator	FilterCoefficients.hpp	/^ const double BesselDenominator[9][18] = {$/;"	v
+BetaMaxArray	FilterCoefficients.hpp	/^ const double BetaMaxArray[17] = {1.000, 1.000, 1.000, 1.010, 1.010, 100.010, 100.010, 100.010, 100.010, 100.010, 100.010, 100.010, 100.010, 100.010, 100.010, 100.010, 100.010}; $/;"	v
+BetaMinArray	FilterCoefficients.hpp	/^ const double BetaMinArray[17] = {0.000, 0.000, 0.000, -1.000, 0.000, 10.000, 40.000, 40.000, 40.000, 40.000, 40.000, 40.000, 40.000, 40.000, 40.000, 40.000, 40.000}; $/;"	v
+BetaStepArray	FilterCoefficients.hpp	/^ const double BetaStepArray[17] = {10.000, 10.000, 10.000, 0.050, 0.100, 5.000, 5.000, 5.000, 5.000, 5.000, 5.000, 5.000, 5.000, 5.000, 5.000, 5.000, 5.000}; $/;"	v
+BiQuadRoots	QuadRootsCode.cpp	/^void BiQuadRoots(long double *P, long double *RealRoot, long double *ImagRoot)$/;"	f
+ButterworthDenominator	FilterCoefficients.hpp	/^ const double ButterworthDenominator[9][30] = {$/;"	v
+C	IIRFilterCode.h	/^ struct TSPlaneCoeff { double A[ARRAY_DIM]; double B[ARRAY_DIM]; double C[ARRAY_DIM];$/;"	m	struct:TSPlaneCoeff
+CalcCoefficients	NewParksMcClellan.cpp	/^void CalcCoefficients(void)$/;"	f
+CalcIIRFilterCoeff	IIRFilterCode.cpp	/^TIIRCoeff CalcIIRFilterCoeff(TIIRFilterTypes ProtoType, double Beta, TIIRPassTypes PassType, int NumPoles, double OmegaC, double BW)$/;"	f
+CalcParkCoeff2	NewParksMcClellan.cpp	/^void CalcParkCoeff2(int NumBands, int TapCount, double *FirCoeff)$/;"	f
+ChebyshevDenominator	FilterCoefficients.hpp	/^ const double ChebyshevDenominator[11][9][30] = {$/;"	v
+Coeff	NewParksMcClellan.cpp	/^double Coeff[PARKS_SMALL], Edge[PARKS_SMALL], BandMag[PARKS_SMALL], InitWeight[PARKS_SMALL];$/;"	v
+CosOfGrid	NewParksMcClellan.cpp	/^double LeGrangeD[PARKS_SMALL], Alpha[PARKS_SMALL], CosOfGrid[PARKS_SMALL], DesPlus[PARKS_SMALL];$/;"	v
+CubicRoots	QuadRootsCode.cpp	/^void CubicRoots(long double *P, long double *RealRoot, long double *ImagRoot)$/;"	f
+D	IIRFilterCode.h	/^                       double D[ARRAY_DIM]; double E[ARRAY_DIM]; double F[ARRAY_DIM];$/;"	m	struct:TSPlaneCoeff
+DFT	FFTCode.cpp	/^void DFT(double *InputR, double *InputI, int N, int Type)$/;"	f
+DesPlus	NewParksMcClellan.cpp	/^double LeGrangeD[PARKS_SMALL], Alpha[PARKS_SMALL], CosOfGrid[PARKS_SMALL], DesPlus[PARKS_SMALL];$/;"	v
+DesiredMag	NewParksMcClellan.cpp	/^double DesiredMag[PARKS_BIG], Grid[PARKS_BIG], Weight[PARKS_BIG];$/;"	v
+E	IIRFilterCode.h	/^                       double D[ARRAY_DIM]; double E[ARRAY_DIM]; double F[ARRAY_DIM];$/;"	m	struct:TSPlaneCoeff
+Edge	NewParksMcClellan.cpp	/^double Coeff[PARKS_SMALL], Edge[PARKS_SMALL], BandMag[PARKS_SMALL], InitWeight[PARKS_SMALL];$/;"	v
+Elliptic_00Denominator	FilterCoefficients.hpp	/^ const double Elliptic_00Denominator[13][7][24] = {$/;"	v
+Elliptic_00Numerator	FilterCoefficients.hpp	/^ const double Elliptic_00Numerator[13][7][24] = {$/;"	v
+Elliptic_02Denominator	FilterCoefficients.hpp	/^ const double Elliptic_02Denominator[13][7][24] = {$/;"	v
+Elliptic_02Numerator	FilterCoefficients.hpp	/^ const double Elliptic_02Numerator[13][7][24] = {$/;"	v
+Elliptic_04Denominator	FilterCoefficients.hpp	/^ const double Elliptic_04Denominator[13][7][24] = {$/;"	v
+Elliptic_04Numerator	FilterCoefficients.hpp	/^ const double Elliptic_04Numerator[13][7][24] = {$/;"	v
+Elliptic_06Denominator	FilterCoefficients.hpp	/^ const double Elliptic_06Denominator[13][7][24] = {$/;"	v
+Elliptic_06Numerator	FilterCoefficients.hpp	/^ const double Elliptic_06Numerator[13][7][24] = {$/;"	v
+Elliptic_08Denominator	FilterCoefficients.hpp	/^ const double Elliptic_08Denominator[13][7][24] = {$/;"	v
+Elliptic_08Numerator	FilterCoefficients.hpp	/^ const double Elliptic_08Numerator[13][7][24] = {$/;"	v
+Elliptic_10Denominator	FilterCoefficients.hpp	/^ const double Elliptic_10Denominator[13][7][24] = {$/;"	v
+Elliptic_10Numerator	FilterCoefficients.hpp	/^ const double Elliptic_10Numerator[13][7][24] = {$/;"	v
+Elliptic_12Denominator	FilterCoefficients.hpp	/^ const double Elliptic_12Denominator[13][7][24] = {$/;"	v
+Elliptic_12Numerator	FilterCoefficients.hpp	/^ const double Elliptic_12Numerator[13][7][24] = {$/;"	v
+Elliptic_14Denominator	FilterCoefficients.hpp	/^ const double Elliptic_14Denominator[13][7][24] = {$/;"	v
+Elliptic_14Numerator	FilterCoefficients.hpp	/^ const double Elliptic_14Numerator[13][7][24] = {$/;"	v
+Elliptic_16Denominator	FilterCoefficients.hpp	/^ const double Elliptic_16Denominator[13][7][24] = {$/;"	v
+Elliptic_16Numerator	FilterCoefficients.hpp	/^ const double Elliptic_16Numerator[13][7][24] = {$/;"	v
+Elliptic_18Denominator	FilterCoefficients.hpp	/^ const double Elliptic_18Denominator[13][7][24] = {$/;"	v
+Elliptic_18Numerator	FilterCoefficients.hpp	/^ const double Elliptic_18Numerator[13][7][24] = {$/;"	v
+Elliptic_20Denominator	FilterCoefficients.hpp	/^ const double Elliptic_20Denominator[13][7][24] = {$/;"	v
+Elliptic_20Numerator	FilterCoefficients.hpp	/^ const double Elliptic_20Numerator[13][7][24] = {$/;"	v
+ErrTest	NewParksMcClellan.cpp	/^bool ErrTest(int k, int Nut, double Comp, double *Err)$/;"	f
+ExampleFIRCall	FIRFilterCode.cpp	/^void ExampleFIRCall(void)$/;"	f
+ExampleIIRCall	IIRFilterCode.cpp	/^void ExampleIIRCall(void)$/;"	f
+ExchangeIndex	NewParksMcClellan.cpp	/^int HalfTapCount, ExchangeIndex[PARKS_SMALL];$/;"	v
+F	IIRFilterCode.h	/^                       double D[ARRAY_DIM]; double E[ARRAY_DIM]; double F[ARRAY_DIM];$/;"	m	struct:TSPlaneCoeff
+FFT	FFTCode.cpp	/^void FFT(double *InputR, double *InputI, int N, TTransFormType Type)$/;"	f
+FFTCodeH	FFTCode.h	4;"	d
+FIRFilterCodeH	FIRFilterCode.h	4;"	d
+FIRFreqError	FIRFilterCode.cpp	/^void FIRFreqError(double *Coeff, int NumTaps, int PassType, double *OmegaC, double *BW)$/;"	f
+FORWARD	FFTCode.h	/^ enum TTransFormType {FORWARD, INVERSE};$/;"	e	enum:TTransFormType
+FillTwiddleArray	FFTCode.cpp	/^void FillTwiddleArray(double *TwiddleR, double *TwiddleI, int N, TTransFormType Type)$/;"	f
+FilterWithFIR	FIRFilterCode.cpp	/^void FilterWithFIR(double *FirCoeff, int NumTaps, double *Signal, double *FilteredSignal, int NumSigPts)$/;"	f
+FilterWithFIR2	FIRFilterCode.cpp	/^void FilterWithFIR2(double *FirCoeff, int NumTaps, double *Signal, double *FilteredSignal, int NumSigPts)$/;"	f
+FilterWithIIR	IIRFilterCode.cpp	/^void FilterWithIIR(TIIRCoeff IIRCoeff, double *Signal, double *FilteredSignal, int NumSigPts)$/;"	f
+GEE2	NewParksMcClellan.cpp	/^double GEE2(int K, int N)$/;"	f
+GaussDenominator	FilterCoefficients.hpp	/^ const double GaussDenominator[9][18] = {$/;"	v
+GetSPlaneCoefficients	IIRFilterCode.cpp	/^TSPlaneCoeff GetSPlaneCoefficients(TIIRFilterTypes FilterType, int NumPoles, double Beta)$/;"	f
+Goertzel	FFTCode.cpp	/^double Goertzel(double *Samples, int N, double Omega)$/;"	f
+Grid	NewParksMcClellan.cpp	/^double DesiredMag[PARKS_BIG], Grid[PARKS_BIG], Weight[PARKS_BIG];$/;"	v
+HalfTapCount	NewParksMcClellan.cpp	/^int HalfTapCount, ExchangeIndex[PARKS_SMALL];$/;"	v
+IIRFilterCodeH	IIRFilterCode.h	4;"	d
+IIRFreqResponse	IIRFilterCode.cpp	/^void IIRFreqResponse(TIIRCoeff IIRCoeff, int NumSections, double *RealHofZ, double *ImagHofZ, int NumPts)$/;"	f
+INVERSE	FFTCode.h	/^ enum TTransFormType {FORWARD, INVERSE};$/;"	e	enum:TTransFormType
+ITRMAX	NewParksMcClellan.h	10;"	d
+InitWeight	NewParksMcClellan.cpp	/^double Coeff[PARKS_SMALL], Edge[PARKS_SMALL], BandMag[PARKS_SMALL], InitWeight[PARKS_SMALL];$/;"	v
+InvChebyDenominator	FilterCoefficients.hpp	/^ const double InvChebyDenominator[19][9][24] = {$/;"	v
+InvChebyNumerator	FilterCoefficients.hpp	/^ const double InvChebyNumerator[19][9][24] = {$/;"	v
+InvertRoots	QuadRootsCode.cpp	/^void InvertRoots(int N, long double *RealRoot, long double *ImagRoot)$/;"	f
+IsValidFFTSize	FFTCode.cpp	/^int IsValidFFTSize(int x)$/;"	f
+LDBL_EPSILON	QuadRootsCode.h	7;"	d
+LeGrangeD	NewParksMcClellan.cpp	/^double LeGrangeD[PARKS_SMALL], Alpha[PARKS_SMALL], CosOfGrid[PARKS_SMALL], DesPlus[PARKS_SMALL];$/;"	v
+LeGrangeInterp2	NewParksMcClellan.cpp	/^double LeGrangeInterp2(int K, int N, int M) \/\/ D$/;"	f
+MAXIMUM_FFT_SIZE	FFTCode.h	8;"	d
+MAX_NUMTAPS	FIRFilterCode.h	8;"	d
+MAX_NUM_PARKS_TAPS	NewParksMcClellan.h	9;"	d
+MINIMUM_FFT_SIZE	FFTCode.h	9;"	d
+MIN_TEST_VAL	NewParksMcClellan.h	11;"	d
+M_2PI	FFTCode.h	7;"	d
+M_2PI	FIRFilterCode.h	9;"	d
+M_2PI	NewParksMcClellan.cpp	66;"	d	file:
+M_SQRT3_2	QuadRootsCode.h	9;"	d
+M_SQRT_2	FFTCode.cpp	15;"	d	file:
+MaxNumPolesArray	FilterCoefficients.hpp	/^ const double MaxNumPolesArray[17] = {10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10}; $/;"	v
+MinNumPolesArray	FilterCoefficients.hpp	/^ const double MinNumPolesArray[17] = {2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4}; $/;"	v
+NUM_FREQ_ERR_PTS	FIRFilterCode.h	10;"	d
+NUM_PLOT_PTS	FIRFilterCode.cpp	16;"	d	file:
+NUM_PLOT_PTS	IIRFilterCode.cpp	27;"	d	file:
+NewParksMcClellan	NewParksMcClellan.cpp	/^void NewParksMcClellan(double *FirCoeff, int NumTaps, TFIRPassTypes PassType, double OmegaC, double BW, double ParksWidth, TWindowType WindowType, double WinBeta)$/;"	f
+NewParksMcClellanH	NewParksMcClellan.h	4;"	d
+NumSections	IIRFilterCode.h	/^                       int NumSections; };$/;"	m	struct:TSPlaneCoeff
+NumSections	IIRFilterCode.h	/^                   int NumSections; };$/;"	m	struct:TIIRCoeff
+OVERFLOW_LIMIT	IIRFilterCode.h	8;"	d
+PARKS_BIG	NewParksMcClellan.h	7;"	d
+PARKS_SMALL	NewParksMcClellan.h	8;"	d
+QuadCubicRoots	QuadRootsCode.cpp	/^int QuadCubicRoots(int N, double *Coeff, double *RootsReal, double *RootsImag)$/;"	f
+QuadRoots	QuadRootsCode.cpp	/^void QuadRoots(long double *P, long double *RealRoot, long double *ImagRoot)$/;"	f
+QuadRootsCodeH	QuadRootsCode.h	4;"	d
+ReArrangeInput	FFTCode.cpp	/^void ReArrangeInput(double *InputR, double *InputI, double *BufferR, double *BufferI, int *RevBits, int N)$/;"	f
+RealSigDFT	FFTCode.cpp	/^void RealSigDFT(double *Samples, double *OutputR, double *OutputI, int N)$/;"	f
+Remez2	NewParksMcClellan.cpp	/^int Remez2(int GridIndex)$/;"	f
+RequiredFFTSize	FFTCode.cpp	/^int RequiredFFTSize(int NumPts)$/;"	f
+ReversePoly	QuadRootsCode.cpp	/^void ReversePoly(long double *P, int N)$/;"	f
+SectCalc	IIRFilterCode.cpp	/^double SectCalc(int j, int k, double x, TIIRCoeff IIRCoeff)$/;"	f
+Sinc	FFTCode.cpp	/^double Sinc(double x)$/;"	f
+Sinc	FIRFilterCode.cpp	/^double Sinc(double x)$/;"	f
+SingleFreqDFT	FFTCode.cpp	/^double SingleFreqDFT(double *Samples, int N, double Omega)$/;"	f
+TFIRPassTypes	FIRFilterCode.h	/^ enum TFIRPassTypes {firLPF, firHPF, firBPF, firNOTCH, firALLPASS, ftNOT_FIR};$/;"	g
+TIIRCoeff	IIRFilterCode.h	/^ struct TIIRCoeff {double a0[ARRAY_DIM]; double a1[ARRAY_DIM]; double a2[ARRAY_DIM]; double a3[ARRAY_DIM]; double a4[ARRAY_DIM];$/;"	s
+TIIRFilterTypes	IIRFilterCode.h	/^ enum TIIRFilterTypes {ftBUTTERWORTH, ftGAUSSIAN, ftBESSEL, ftADJGAUSS, ftCHEBYSHEV, ftINVERSE_CHEBY,$/;"	g
+TIIRPassTypes	IIRFilterCode.h	/^ enum TIIRPassTypes {iirLPF, iirHPF, iirBPF, iirNOTCH, iirALLPASS};$/;"	g
+TINY_VALUE	QuadRootsCode.h	13;"	d
+TSPlaneCoeff	IIRFilterCode.h	/^ struct TSPlaneCoeff { double A[ARRAY_DIM]; double B[ARRAY_DIM]; double C[ARRAY_DIM];$/;"	s
+TTransFormType	FFTCode.h	/^ enum TTransFormType {FORWARD, INVERSE};$/;"	g
+TWindowType	FFTCode.h	/^ enum TWindowType {wtFIRSTWINDOW, wtNONE, wtKAISER, wtSINC, wtHANNING,$/;"	g
+Transform	FFTCode.cpp	/^void Transform(double *InputR, double *InputI, double *BufferR, double *BufferI, double *TwiddleR, double *TwiddleI, int N)$/;"	f
+Weight	NewParksMcClellan.cpp	/^double DesiredMag[PARKS_BIG], Grid[PARKS_BIG], Weight[PARKS_BIG];$/;"	v
+WindowData	FFTCode.cpp	/^void WindowData(double *Data, int N, TWindowType WindowType, double Alpha, double Beta, bool UnityGain)$/;"	f
+ZERO_MINUS	QuadRootsCode.h	12;"	d
+ZERO_PLUS	QuadRootsCode.h	11;"	d
+a0	IIRFilterCode.h	/^ struct TIIRCoeff {double a0[ARRAY_DIM]; double a1[ARRAY_DIM]; double a2[ARRAY_DIM]; double a3[ARRAY_DIM]; double a4[ARRAY_DIM];$/;"	m	struct:TIIRCoeff
+a1	IIRFilterCode.h	/^ struct TIIRCoeff {double a0[ARRAY_DIM]; double a1[ARRAY_DIM]; double a2[ARRAY_DIM]; double a3[ARRAY_DIM]; double a4[ARRAY_DIM];$/;"	m	struct:TIIRCoeff
+a2	IIRFilterCode.h	/^ struct TIIRCoeff {double a0[ARRAY_DIM]; double a1[ARRAY_DIM]; double a2[ARRAY_DIM]; double a3[ARRAY_DIM]; double a4[ARRAY_DIM];$/;"	m	struct:TIIRCoeff
+a3	IIRFilterCode.h	/^ struct TIIRCoeff {double a0[ARRAY_DIM]; double a1[ARRAY_DIM]; double a2[ARRAY_DIM]; double a3[ARRAY_DIM]; double a4[ARRAY_DIM];$/;"	m	struct:TIIRCoeff
+a4	IIRFilterCode.h	/^ struct TIIRCoeff {double a0[ARRAY_DIM]; double a1[ARRAY_DIM]; double a2[ARRAY_DIM]; double a3[ARRAY_DIM]; double a4[ARRAY_DIM];$/;"	m	struct:TIIRCoeff
+b0	IIRFilterCode.h	/^				   double b0[ARRAY_DIM]; double b1[ARRAY_DIM]; double b2[ARRAY_DIM]; double b3[ARRAY_DIM]; double b4[ARRAY_DIM];$/;"	m	struct:TIIRCoeff
+b1	IIRFilterCode.h	/^				   double b0[ARRAY_DIM]; double b1[ARRAY_DIM]; double b2[ARRAY_DIM]; double b3[ARRAY_DIM]; double b4[ARRAY_DIM];$/;"	m	struct:TIIRCoeff
+b2	IIRFilterCode.h	/^				   double b0[ARRAY_DIM]; double b1[ARRAY_DIM]; double b2[ARRAY_DIM]; double b3[ARRAY_DIM]; double b4[ARRAY_DIM];$/;"	m	struct:TIIRCoeff
+b3	IIRFilterCode.h	/^				   double b0[ARRAY_DIM]; double b1[ARRAY_DIM]; double b2[ARRAY_DIM]; double b3[ARRAY_DIM]; double b4[ARRAY_DIM];$/;"	m	struct:TIIRCoeff
+b4	IIRFilterCode.h	/^				   double b0[ARRAY_DIM]; double b1[ARRAY_DIM]; double b2[ARRAY_DIM]; double b3[ARRAY_DIM]; double b4[ARRAY_DIM];$/;"	m	struct:TIIRCoeff
+dNUM_FREQ_ERR_PTS	FIRFilterCode.h	11;"	d
+firALLPASS	FIRFilterCode.h	/^ enum TFIRPassTypes {firLPF, firHPF, firBPF, firNOTCH, firALLPASS, ftNOT_FIR};$/;"	e	enum:TFIRPassTypes
+firBPF	FIRFilterCode.h	/^ enum TFIRPassTypes {firLPF, firHPF, firBPF, firNOTCH, firALLPASS, ftNOT_FIR};$/;"	e	enum:TFIRPassTypes
+firHPF	FIRFilterCode.h	/^ enum TFIRPassTypes {firLPF, firHPF, firBPF, firNOTCH, firALLPASS, ftNOT_FIR};$/;"	e	enum:TFIRPassTypes
+firLPF	FIRFilterCode.h	/^ enum TFIRPassTypes {firLPF, firHPF, firBPF, firNOTCH, firALLPASS, ftNOT_FIR};$/;"	e	enum:TFIRPassTypes
+firNOTCH	FIRFilterCode.h	/^ enum TFIRPassTypes {firLPF, firHPF, firBPF, firNOTCH, firALLPASS, ftNOT_FIR};$/;"	e	enum:TFIRPassTypes
+ftADJGAUSS	IIRFilterCode.h	/^ enum TIIRFilterTypes {ftBUTTERWORTH, ftGAUSSIAN, ftBESSEL, ftADJGAUSS, ftCHEBYSHEV, ftINVERSE_CHEBY,$/;"	e	enum:TIIRFilterTypes
+ftBESSEL	IIRFilterCode.h	/^ enum TIIRFilterTypes {ftBUTTERWORTH, ftGAUSSIAN, ftBESSEL, ftADJGAUSS, ftCHEBYSHEV, ftINVERSE_CHEBY,$/;"	e	enum:TIIRFilterTypes
+ftBUTTERWORTH	IIRFilterCode.h	/^ enum TIIRFilterTypes {ftBUTTERWORTH, ftGAUSSIAN, ftBESSEL, ftADJGAUSS, ftCHEBYSHEV, ftINVERSE_CHEBY,$/;"	e	enum:TIIRFilterTypes
+ftCHEBYSHEV	IIRFilterCode.h	/^ enum TIIRFilterTypes {ftBUTTERWORTH, ftGAUSSIAN, ftBESSEL, ftADJGAUSS, ftCHEBYSHEV, ftINVERSE_CHEBY,$/;"	e	enum:TIIRFilterTypes
+ftCOUNT	IIRFilterCode.h	/^                       ftELLIPTIC_20, ftCOUNT, ftNOT_IIR};$/;"	e	enum:TIIRFilterTypes
+ftELLIPTIC_00	IIRFilterCode.h	/^                       ftELLIPTIC_00, ftELLIPTIC_02, ftELLIPTIC_04, ftELLIPTIC_06,  ftELLIPTIC_08,$/;"	e	enum:TIIRFilterTypes
+ftELLIPTIC_02	IIRFilterCode.h	/^                       ftELLIPTIC_00, ftELLIPTIC_02, ftELLIPTIC_04, ftELLIPTIC_06,  ftELLIPTIC_08,$/;"	e	enum:TIIRFilterTypes
+ftELLIPTIC_04	IIRFilterCode.h	/^                       ftELLIPTIC_00, ftELLIPTIC_02, ftELLIPTIC_04, ftELLIPTIC_06,  ftELLIPTIC_08,$/;"	e	enum:TIIRFilterTypes
+ftELLIPTIC_06	IIRFilterCode.h	/^                       ftELLIPTIC_00, ftELLIPTIC_02, ftELLIPTIC_04, ftELLIPTIC_06,  ftELLIPTIC_08,$/;"	e	enum:TIIRFilterTypes
+ftELLIPTIC_08	IIRFilterCode.h	/^                       ftELLIPTIC_00, ftELLIPTIC_02, ftELLIPTIC_04, ftELLIPTIC_06,  ftELLIPTIC_08,$/;"	e	enum:TIIRFilterTypes
+ftELLIPTIC_10	IIRFilterCode.h	/^                       ftELLIPTIC_10, ftELLIPTIC_12, ftELLIPTIC_14, ftELLIPTIC_16, ftELLIPTIC_18,$/;"	e	enum:TIIRFilterTypes
+ftELLIPTIC_12	IIRFilterCode.h	/^                       ftELLIPTIC_10, ftELLIPTIC_12, ftELLIPTIC_14, ftELLIPTIC_16, ftELLIPTIC_18,$/;"	e	enum:TIIRFilterTypes
+ftELLIPTIC_14	IIRFilterCode.h	/^                       ftELLIPTIC_10, ftELLIPTIC_12, ftELLIPTIC_14, ftELLIPTIC_16, ftELLIPTIC_18,$/;"	e	enum:TIIRFilterTypes
+ftELLIPTIC_16	IIRFilterCode.h	/^                       ftELLIPTIC_10, ftELLIPTIC_12, ftELLIPTIC_14, ftELLIPTIC_16, ftELLIPTIC_18,$/;"	e	enum:TIIRFilterTypes
+ftELLIPTIC_18	IIRFilterCode.h	/^                       ftELLIPTIC_10, ftELLIPTIC_12, ftELLIPTIC_14, ftELLIPTIC_16, ftELLIPTIC_18,$/;"	e	enum:TIIRFilterTypes
+ftELLIPTIC_20	IIRFilterCode.h	/^                       ftELLIPTIC_20, ftCOUNT, ftNOT_IIR};$/;"	e	enum:TIIRFilterTypes
+ftGAUSSIAN	IIRFilterCode.h	/^ enum TIIRFilterTypes {ftBUTTERWORTH, ftGAUSSIAN, ftBESSEL, ftADJGAUSS, ftCHEBYSHEV, ftINVERSE_CHEBY,$/;"	e	enum:TIIRFilterTypes
+ftINVERSE_CHEBY	IIRFilterCode.h	/^ enum TIIRFilterTypes {ftBUTTERWORTH, ftGAUSSIAN, ftBESSEL, ftADJGAUSS, ftCHEBYSHEV, ftINVERSE_CHEBY,$/;"	e	enum:TIIRFilterTypes
+ftNOT_FIR	FIRFilterCode.h	/^ enum TFIRPassTypes {firLPF, firHPF, firBPF, firNOTCH, firALLPASS, ftNOT_FIR};$/;"	e	enum:TFIRPassTypes
+ftNOT_IIR	IIRFilterCode.h	/^                       ftELLIPTIC_20, ftCOUNT, ftNOT_IIR};$/;"	e	enum:TIIRFilterTypes
+iirALLPASS	IIRFilterCode.h	/^ enum TIIRPassTypes {iirLPF, iirHPF, iirBPF, iirNOTCH, iirALLPASS};$/;"	e	enum:TIIRPassTypes
+iirBPF	IIRFilterCode.h	/^ enum TIIRPassTypes {iirLPF, iirHPF, iirBPF, iirNOTCH, iirALLPASS};$/;"	e	enum:TIIRPassTypes
+iirHPF	IIRFilterCode.h	/^ enum TIIRPassTypes {iirLPF, iirHPF, iirBPF, iirNOTCH, iirALLPASS};$/;"	e	enum:TIIRPassTypes
+iirLPF	IIRFilterCode.h	/^ enum TIIRPassTypes {iirLPF, iirHPF, iirBPF, iirNOTCH, iirALLPASS};$/;"	e	enum:TIIRPassTypes
+iirNOTCH	IIRFilterCode.h	/^ enum TIIRPassTypes {iirLPF, iirHPF, iirBPF, iirNOTCH, iirALLPASS};$/;"	e	enum:TIIRPassTypes
+main	FIRMain.cpp	/^int main(){$/;"	f
+wtBLACKMAN	FFTCode.h	/^				   wtHAMMING, wtBLACKMAN, wtFLATTOP, wtBLACKMAN_HARRIS,$/;"	e	enum:TWindowType
+wtBLACKMAN_HARRIS	FFTCode.h	/^				   wtHAMMING, wtBLACKMAN, wtFLATTOP, wtBLACKMAN_HARRIS,$/;"	e	enum:TWindowType
+wtBLACKMAN_NUTTALL	FFTCode.h	/^				   wtBLACKMAN_NUTTALL, wtNUTTALL, wtKAISER_BESSEL, wtTRAPEZOID,$/;"	e	enum:TWindowType
+wtFIRSTWINDOW	FFTCode.h	/^ enum TWindowType {wtFIRSTWINDOW, wtNONE, wtKAISER, wtSINC, wtHANNING,$/;"	e	enum:TWindowType
+wtFLATTOP	FFTCode.h	/^				   wtHAMMING, wtBLACKMAN, wtFLATTOP, wtBLACKMAN_HARRIS,$/;"	e	enum:TWindowType
+wtGAUSS	FFTCode.h	/^                   wtGAUSS, wtSINE, wtTEST };$/;"	e	enum:TWindowType
+wtHAMMING	FFTCode.h	/^				   wtHAMMING, wtBLACKMAN, wtFLATTOP, wtBLACKMAN_HARRIS,$/;"	e	enum:TWindowType
+wtHANNING	FFTCode.h	/^ enum TWindowType {wtFIRSTWINDOW, wtNONE, wtKAISER, wtSINC, wtHANNING,$/;"	e	enum:TWindowType
+wtKAISER	FFTCode.h	/^ enum TWindowType {wtFIRSTWINDOW, wtNONE, wtKAISER, wtSINC, wtHANNING,$/;"	e	enum:TWindowType
+wtKAISER_BESSEL	FFTCode.h	/^				   wtBLACKMAN_NUTTALL, wtNUTTALL, wtKAISER_BESSEL, wtTRAPEZOID,$/;"	e	enum:TWindowType
+wtNONE	FFTCode.h	/^ enum TWindowType {wtFIRSTWINDOW, wtNONE, wtKAISER, wtSINC, wtHANNING,$/;"	e	enum:TWindowType
+wtNUTTALL	FFTCode.h	/^				   wtBLACKMAN_NUTTALL, wtNUTTALL, wtKAISER_BESSEL, wtTRAPEZOID,$/;"	e	enum:TWindowType
+wtSINC	FFTCode.h	/^ enum TWindowType {wtFIRSTWINDOW, wtNONE, wtKAISER, wtSINC, wtHANNING,$/;"	e	enum:TWindowType
+wtSINE	FFTCode.h	/^                   wtGAUSS, wtSINE, wtTEST };$/;"	e	enum:TWindowType
+wtTEST	FFTCode.h	/^                   wtGAUSS, wtSINE, wtTEST };$/;"	e	enum:TWindowType
+wtTRAPEZOID	FFTCode.h	/^				   wtBLACKMAN_NUTTALL, wtNUTTALL, wtKAISER_BESSEL, wtTRAPEZOID,$/;"	e	enum:TWindowType
