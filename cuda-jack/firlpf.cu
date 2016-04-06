@@ -1,8 +1,11 @@
 /* dsp.cu */
 
-#define BLOCK_SIZE 512
-#include <jack/jack.h>
 
+#include <stdio.h>
+#include <math.h>
+
+#include <jack/jack.h>
+#define BLOCK_SIZE 512
 #define KERNELTAPS	256	//must be odd value. 
 //Freq/Taps = Filter Frequency accuracy. 
 //5.4Hz for 44100.
@@ -202,9 +205,24 @@ __global__ void calcFIR(const float * g_indata, float * g_outdata, const int nfr
 		 */		//      loop over i and j:
 		//	out[i]+=h[j]*in[i+j];
 		//__shared__ float buf[N];
+		
+		// This is First algorithm
+		/*
+		float twopioversamplerate = (2*M_PI)/ 44100;	//rod
+		float comp;	//rod
+		float amountoflast, amountofcurrent;
+		int cutoff = 500;
+		bool first;
 
+		printf("nframes = %d\n",nframes);
+		comp = 2 - cos(twopioversamplerate * cutoff);
+		amountoflast = comp - (float)sqrt( comp * comp -1);
+		amountofcurrent = 1 - amountoflast;
 		g_outdata[x]=0.0f;
-		if(x+N>nframes) {return;}
+		
+		if(x+N>nframes) {
+			return;
+		}
 #pragma unroll
 		for (int j=0; j<N-1; j++) {
 				//buf[j]=g_indata[x];
@@ -212,8 +230,31 @@ __global__ void calcFIR(const float * g_indata, float * g_outdata, const int nfr
 						__syncthreads();
 						return;
 				} else {
-						g_outdata[x] = g_outdata[x] + g_indata[(x+j)]*h[j]/(M_PI);
-						
+						//g_outdata[x] = g_outdata[x] + g_indata[(x+j)]*h[j]/(M_PI);
+						//g_outdata[x] = g_outdata[x]*amountoflast + (g_indata[(x+j)]*amountofcurrent)/(M_PI);
+						g_outdata[x] = g_outdata[x]*amountoflast + g_indata[(x+j)]*amountofcurrent;
+				}
+		}
+		*/
+		
+		//This is Second algorithm
+		int samplerate = 44100;
+		double cutoff = 1000.0;
+		double RC = 1.0/(cutoff*2*M_PI);
+		double dt = 1.0/samplerate;
+		double alpha = dt/(RC+dt);
+
+		g_outdata[x]=0.0f;
+		for (int j=0; j<N-1; j++) {
+				//buf[j]=g_indata[x];
+				if(x+j>nframes) {
+						__syncthreads();
+						return;
+				} else {
+						//g_outdata[x] = g_outdata[x] + g_indata[(x+j)]*h[j]/(M_PI);
+						//g_outdata[x] = g_outdata[x]*amountoflast + (g_indata[(x+j)]*amountofcurrent)/(M_PI);
+						//g_outdata[x] = g_outdata[x]*amountoflast + g_indata[(x+j)]*amountofcurrent;
+						g_outdata[x] = g_outdata[x-1] + (alpha * (g_indata[x] - g_outdata[x-1]));
 				}
 		}
 		__syncthreads();

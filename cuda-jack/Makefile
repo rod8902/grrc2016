@@ -1,7 +1,7 @@
 EXE	:= gpujacktest
 
 # CUDA source files (compiled with nvcc)
-CUFILES	:= dsp5.cu		
+CUFILES	:= origin_dsp5.cu		
 SMFLAGS	:= -arch sm_21 -maxrregcount=32
 
 # CUDA libs
@@ -10,7 +10,7 @@ CUINC	:= -I/usr/local/cuda-6.5/include
 			
 # C/C++ source files (compiled with gcc / c++)
 CCFILES	:= 
-CCMAIN	:= cudajack_client2.cpp 
+CCMAIN	:= origin_cudajack_client2.cpp 
 CCLIBS	:= -ljack -lcudart -lcuda 
 
 ################################################################################
@@ -19,6 +19,10 @@ CCLIBS	:= -ljack -lcudart -lcuda
 all:
 	nvcc $(CUINC) -c $(CUFILES) -o cu.o $(SMFLAGS)
 	g++ $(CUINC) $(CCMAIN) cu.o -o $(EXE) $(LIBDIR) $(CCLIBS)
+	nvcc $(CUINC) -c firlpf.cu -o lpfcu.o $(SMFLAGS)
+	g++ $(CUINC) lpf_cudajack_client.cpp lpfcu.o -o firlpf $(LIBDIR) $(CCLIBS)
+	nvcc $(CUINC) -c firhpf.cu -o hpfcu.o $(SMFLAGS)
+	g++ $(CUINC) hpf_cudajack_client.cpp hpfcu.o -o firhpf $(LIBDIR) $(CCLIBS)
 
 
 

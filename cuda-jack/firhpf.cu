@@ -229,7 +229,7 @@ __global__ void calcFIR(const float * g_indata, float * g_outdata, const int nfr
 				} else {
 						//g_outdata[x] = g_outdata[x] + g_indata[(x+j)]*h[j]/(M_PI);
 						//g_outdata[x] = g_outdata[x]*amountoflast + (g_indata[(x+j)]*amountofcurrent)/(M_PI);
-						g_outdata[x] = g_outdata[x]*amountoflast + g_indata[(x+j)]*amountofcurrent;
+						g_outdata[x] = g_outdata[x]*amountoflast + g_indata[(x+j)]*(1-amountofcurrent);
 				}
 		}
 		__syncthreads();

@@ -15,6 +15,7 @@
 #include <jack/jack.h>
 
 #define FRAMES 1000000
+
 typedef struct io_t {
 	jack_default_audio_sample_t *p_in;
 	jack_default_audio_sample_t *p_out;
@@ -91,6 +92,8 @@ _process (jack_nframes_t nframes, void *arg)
 	cudaError rc;
 	
 	jack_default_audio_sample_t *in, *out;
+	
+	//printf("%d\n", nframes);	//debug
 
 	in = (jack_default_audio_sample_t*)jack_port_get_buffer (input_port, nframes);
 	out = (jack_default_audio_sample_t*)jack_port_get_buffer (output_port, nframes);
@@ -109,7 +112,7 @@ _process (jack_nframes_t nframes, void *arg)
 
 	int grid = 1;
 	
-	RunGPU_DSP( grid, gpuio->p_in, gpuio->p_out, nframes );
+	RunGPU_DSP( grid, gpuio->p_in, gpuio->p_out, nframes );	// in .cu file
 	
 	rc = cudaMemcpy( in, gpuio->p_in, sizeof(jack_default_audio_sample_t) * nframes, cudaMemcpyDeviceToHost );
 	if( rc != cudaSuccess )
@@ -188,7 +191,7 @@ int
 main (int argc, char *argv[])
 {
 	const char **ports;
-	const char *client_name = "CUDA-DSP";
+	const char *client_name = "LPF-CUDA-DSP";
 	const char *server_name = NULL;
 	jack_options_t options = JackNullOption;
 	jack_status_t status;
@@ -196,6 +199,7 @@ main (int argc, char *argv[])
 	/* open a client connection to the JACK server */
 
 	client = jack_client_open (client_name, options, &status, server_name);
+				// CUDA-DSP , JackNullOption, ?, NULL
 	if (client == NULL) {
 		fprintf (stderr, "jack_client_open() failed, "
 			 "status = 0x%2.0x\n", status);
@@ -244,12 +248,14 @@ main (int argc, char *argv[])
 					  JACK_DEFAULT_AUDIO_TYPE,
 					  JackPortIsOutput, 0);
 
+	// pulseaudio jack sink have two output ports.
+
 	if ((input_port == NULL) || (output_port == NULL)) {
 		fprintf(stderr, "no more JACK ports available\n");
 		exit (1);
 	}
 
-        cuda_initialise();	
+        cuda_initialise();	// What purpose? => return multi_processor_count
 		
 	/* Tell the JACK server that we are ready to roll.  Our
 	 * process() callback will start running now. */
