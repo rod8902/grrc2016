@@ -103,10 +103,6 @@ __device__  float coeff_Kernel[KERNELTAPS];
 __global__ void calcFIRHJ(const float * g_indata, float * g_outdata, const int nframes)
 {
 
-	int gindex = threadIdx.x + blockIdx.x*blockDim.x;
-	int lindex = threadIdx.x;//thread id
-	float result=0.0;	
-
 	int max_sharedsize = 2048;
 
 	__shared__ float sharedM[2048];
@@ -139,8 +135,6 @@ __global__ void calcFIRHJ(const float * g_indata, float * g_outdata, const int n
 	}
 
 	__syncthreads();
-
-	int idx=0;
 
 	for(int i=begin;i<end;i++){
 		//printf("end-begin:%d\n",end-begin);//64
@@ -346,7 +340,7 @@ for (int i=0; i< count; i++) {
 
 extern "C" void RunGPU_DSP( int grid, jack_default_audio_sample_t *ins, jack_default_audio_sample_t *outs, int count)
 {
-	calcFIRHJ<<< 64,32 >>>( ins, outs, count );
+	calcFIRHJ<<< 256, 8 >>>( ins, outs, count );
 }
 
 __device__ void device_memcpy (jack_default_audio_sample_t *to, 

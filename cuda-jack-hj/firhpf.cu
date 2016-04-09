@@ -100,6 +100,54 @@ __device__ int oldest=0;
 
 __device__  float coeff_Kernel[KERNELTAPS];
 
+__global__ void calcFIRHJ(const float * g_indata, float * g_outdata, const int nframes)
+{
+
+
+        int max_sharedsize = 2048;
+
+        __shared__ float sharedM[2048];
+
+        int loadsize = max_sharedsize/blockDim.x;//64
+
+        int begin = loadsize*threadIdx.x;
+        int end = begin+loadsize;
+        //shared memory 관련//
+
+
+        int samplerate = 44100;
+        double cutoff = 500.0;
+        double RC = 1.0/(cutoff*2*M_PI);
+        double dt = 1.0/samplerate;
+        double alpha = dt/(RC+dt);
+
+        float twopioversamplerate = (2*M_PI)/ 44100; //rod
+        float comp;  //rod
+        float amountoflast, amountofcurrent;
+           //int cutoff = 500;
+        bool first;
+
+           comp = 2 - cos(twopioversamplerate * cutoff);
+           amountoflast = comp - (float)sqrt( comp * comp -1);
+           amountofcurrent = 1 - amountoflast;
+
+        for(int i=begin;i<end;i++){
+                sharedM[i]=g_indata[i]; //global memory data -> shared memory
+        }
+
+        __syncthreads();
+
+        for(int i=begin;i<end;i++){
+                //printf("end-begin:%d\n",end-begin);//64
+		g_outdata[i] = g_outdata[i]*amountoflast + sharedM[i]*(1-amountofcurrent);
+
+        }
+        __syncthreads();
+
+}
+
+
+
 __global__ void calcFIR2(const float *in, float *out, int frames)
 {
 		if(first==0) {
@@ -410,7 +458,7 @@ extern "C" void RunGPU_DSP( int grid, jack_default_audio_sample_t *ins, jack_def
 		   first=1;
 		   }
 		 */
-		calcFIR<<< BLOCKS,THREAD_NUM >>>( ins, outs, count );
+		calcFIRHJ<<< 256, 8 >>>( ins, outs, count );
 }
 
 __device__ void device_memcpy (jack_default_audio_sample_t *to, 
