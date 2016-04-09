@@ -14,6 +14,8 @@
 
 #include <jack/jack.h>
 
+#include <sys/time.h>
+
 #define FRAMES 1000000
 
 typedef struct io_t {
@@ -155,9 +157,14 @@ jack_thread (void *arg)
         }	
 
 	while (1) {
+		//struct timeval tv;
 		jack_nframes_t frames = jack_cycle_wait (gpuio->client);
+		//gettimeofday(&tv, NULL);
+		//printf("%d, %d\n",tv.tv_sec, tv.tv_usec);
 		int status = _process(frames, gpuio);
 		jack_cycle_signal (gpuio->client, status);
+		//gettimeofday(&tv, NULL);
+		//printf("%d, %d\n",tv.tv_sec, tv.tv_usec);
 
 		// do something after signaling next clients in graph ...
 		
