@@ -1,42 +1,22 @@
-/* dsp.cu */
-
-
 #include <stdio.h>
 #include <math.h>
-
 #include <jack/jack.h>
-#define BLOCK_SIZE	512
+
 #define KERNELTAPS	256	//must be odd value. 
 						//Freq/Taps = Filter Frequency accuracy. 
 						//5.4Hz for 44100.
 
-#define THREAD_NUM	512	// executed thread count per block, do not change. 
+#define THREAD_NUM	32	// executed thread count per block, do not change. 
 						// shared memory is common in the block.
 
 #define DATAPERCYCLE 64  // data count per loop. do not change
 
-#define BLOCKS	4
-#define THREADS 512
+#define BLOCKS	64	//4
+#define N 255
 
-#define N  255
-#define NFL 255.0
+#define NUM_TAPS	32
 
-#define M ((N-1)/2.0)
 /*
-   __device__ float A[N]=
-   {
-   1.0, 0.9, 0.8, 1.0, 0.6, 1.0, 0.1, 1.0, 1.0, 1.0,
-   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-   0.0
-   };
- */
-
 __device__ float h[N]={
 		-0.0493254733597,-0.0447872903729,-0.0393994536854,-0.0332411068378,-0.0264058290462,-0.0190002768323,-0.0111425845971,-0.00296054721187,
 		0.00541038834992, 0.0138292917627, 0.0221520447997, 0.0302337272125, 0.0379310547361, 0.0451048294826, 0.0516223621892,  0.0573598256355, 
@@ -70,283 +50,109 @@ __device__ float h[N]={
 		0.0680964097194, 0.0701156225398, 0.0709015465243, 0.0704638633709, 0.0688325187041, 0.0660568646325, 0.0622044990661,  0.0573598256355,
 		0.0516223621892, 0.0451048294826, 0.0379310547361, 0.0302337272125, 0.0221520447997, 0.0138292917627,0.00541038834992,-0.00296054721187,
 		-0.0111425845971,-0.0190002768323,-0.0264058290462,-0.0332411068378,-0.0393994536854,-0.0447872903729,-0.0493254733597 };
-
-__device__ float accum = 0.0;
-/*
-   __global__ void impulseResponse(int n) {
-   __shared__ float ans[BLOCKS][THREADS];
-
-   int tid = threadIdx.x;
-   int bid = blockIdx.x;
-   int k = bid*tid;
-
-   if (k < M-1) {
-   ans[bid][tid] = 2.0*A[k]*cos(2.0*M_PI*(n-M)*k/NFL);
-   } else {
-   ans[bid][tid] = 0.0;
-   }
-   __syncthreads();
-
-   accum += ans[bid][tid]/NFL;
-
-   __syncthreads();
-   }
- */
-__device__ int first=0;
-
-//__device__ float x[N];
-
-__device__ int oldest=0;
-
-__device__  float coeff_Kernel[KERNELTAPS];
-
-__global__ void calcFIR2(const float *in, float *out, int frames)
-{
-		if(first==0) {
-				for (int j=0; j<N; j++) {
-						//x[j]=0.0;
-						h[j]=j/N;
-
-				}
-				first=1;
-		}
-		/*
-		 * Insert the newest sample into an N-sample circular buffer.
-		 * The oldest sample in the circular buffer is overwritten.
-		 */
-
-		//   for (int i=0; i< count/BLOCKSIZE; i++) {
-		//     outs[i+threadIdx.x*count/BLOCKSIZE]=0.1*ins[i+threadIdx.x*count/BLOCKSIZE];
-		//  }
-		for (int i=0; i< frames; i++) {
-
-				//x[oldest] = in[i]; 
-				/*
-				 * Multiply the last N inputs by the appropriate coefficients.
-				 * Their sum is the current output.
-				 */
-				float y = 0; 
-
-				for (int k = 0; k < N; k++) 
-				{ 
-						//y += h[k] * x[(oldest + k) % N]; 
-				} 
-
-				oldest = (oldest + 1) % N;
-
-				/*
-				 * Output the result.
-				 */
-				out[i]=y;
-		}
-
-
-}
-
-
+*/
 
 __global__ void calcFIR(const float * g_indata, float * g_outdata, const int nframes)
 {
 	// access Block Width
 	//const unsigned int bw = gridDim.x;
+
 	// access Block ID
 	//const unsigned int bix = blockIdx.x;
 
 	// access thread id
 	//	const unsigned int tid = threadIdx.x;
 
-	int x = blockIdx.x*blockDim.x + threadIdx.x;
-			
-	//This is Second algorithm
-	int samplerate = 44100;
-	double cutoff = 500.0;
-	double RC = 1.0/(cutoff*2*M_PI);
-	double dt = 1.0/samplerate;
-	double alpha = dt/(RC+dt);
+	//int x = blockIdx.x*blockDim.x + threadIdx.x;
 
-	g_outdata[x]=0.0f;
-	for (int j=0; j<N-1; j++) {
-		//buf[j]=g_indata[x];
-		if(x+j>nframes) {
-			__syncthreads();
-			return;
-		} else {
-			//g_outdata[x] = g_outdata[x] + g_indata[(x+j)]*h[j]/(M_PI);
-			//g_outdata[x] = g_outdata[x]*amountoflast + (g_indata[(x+j)]*amountofcurrent)/(M_PI);
-			//g_outdata[x] = g_outdata[x]*amountoflast + g_indata[(x+j)]*amountofcurrent;
-			g_outdata[x] = g_indata[x];//g_outdata[x-1] + (alpha * (g_indata[x] - g_outdata[x-1]));
-		}
-	}
+	__shared__ float sharedM[64];	// 32(thread_num) + 32(window_size)
+									// shareM은 block 내의 thread 간의 공유 메모리
+
+	//int max_sharedsize = 2048;
+	//int loadsize = max_sharedsize/blockDim.x;	// 64
+	//int begin = loadsize*threadIdx.x;	
+	int globalIdx = blockIdx.x*blockDim.x+threadIdx.x;	
+	int begin = threadIdx.x;	
+	int end = begin + NUM_TAPS;	// begin + loadsize;
+	int sharedIdx = 2*threadIdx.x;
+
+	sharedM[sharedIdx] = g_indata[globalIdx+1];
+
 	__syncthreads();
-	
+/*
 	// This is First algorithm
-	/*
-	float twopioversamplerate = (2*M_PI)/ 44100;	//rod
+	int samplerate = 44100;
+	float twopioversamplerate = (2*M_PI)/ samplerate;	//rod
 	float comp;	//rod
 	float amountoflast, amountofcurrent;
-	int cutoff = 500;
-	bool first;
+	float cutoff = 64.0f;	//500;
+	float temp = 0.0f;
 
-	printf("nframes = %d\n",nframes);
 	comp = 2 - cos(twopioversamplerate * cutoff);
 	amountoflast = comp - (float)sqrt( comp * comp -1);
 	amountofcurrent = 1 - amountoflast;
-	g_outdata[x]=0.0f;
-		
-	if(x+N>nframes) {
-		return;
+	g_outdata[begin]=0.0f;
+
+	
+	for( int i=begin; i<end; i++){
+		g_outdata[i]=g_outdata[i]*amountoflast+ sharedM[i]*amountofcurrent;
 	}
+
+	
 #pragma unroll
+	for(int i=begin; i<end; i++){
+//#pragma unroll
+//		for(int j=0; j<32; j++){
+			temp = temp*amountoflast + sharedM[i]*amountofcurrent;
+//		}
+	}
+	g_outdata[begin] = temp;
+	__syncthreads();
+*/
+/*
 	for (int j=0; j<N-1; j++) {
-		//buf[j]=g_indata[x];
-		if(x+j>nframes) {
+		if(x+j>x+nframes) {
+			printf("x+j > nframes\n");
 			__syncthreads();
 			return;
 		} else {
 			//g_outdata[x] = g_outdata[x] + g_indata[(x+j)]*h[j]/(M_PI);
 			//g_outdata[x] = g_outdata[x]*amountoflast + (g_indata[(x+j)]*amountofcurrent)/(M_PI);
-			g_outdata[x] = g_outdata[x]*amountoflast + g_indata[(x+j)]*amountofcurrent;
+			g_outdata[x] = g_outdata[x]*amountoflast + g_indata[x+j]*amountofcurrent;
 		}
 	}
-	*/
-}
-
-/*
-
-//do FIR
-//each threads has offseted address to global memory. loop jumps threads*blocks.
-for (int index = 0; index < nframes; index = index + THREAD_NUM*bw)
-{
-float dOut = 0.0;
-//x[oldest]=g_indata[index];
-
-//read g_indata to Shared Memory
-//cycle is, ex, 8=8192/1024.
-
-for (int j = 0; j < KERNELTAPS/DATAPERCYCLE; j++)
-{
-shared[tid             ] = g_indata[DATAPERCYCLE*j + THREAD_NUM*bix + index + tid           ];
-//__syncthreads();
-shared[tid+THREAD_NUM  ] = g_indata[DATAPERCYCLE*j + THREAD_NUM*bix + index + tid + THREAD_NUM];
-//__syncthreads();
-shared[tid+THREAD_NUM*2] = g_indata[DATAPERCYCLE*j + THREAD_NUM*bix + index + tid + THREAD_NUM*2];
-__syncthreads();
-
-#pragma unroll
-for(int k = 0; k < DATAPERCYCLE; k = k+1)
-{
-// dOut += x[(oldest + k+tid)% N] * h[j*DATAPERCYCLE + k];
-dOut += shared[k + tid] * h[j*DATAPERCYCLE + k];
-//dOut += shared[k + tid] * coeff_Kernel[j*DATAPERCYCLE + k];
-__syncthreads();
-}
-}
-__syncthreads();
-g_outdata[THREAD_NUM*bix + index + tid] = dOut;
-}
-}
+	__syncthreads();
 */
+			
+	//This is Second algorithm
+	int samplerate = 44100;
+	float cutoff = 240.0f;
+	float RC = 1.0/(cutoff*2*M_PI);
+	float dt = 1.0/samplerate;
+	float alpha = dt/(RC+dt);
+	float temp;
 
-__device__ float xv[4][3], yv[4][3], xv2[4][3], yv2[4][3], gain, a1, a2, a3, b1, b2;
-
-__device__ void zerothem() {
-
-		for(int i=0;i<4;++i) {
-				for(int j=0;j<3;++j) {
-						xv[i][j]=0.0;
-						yv[i][j]=0.0;
-						xv2[i][j]=0.0;
-						yv2[i][j]=0.0;
-				}
-		}
-}
-
-extern "C" void GPU_INIT() {
-		return;
-}
-
-__device__ int firstrun=0;
-
-__device__ float mult (float a, float b) {
-		return a*b;
-}
-
-__device__ void  device_memcpy (jack_default_audio_sample_t *to, jack_default_audio_sample_t *from, int len);
-
-__global__ void GPU_DSP(jack_default_audio_sample_t *ins, jack_default_audio_sample_t *outs, int count)
-{
-
-	/**
-	 * Gain with 2 threads
-	 *
-
-	 int i;
-	 for (i=0; i< count/2; i++) {
-	 if (threadIdx.x==0) {
-	 outs[i]=ins[i];
-	 } else if (threadIdx.x==1) {
-	 outs[i+count/2]=ins[i+count/2]; 
-	 }
-	 }
-	 */
-
-	/**
-	 * GAIN with 256 threads
-	 */
-	/*
-	   for (int i=0; i< count/BLOCKSIZE; i++) {
-	   outs[i+threadIdx.x*count/BLOCKSIZE]=0.1*ins[i+threadIdx.x*count/BLOCKSIZE];
-	   }
-	   }  
-	*/
-
-	int n=0;
-
-	if (firstrun==0){ 
-		gain=1.513365061e+03;
-		a1=1.0;
-		a2=2.0;
-		a3=1.0;
-		b1=-0.9286270861;
-		b2=1.9259839697;
-		zerothem();
-		firstrun=1;
-		__syncthreads();
+	temp=sharedM[begin];
+	for (int j=begin+1; j<end; j++) {
+		//buf[j]=g_indata[x];
+		//if(x+j>nframes) {
+		//	__syncthreads();
+		//	return;
+		//} else {
+			//g_outdata[x] = g_outdata[x] + (alpha * (g_indata[x] - g_outdata[x]));
+			//g_outdata[x] = g_indata[x];
+		//}
+		temp = temp + (alpha * (sharedM[j] - temp));
 	}
+	g_outdata[begin] = temp;
+	__syncthreads();
+	
 
-#pragma unroll 8
-	for (int i=0; i< count; i++) {
-		float intermediate = 0.0;
-		xv[n][0] = xv[n][1]; xv[n][1] = xv[n][2];
-		xv[n][2] = ins[i] / gain;
-		yv[n][0] = yv[n][1]; yv[n][1] = yv[n][2];
-		yv[n][2] =   (mult(a1,xv[n][0]) + mult(a3,xv[n][2])) + mult(a2,xv[n][1])
-				+ mult(b1,yv[n][0]) + (mult(b2,yv[n][1]));
-		__syncthreads();
-		intermediate = yv[n][2];
-
-		xv2[n][0] = xv2[n][1]; xv2[n][1] = xv2[n][2];
-		xv2[n][2] = intermediate / gain;
-		yv2[n][0] = yv2[n][1]; yv2[n][1] = yv2[n][2];
-		yv2[n][2] =   (mult(a1,xv2[n][0]) + mult(a3,xv2[n][2])) + mult(a2,xv2[n][1])
-				+ (mult(b1,yv2[n][0])) + (mult(b2,yv2[n][1]));
-		__syncthreads();
-		outs[i]=yv2[n][2];
-	}
 }
-
 
 extern "C" void RunGPU_DSP( int grid, jack_default_audio_sample_t *ins, jack_default_audio_sample_t *outs, int count)
 {
+	// count is nframes, ex) 2048 or 4096
 	calcFIR<<< BLOCKS,THREAD_NUM >>>( ins, outs, count );
+	// 64, 32
 }
-
-__device__ void device_memcpy (jack_default_audio_sample_t *to, 
-								jack_default_audio_sample_t *from, int len)
-{
-		int i;
-
-		for (i=0; i< len; i++) to[i] = from[i];
-
-}
-

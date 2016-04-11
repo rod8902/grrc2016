@@ -14,9 +14,7 @@
 
 #include <jack/jack.h>
 
-#include <sys/time.h>
-
-#define FRAMES 1000000
+#define FRAMES 1000000	// 1,000,000 * 4byte
 
 typedef struct io_t {
 	jack_default_audio_sample_t *p_in;
@@ -34,15 +32,11 @@ IO_T* pio=&io;
 
 extern "C" void RunGPU_DSP( int grid, jack_default_audio_sample_t *ins, jack_default_audio_sample_t *outs, int count);
 
-extern "C" void GPU_INIT();
-
 int cuda_initialise()
 {
-        GPU_INIT();
-	
 	pio->first_exec=0;
 	IO_T *ptio=&io;
-	int nframes = 10000;
+	//int nframes = 10000;
 	int deviceCount = 0;
 	int multiCount = 1;
 	cudaError rc;
@@ -74,8 +68,10 @@ int cuda_initialise()
 	{
 		printf( " Number of CUDA devices present: %d, multiprocessors = %d\n", deviceCount, multiCount );
 	}
-        printf("init success\nlast error: %d\n",cudaGetLastError());
- 	return multiCount;
+    
+	printf("init success\nlast error: %d\n",cudaGetLastError());
+ 	
+	return multiCount;
 }
 
 /**
@@ -94,35 +90,49 @@ _process (jack_nframes_t nframes, void *arg)
 	cudaError rc;
 	
 	jack_default_audio_sample_t *in, *out;
+
+	int ref_size = nframes+32;
 	
 	//printf("%d\n", nframes);	//debug
 
-	in = (jack_default_audio_sample_t*)jack_port_get_buffer (input_port, nframes);
-	out = (jack_default_audio_sample_t*)jack_port_get_buffer (output_port, nframes);
+	in = (jack_default_audio_sample_t*)jack_port_get_buffer (input_port, ref_size);//nframes);
+	out = (jack_default_audio_sample_t*)jack_port_get_buffer (output_port, ref_size);//nframes);
 
-	rc = cudaMemcpy( gpuio->p_in, in, sizeof(jack_default_audio_sample_t) * nframes, cudaMemcpyHostToDevice );
+	// Copy from cpu memory to gpu memory
+	rc = cudaMemcpy( gpuio->p_in, in, 
+					sizeof(jack_default_audio_sample_t) * ref_size/*nframes*/, 
+					cudaMemcpyHostToDevice );
 	if( rc != cudaSuccess )
 	{
 		printf( " cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
 		
 	}
-	rc = cudaMemcpy( gpuio->p_out, out, sizeof(jack_default_audio_sample_t) * nframes, cudaMemcpyHostToDevice );
-        if( rc != cudaSuccess )
-        {
-                printf( " ! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
-        }
+	rc = cudaMemcpy( gpuio->p_out, out, 
+					sizeof(jack_default_audio_sample_t) * ref_size/*nframes*/, 
+					cudaMemcpyHostToDevice );
+	if( rc != cudaSuccess )
+	{
+		printf( " ! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
+	}
 
+	// parallel processing
 	int grid = 1;
-	
 	RunGPU_DSP( grid, gpuio->p_in, gpuio->p_out, nframes );	// in .cu file
 	
-	rc = cudaMemcpy( in, gpuio->p_in, sizeof(jack_default_audio_sample_t) * nframes, cudaMemcpyDeviceToHost );
+	// Copy from gpu memory to cpu memory
+	rc = cudaMemcpy( in, gpuio->p_in, 
+					sizeof(jack_default_audio_sample_t) * ref_size/*nframes*/, 
+					cudaMemcpyDeviceToHost );
+
 	if( rc != cudaSuccess )
 	{
 		printf( " ! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
 	}
 		
-	rc = cudaMemcpy( out, gpuio->p_out, sizeof(jack_default_audio_sample_t) * nframes, cudaMemcpyDeviceToHost );
+	rc = cudaMemcpy( out, gpuio->p_out, 
+					sizeof(jack_default_audio_sample_t) * ref_size/*nframes*/, 
+					cudaMemcpyDeviceToHost );
+
 	if( rc != cudaSuccess )
 	{
 		printf( " ! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
@@ -132,14 +142,17 @@ _process (jack_nframes_t nframes, void *arg)
 	return 0;
 }
 
-static void*
-jack_thread (void *arg) 
+/****************************************************************/
+/************************ thread-main ***************************/
+/****************************************************************/
+
+static void* jack_thread (void *arg) 
 {
 	cudaError rc;
-
 	io_t *gpuio=(io_t *)arg;
-	if (!gpuio->first_exec) {
+	//float firstM[32]={0.0f};
 
+	if (!gpuio->first_exec) {
 		rc = cudaMalloc( (void **)&(gpuio->p_in), sizeof(jack_default_audio_sample_t) * FRAMES );
 		if( rc != cudaSuccess )
 		{
@@ -154,39 +167,28 @@ jack_thread (void *arg)
 			return 0;
 		}
 		gpuio->first_exec=1;
-        }	
+    }	
 
 	while (1) {
-		//struct timeval tv;
 		jack_nframes_t frames = jack_cycle_wait (gpuio->client);
-		//gettimeofday(&tv, NULL);
-		//printf("%d, %d\n",tv.tv_sec, tv.tv_usec);
 		int status = _process(frames, gpuio);
 		jack_cycle_signal (gpuio->client, status);
-		//gettimeofday(&tv, NULL);
-		//printf("%d, %d\n",tv.tv_sec, tv.tv_usec);
 
 		// do something after signaling next clients in graph ...
 		
 		// end condition
 		if (status != 0)
 			return 0;
-
 	}
-
-	//Not reached
-	return 0;
-
+	return 0;	//Not reached
 }
-
 
 
 /**
  * JACK calls this shutdown_callback if the server ever shuts down or
  * decides to disconnect the client.
  */
-void
-jack_shutdown (void *arg)
+void jack_shutdown (void *arg)
 {
 	io_t *gpuio=(io_t *)arg;
 	cudaFree( gpuio->p_in );
@@ -194,8 +196,7 @@ jack_shutdown (void *arg)
 	exit (1);
 }
 
-int
-main (int argc, char *argv[])
+int	main (int argc, char *argv[])
 {
 	const char **ports;
 	const char *client_name = "LPF-CUDA-DSP";
@@ -262,7 +263,7 @@ main (int argc, char *argv[])
 		exit (1);
 	}
 
-        cuda_initialise();	// What purpose? => return multi_processor_count
+    cuda_initialise();	// What purpose? => return multi_processor_count
 		
 	/* Tell the JACK server that we are ready to roll.  Our
 	 * process() callback will start running now. */
