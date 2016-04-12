@@ -6,52 +6,80 @@
 						//Freq/Taps = Filter Frequency accuracy. 
 						//5.4Hz for 44100.
 
+#define BLOCKS	64	//4
 #define THREAD_NUM	32	// executed thread count per block, do not change. 
 						// shared memory is common in the block.
 
 #define DATAPERCYCLE 64  // data count per loop. do not change
 
-#define BLOCKS	64	//4
-#define N 255
-
+/****************************/
+#define SAMPLERATE	44100
 #define NUM_TAPS	32
+#define CUTOFF	2.0	//2.0
 
+__device__ float samplerate = SAMPLERATE;
+__device__ float m_taps[NUM_TAPS];
+__device__ float m_sr[NUM_TAPS];
+__device__ float m_lambda;
+
+__global__ void do_sample(const float *g_indata, float *g_outdata)
+{
+	int i, n, x;
+
+	/*** init() ***/
+	for(i = 0; i < NUM_TAPS; i++) m_sr[i] = 0;
+	m_lambda = M_PI * CUTOFF / (SAMPLERATE/2);
+
+	/*** designLPF ***/
+	
+	double mm;
+
+	for(n = 0; n < NUM_TAPS; n++){
+		mm = n - (NUM_TAPS - 1.0) / 2.0;
+		if( mm == 0.0 ) m_taps[n] = m_lambda / M_PI;
+		else m_taps[n] = sin( mm * m_lambda ) / (mm * M_PI);
+	}
+
+	x = blockIdx.x * blockDim.x + threadIdx.x;
+
+	/*** do_sample ***/
+	float result;
+	//short m1, m2;
+	//char local_in[4];
+	unsigned temp;
+
+	result = g_indata[x];
+	temp = *(unsigned *)&result;
+
+	printf("in: %a, %a\n", g_indata[x], temp);
+	/*
+	for(i = NUM_TAPS - 1; i >= 1; i--){
+		m_sr[i] = m_sr[i-1];
+	}
+	m_sr[0] = m1;
+
+	result = 0;
+	for(i = 0; i < NUM_TAPS; i++) 
+		result += m_sr[i] * m_taps[i];
+	m1 = ((int)result << 16);	
+
+	//printf("result: %f\n",result);
+	for(i = NUM_TAPS - 1; i >= 1; i--){
+		m_sr[i] = m_sr[i-1];
+	}
+	m_sr[0] = m2;
+
+	result = 0;
+	for(i = 0; i < NUM_TAPS; i++) 
+		result += m_sr[i] * m_taps[i];
+	m2 = result;	
+
+	g_outdata[x] = 0xff & (m1 | m2); //result;
+	*/
+	g_outdata[x] = g_indata[x];
+	__syncthreads();
+}
 /*
-__device__ float h[N]={
-		-0.0493254733597,-0.0447872903729,-0.0393994536854,-0.0332411068378,-0.0264058290462,-0.0190002768323,-0.0111425845971,-0.00296054721187,
-		0.00541038834992, 0.0138292917627, 0.0221520447997, 0.0302337272125, 0.0379310547361, 0.0451048294826, 0.0516223621892,  0.0573598256355, 
-		0.0622044990661 , 0.0660568646325, 0.0688325187041, 0.0704638633709, 0.0709015465243, 0.0701156225398, 0.0680964097194,  0.0648550252437,
-		0.0604235833498 , 0.0548550477276, 0.0482227346262, 0.0406194688013, 0.0321564001233, 0.0229614943155, 0.0131777168103, 0.00296093400475,
-		-0.00752243881471,-0.0180980090182,-0.0285861596699,-0.0388049425028,-0.0485730663149,-0.0577129339705,-0.0660536796058,  -0.073434156796,
-		-0.0797058283755,-0.0847355093131,-0.0884079155425,-0.0906279739124,-0.0913228514356,-0.0904436657294,-0.0879668429255,    -0.0838950943,
-		-0.0782579883898,-0.0711121013189,-0.0625407343861,-0.0526531945653,-0.0415836403373,-0.0294895021142,-0.0165494933214,-0.00296123486462,
-		0.0110614778744, 0.0252917303025, 0.0394928253115, 0.0534218554965, 0.0668334605377,  0.079483715632, 0.0911340938844,   0.101555443413,
-		0.110531918634,  0.117864804812,  0.123376175496,  0.126912323904,  0.128346911709,  0.127583781927,  0.124559386695,   0.119244785671,
-		0.111647176399,  0.101810924296, 0.0898180667823, 0.0757882734584, 0.0598782519045, 0.0422805967207, 0.0232220875214, 0.00296144977576,
-		-0.0182133995541,-0.0399885917727, -0.062027994285, -0.083977302115, -0.105468482203, -0.126124513729, -0.145564362603,   -0.16340812401,
-		-0.17928226353, -0.192824884961, -0.203690951608, -0.211557387432, -0.216127985183, -0.217138050406, -0.214358712997,  -0.207600841817,
-		-0.196718502626, -0.181611905284, -0.162229792631, -0.138571230734,  -0.11068676802,-0.0786789392362,-0.0427020989897,-0.00296157872693,
-		0.0402878297219, 0.0867440516088,  0.136060546126,  0.187849732079,  0.241686983193,  0.297115145795,  0.353649524067,   0.410783271339,
-		0.467993119886,  0.524745376675,  0.580502108391,  0.634727436091,  0.686893857863,  0.736488517077,  0.783019334129,   0.826020921048,
-		0.86506020094,  0.899741657881,   0.92971214763,  0.954665205188,  0.974344791832,   0.98854843163,  0.997129695559,              0.0,
-		0.997129695559,   0.98854843163,  0.974344791832,  0.954665205188,   0.92971214763,  0.899741657881,   0.86506020094,   0.826020921048,
-		0.783019334129,  0.736488517077,  0.686893857863,  0.634727436091,  0.580502108391,  0.524745376675,  0.467993119886,   0.410783271339,
-		0.353649524067,  0.297115145795,  0.241686983193,  0.187849732079,  0.136060546126, 0.0867440516088, 0.0402878297219,-0.00296157872693,
-		-0.0427020989897,-0.0786789392362,  -0.11068676802, -0.138571230734, -0.162229792631, -0.181611905284, -0.196718502626,  -0.207600841817,
-		-0.214358712997, -0.217138050406, -0.216127985183, -0.211557387432, -0.203690951608, -0.192824884961,  -0.17928226353,   -0.16340812401,
-		-0.145564362603, -0.126124513729, -0.105468482203, -0.083977302115, -0.062027994285,-0.0399885917727,-0.0182133995541, 0.00296144977576,
-		0.0232220875214, 0.0422805967207, 0.0598782519045, 0.0757882734584, 0.0898180667823,  0.101810924296,  0.111647176399,   0.119244785671,
-		0.124559386695,  0.127583781927,  0.128346911709,  0.126912323904,  0.123376175496,  0.117864804812,  0.110531918634,   0.101555443413,
-		0.0911340938844,  0.079483715632, 0.0668334605377, 0.0534218554965, 0.0394928253115, 0.0252917303025, 0.0110614778744,-0.00296123486462,
-		-0.0165494933214,-0.0294895021142,-0.0415836403373,-0.0526531945653,-0.0625407343861,-0.0711121013189,-0.0782579883898,    -0.0838950943,
-		-0.0879668429255,-0.0904436657294,-0.0913228514356,-0.0906279739124,-0.0884079155425,-0.0847355093131,-0.0797058283755,  -0.073434156796,
-		-0.0660536796058,-0.0577129339705,-0.0485730663149,-0.0388049425028,-0.0285861596699,-0.0180980090182,-0.00752243881471,0.00296093400475,
-		0.0131777168103, 0.0229614943155, 0.0321564001233, 0.0406194688013, 0.0482227346262, 0.0548550477276, 0.0604235833498,  0.0648550252437,
-		0.0680964097194, 0.0701156225398, 0.0709015465243, 0.0704638633709, 0.0688325187041, 0.0660568646325, 0.0622044990661,  0.0573598256355,
-		0.0516223621892, 0.0451048294826, 0.0379310547361, 0.0302337272125, 0.0221520447997, 0.0138292917627,0.00541038834992,-0.00296054721187,
-		-0.0111425845971,-0.0190002768323,-0.0264058290462,-0.0332411068378,-0.0393994536854,-0.0447872903729,-0.0493254733597 };
-*/
-
 __global__ void calcFIR(const float * g_indata, float * g_outdata, const int nframes)
 {
 	// access Block Width
@@ -71,58 +99,20 @@ __global__ void calcFIR(const float * g_indata, float * g_outdata, const int nfr
 	//int max_sharedsize = 2048;
 	//int loadsize = max_sharedsize/blockDim.x;	// 64
 	//int begin = loadsize*threadIdx.x;	
-	int globalIdx = blockIdx.x*blockDim.x+threadIdx.x;	
+	
+	int sharedIdx = 2*threadIdx.x;
+	int globalIdx = blockIdx.x*blockDim.x+sharedIdx;
+
 	int begin = threadIdx.x;	
 	int end = begin + NUM_TAPS;	// begin + loadsize;
-	int sharedIdx = 2*threadIdx.x;
 
-	sharedM[sharedIdx] = g_indata[globalIdx+1];
+	sharedM[sharedIdx] = g_indata[globalIdx];
+	sharedM[sharedIdx+1] = g_indata[globalIdx+1];
+
+	printf("blockIdx.x: %d, threadIdx.x: %d, shreadIdx: %d %d, globalIdx: %d %d, data: %f %f\n", 
+			blockIdx.x, threadIdx.x, sharedIdx, sharedIdx+1, globalIdx, globalIdx+1, g_indata[globalIdx], g_indata[globalIdx+1]);
 
 	__syncthreads();
-/*
-	// This is First algorithm
-	int samplerate = 44100;
-	float twopioversamplerate = (2*M_PI)/ samplerate;	//rod
-	float comp;	//rod
-	float amountoflast, amountofcurrent;
-	float cutoff = 64.0f;	//500;
-	float temp = 0.0f;
-
-	comp = 2 - cos(twopioversamplerate * cutoff);
-	amountoflast = comp - (float)sqrt( comp * comp -1);
-	amountofcurrent = 1 - amountoflast;
-	g_outdata[begin]=0.0f;
-
-	
-	for( int i=begin; i<end; i++){
-		g_outdata[i]=g_outdata[i]*amountoflast+ sharedM[i]*amountofcurrent;
-	}
-
-	
-#pragma unroll
-	for(int i=begin; i<end; i++){
-//#pragma unroll
-//		for(int j=0; j<32; j++){
-			temp = temp*amountoflast + sharedM[i]*amountofcurrent;
-//		}
-	}
-	g_outdata[begin] = temp;
-	__syncthreads();
-*/
-/*
-	for (int j=0; j<N-1; j++) {
-		if(x+j>x+nframes) {
-			printf("x+j > nframes\n");
-			__syncthreads();
-			return;
-		} else {
-			//g_outdata[x] = g_outdata[x] + g_indata[(x+j)]*h[j]/(M_PI);
-			//g_outdata[x] = g_outdata[x]*amountoflast + (g_indata[(x+j)]*amountofcurrent)/(M_PI);
-			g_outdata[x] = g_outdata[x]*amountoflast + g_indata[x+j]*amountofcurrent;
-		}
-	}
-	__syncthreads();
-*/
 			
 	//This is Second algorithm
 	int samplerate = 44100;
@@ -142,17 +132,18 @@ __global__ void calcFIR(const float * g_indata, float * g_outdata, const int nfr
 			//g_outdata[x] = g_outdata[x] + (alpha * (g_indata[x] - g_outdata[x]));
 			//g_outdata[x] = g_indata[x];
 		//}
-		temp = temp + (alpha * (sharedM[j] - temp));
+		//temp = temp + (alpha * (sharedM[j] - temp));
 	}
 	g_outdata[begin] = temp;
 	__syncthreads();
 	
 
 }
-
+*/
 extern "C" void RunGPU_DSP( int grid, jack_default_audio_sample_t *ins, jack_default_audio_sample_t *outs, int count)
 {
 	// count is nframes, ex) 2048 or 4096
-	calcFIR<<< BLOCKS,THREAD_NUM >>>( ins, outs, count );
+	//calcFIR<<< BLOCKS,THREAD_NUM >>>( ins, outs, count );
 	// 64, 32
+	do_sample<<<BLOCKS, THREAD_NUM>>>(ins, outs);
 }

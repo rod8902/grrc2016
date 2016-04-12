@@ -104,7 +104,7 @@ _process (jack_nframes_t nframes, void *arg)
 					cudaMemcpyHostToDevice );
 	if( rc != cudaSuccess )
 	{
-		printf( " cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
+		printf( " !cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
 		
 	}
 	rc = cudaMemcpy( gpuio->p_out, out, 
@@ -112,7 +112,7 @@ _process (jack_nframes_t nframes, void *arg)
 					cudaMemcpyHostToDevice );
 	if( rc != cudaSuccess )
 	{
-		printf( " ! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
+		printf( " !! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
 	}
 
 	// parallel processing
@@ -126,7 +126,7 @@ _process (jack_nframes_t nframes, void *arg)
 
 	if( rc != cudaSuccess )
 	{
-		printf( " ! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
+		printf( " !!! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
 	}
 		
 	rc = cudaMemcpy( out, gpuio->p_out, 
@@ -135,7 +135,7 @@ _process (jack_nframes_t nframes, void *arg)
 
 	if( rc != cudaSuccess )
 	{
-		printf( " ! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
+		printf( " !!!! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
 	}
 	
 	//count += grid * THREADS_PER_BLOCK;
