@@ -34,11 +34,11 @@ IO_T* pio=&io;
 
 int m_num_taps;
 int m_error_flag;
-double m_Fs;
-double m_Fx;
-double m_lambda;
-double *m_taps;
-double *m_sr;
+float m_Fs;
+float m_Fx;
+float m_lambda;
+float *m_taps;
+float *m_sr;
 int first;
 /*
 extern "C" void RunGPU_DSP( int grid, jack_default_audio_sample_t *ins, jack_default_audio_sample_t *outs, int count);
@@ -101,7 +101,7 @@ void init()
 void designLPF()
 {
 	int n;
-	double mm;
+	float mm;
 
 	for(n = 0; n < m_num_taps; n++){
 		mm = n - (m_num_taps - 1.0) / 2.0;
@@ -111,7 +111,7 @@ void designLPF()
 
 	return;
 }
-void filter(int num_taps, double Fs, double Fx)
+void filter(int num_taps, float Fs, float Fx)
 {
 	m_error_flag = 0;
 	m_num_taps = num_taps;
@@ -124,8 +124,8 @@ void filter(int num_taps, double Fs, double Fx)
 	if( m_num_taps <= 0 || m_num_taps > 1000 ) printf("-3\n");
 
 	m_taps = m_sr = NULL;
-	m_taps = (double*)malloc( m_num_taps * sizeof(double) );
-	m_sr = (double*)malloc( m_num_taps * sizeof(double) );
+	m_taps = (float*)malloc( m_num_taps * sizeof(float) );
+	m_sr = (float*)malloc( m_num_taps * sizeof(float) );
 	if( m_taps == NULL || m_sr == NULL ) printf("-4\n");
 	
 	init();
@@ -174,9 +174,6 @@ _process (jack_nframes_t nframes, void *arg)
 	//cudaError rc;
 	
 	jack_default_audio_sample_t *in, *out;
-
-	float samp_dat;
-	double out_val;
 
 	in = (jack_default_audio_sample_t*)jack_port_get_buffer (input_port, nframes);
 	out = (jack_default_audio_sample_t*)jack_port_get_buffer (output_port, nframes);
