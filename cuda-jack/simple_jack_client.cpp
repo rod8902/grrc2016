@@ -36,6 +36,7 @@ double m_Fx;
 double m_lambda;
 double *m_taps;
 double *m_sr;
+int first_exec;
 /*
 extern "C" void RunGPU_DSP( int grid, jack_default_audio_sample_t *ins, jack_default_audio_sample_t *outs, int count);
 
@@ -144,12 +145,12 @@ double do_sample(double data_sample)
 	m_sr[0] = data_sample;
 
 	result = 0;
-	printf("m_taps: ");
+	//printf("m_taps: ");
 	for(i = 0; i < m_num_taps; i++) {
 		result += m_sr[i] * m_taps[i];
-		printf(" %f ", m_taps[i]);
+		//printf(" %f ", m_taps[i]);
 	}
-	printf("\n");
+	//printf("\n");
 
 	return result;
 }
@@ -178,8 +179,10 @@ _process (jack_nframes_t nframes, void *arg)
 	out = (jack_default_audio_sample_t*)jack_port_get_buffer (output_port, nframes);
 	//in = (short*) jack_port_get_buffer(input_port, nframes);
 	//out = (short*) jack_port_get_buffer(output_port, nframes);
-
-	filter(16, 44.1, 2.0);
+	if(!first_exec){
+		filter(16, 44.1, 2.0);
+		first_exec=1;
+	}
 
 	for(int i=0; i < nframes; i++){
 		
@@ -294,7 +297,7 @@ main (int argc, char *argv[])
 	jack_status_t status;
 	
 	/* open a client connection to the JACK server */
-
+	first_exec = 0;
 	client = jack_client_open (client_name, options, &status, server_name);
 	if (client == NULL) {
 		fprintf (stderr, "jack_client_open() failed, "
