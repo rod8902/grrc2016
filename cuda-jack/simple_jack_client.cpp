@@ -184,9 +184,7 @@ _process (jack_nframes_t nframes, void *arg)
 	}
 
 	for(int i=0; i < nframes; i++){
-		//printf(" in: %f, ", in[i]);	
 		out[i] = do_sample(in[i]);
-		//printf("out: %f\n", out[i]);
 		
 	}
 
@@ -285,8 +283,8 @@ main (int argc, char *argv[])
 
 	pio->client=client;
 
-	//if(jack_set_process_thread (client, jack_thread, &io) < 0)
-	if(jack_set_process_callback (client, _process, &io) < 0)
+	if(jack_set_process_thread (client, jack_thread, &io) < 0)
+	//if(jack_set_process_callback (client, _process, &io) < 0)
 	    exit(1);
 
 
