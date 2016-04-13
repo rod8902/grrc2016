@@ -209,7 +209,7 @@ _process (jack_nframes_t nframes, void *arg)
 					cudaMemcpyHostToDevice );
 	if( rc != cudaSuccess )
 	{
-		printf( " !cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
+		printf( " !!!cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
 		
 	}
 	rc = cudaMemcpy( gpuio->p_taps, m_taps, 
@@ -217,11 +217,17 @@ _process (jack_nframes_t nframes, void *arg)
 					cudaMemcpyHostToDevice );
 	if( rc != cudaSuccess )
 	{
-		printf( " !! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
+		printf( " !!!! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
 	}
 
 	//////////////////////////////////////////////////////////////////////
 	// parallel processing
+	/*
+	printf("before p_sr: ");
+	for( int j=0; j<32; j++)	printf("%f ", m_sr[j]);
+	printf("\n");
+	*/
+
 	RunGPU_DSP(gpuio->p_in, gpuio->p_out, gpuio->p_sr, gpuio->p_taps, NUMTAPS);	
 	//RunGPU_DSP functions is in .cu file
 	//////////////////////////////////////////////////////////////////////
@@ -233,7 +239,7 @@ _process (jack_nframes_t nframes, void *arg)
 
 	if( rc != cudaSuccess )
 	{
-		printf( " !!! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
+		printf( " !!!!! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
 	}
 		
 	rc = cudaMemcpy( out, gpuio->p_out, 
@@ -242,24 +248,33 @@ _process (jack_nframes_t nframes, void *arg)
 
 	if( rc != cudaSuccess )
 	{
-		printf( " !!!! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
+		printf( " !!!!!! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
 	}
-	
+/*	
 	rc = cudaMemcpy( m_sr, gpuio->p_sr, 
 					sizeof(jack_default_audio_sample_t) * NUMTAPS, 
-					cudaMemcpyHostToDevice );
+					cudaMemcpyDeviceToHost );
 	if( rc != cudaSuccess )
 	{
-		printf( " !cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
+		printf( " !!!!!!!!cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
 		
 	}
 	rc = cudaMemcpy( m_taps, gpuio->p_taps, 
 					sizeof(jack_default_audio_sample_t) * NUMTAPS, 
-					cudaMemcpyHostToDevice );
+					cudaMemcpyDeviceToHost );
 	if( rc != cudaSuccess )
 	{
-		printf( " !! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
+		printf( " !!!!!!!!! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
 	}
+*/
+	
+	for( int j=0; j<32; j++)	printf("%f ", in[2047-j]);
+	
+	printf("After p_sr: ");
+	for( int j=0; j<32; j++)	printf("%f ", m_sr[j]);
+	printf("\n");
+	
+
 	//count += grid * THREADS_PER_BLOCK;
 	return 0;
 }
@@ -343,7 +358,7 @@ int	main (int argc, char *argv[])
 	jack_status_t status;
 	
 	/* open a client connection to the JACK server */
-
+	first=0;
 	client = jack_client_open (client_name, options, &status, server_name);
 				// CUDA-DSP , JackNullOption, ?, NULL
 	if (client == NULL) {
