@@ -19,13 +19,16 @@ typedef struct io_t {
 	jack_default_audio_sample_t *p_in;
 	jack_default_audio_sample_t *p_out;
 	jack_client_t *client;
- 	int first_exec;
+ 	
+	int first_exec;
+
 } IO_T;
 
 
 jack_port_t *input_port;
 jack_port_t *output_port;
 jack_client_t *client;
+
 IO_T io;
 IO_T* pio=&io;
 
@@ -36,7 +39,7 @@ double m_Fx;
 double m_lambda;
 double *m_taps;
 double *m_sr;
-int first_exec;
+int first;
 /*
 extern "C" void RunGPU_DSP( int grid, jack_default_audio_sample_t *ins, jack_default_audio_sample_t *outs, int count);
 
@@ -132,10 +135,11 @@ void filter(int num_taps, double Fs, double Fx)
 	return;
 }
 
-double do_sample(double data_sample)
+//double do_sample(double data_sample)
+float do_sample(float data_sample)
 {
 	int i;
-	double result;
+	float result;
 
 	//if( m_error_flag != 0 ) return(0);
 
@@ -170,61 +174,24 @@ _process (jack_nframes_t nframes, void *arg)
 	//cudaError rc;
 	
 	jack_default_audio_sample_t *in, *out;
-	//short *in, *out;
 
 	float samp_dat;
 	double out_val;
 
 	in = (jack_default_audio_sample_t*)jack_port_get_buffer (input_port, nframes);
 	out = (jack_default_audio_sample_t*)jack_port_get_buffer (output_port, nframes);
-	//in = (short*) jack_port_get_buffer(input_port, nframes);
-	//out = (short*) jack_port_get_buffer(output_port, nframes);
-	if(!first_exec){
+	
+	if(!first){
 		filter(16, 44.1, 2.0);
-		first_exec=1;
+		first=1;
 	}
 
 	for(int i=0; i < nframes; i++){
-		
-		//samp_dat =  in[i];
-		//out_val = do_sample((double) samp_dat);
-		//samp_dat =  out_val;
-		//out[i] = samp_dat;
-		out[i] = (float) do_sample((double) in[i]);
-		
-		//samp_dat = 0.543543543*in[i];
-		//out[i] = samp_dat;
-		
-		//out[i]=in[i];
-	}
-
-/*
-	rc = cudaMemcpy( gpuio->p_in, in, sizeof(jack_default_audio_sample_t) * nframes, cudaMemcpyHostToDevice );
-	if( rc != cudaSuccess )
-	{
-		printf( " cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
+		//printf(" in: %f, ", in[i]);	
+		out[i] = do_sample(in[i]);
+		//printf("out: %f\n", out[i]);
 		
 	}
-	rc = cudaMemcpy( gpuio->p_out, out, sizeof(jack_default_audio_sample_t) * nframes, cudaMemcpyHostToDevice );
-        if( rc != cudaSuccess )
-        {
-                printf( " ! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
-        }
-
-	RunGPU_DSP( grid, gpuio->p_in, gpuio->p_out, nframes );
-	
-	rc = cudaMemcpy( in, gpuio->p_in, sizeof(jack_default_audio_sample_t) * nframes, cudaMemcpyDeviceToHost );
-	if( rc != cudaSuccess )
-	{
-		printf( " ! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
-	}
-		
-	rc = cudaMemcpy( out, gpuio->p_out, sizeof(jack_default_audio_sample_t) * nframes, cudaMemcpyDeviceToHost );
-	if( rc != cudaSuccess )
-	{
-		printf( " ! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
-	}
-*/	
 
 	return 0;
 }
@@ -297,7 +264,7 @@ main (int argc, char *argv[])
 	jack_status_t status;
 	
 	/* open a client connection to the JACK server */
-	first_exec = 0;
+	first = 0;
 	client = jack_client_open (client_name, options, &status, server_name);
 	if (client == NULL) {
 		fprintf (stderr, "jack_client_open() failed, "
