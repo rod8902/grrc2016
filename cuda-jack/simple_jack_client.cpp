@@ -101,7 +101,7 @@ void designLPF()
 
 	for(n = 0; n < m_num_taps; n++){
 		mm = n - (m_num_taps - 1.0) / 2.0;
-		if( mm == 0.0 ) m_taps[n] = m_lambda / M_PI;
+		if( mm == 0.0 ) m_taps[n] =	m_lambda / M_PI;
 		else m_taps[n] = sin( mm * m_lambda ) / (mm * M_PI);
 	}
 
@@ -136,7 +136,7 @@ double do_sample(double data_sample)
 	int i;
 	double result;
 
-	if( m_error_flag != 0 ) return(0);
+	//if( m_error_flag != 0 ) return(0);
 
 	for(i = m_num_taps - 1; i >= 1; i--){
 		m_sr[i] = m_sr[i-1];
@@ -144,7 +144,12 @@ double do_sample(double data_sample)
 	m_sr[0] = data_sample;
 
 	result = 0;
-	for(i = 0; i < m_num_taps; i++) result += m_sr[i] * m_taps[i];
+	printf("m_taps: ");
+	for(i = 0; i < m_num_taps; i++) {
+		result += m_sr[i] * m_taps[i];
+		printf(" %f ", m_taps[i]);
+	}
+	printf("\n");
 
 	return result;
 }
@@ -174,15 +179,19 @@ _process (jack_nframes_t nframes, void *arg)
 	//in = (short*) jack_port_get_buffer(input_port, nframes);
 	//out = (short*) jack_port_get_buffer(output_port, nframes);
 
-	filter(32, 44.1, 2.0);
+	filter(16, 44.1, 2.0);
 
 	for(int i=0; i < nframes; i++){
 		
-		samp_dat =  in[i];
-		out_val = do_sample((double) samp_dat);
-		samp_dat =  out_val;
-		out[i] = samp_dat;
-	
+		//samp_dat =  in[i];
+		//out_val = do_sample((double) samp_dat);
+		//samp_dat =  out_val;
+		//out[i] = samp_dat;
+		out[i] = (float) do_sample((double) in[i]);
+		
+		//samp_dat = 0.543543543*in[i];
+		//out[i] = samp_dat;
+		
 		//out[i]=in[i];
 	}
 
