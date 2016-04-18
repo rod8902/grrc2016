@@ -1,4 +1,4 @@
-EXE	:= gpujacktest
+EXE	:= firlpf firhpf	#gpujacktest
 
 # CUDA source files (compiled with nvcc)
 CUFILES	:= origin_dsp5.cu		
@@ -17,13 +17,12 @@ CCLIBS	:= -ljack -lcudart -lcuda
 # Rules and targets
 
 all:
-	g++ simple_jack_client.cpp -o cpujackclient -ljack
 	#nvcc $(CUINC) -c $(CUFILES) -o cu.o $(SMFLAGS)
 	#g++ $(CUINC) $(CCMAIN) cu.o -o $(EXE) $(LIBDIR) $(CCLIBS)
-	#nvcc $(CUINC) -c firlpf.cu -o lpfcu.o $(SMFLAGS)
-	#g++ $(CUINC) lpf_cudajack_client.cpp lpfcu.o -o firlpf $(LIBDIR) $(CCLIBS)
-	#nvcc $(CUINC) -c firhpf.cu -o hpfcu.o $(SMFLAGS)
-	#g++ $(CUINC) hpf_cudajack_client.cpp hpfcu.o -o firhpf $(LIBDIR) $(CCLIBS)
+	nvcc $(CUINC) -c firlpf.cu -o lpfcu.o $(SMFLAGS)
+	g++ $(CUINC) lpf_cudajack_client.cpp lpfcu.o -o firlpf $(LIBDIR) $(CCLIBS)
+	nvcc $(CUINC) -c firhpf.cu -o hpfcu.o $(SMFLAGS)
+	g++ $(CUINC) hpf_cudajack_client.cpp hpfcu.o -o firhpf $(LIBDIR) $(CCLIBS)
 
 
 
@@ -42,7 +41,7 @@ all:
 #$(CCFILES):
 #	$(CXX) $(CUINC) $< -o $@
 #
-#clean:
-#	rm -rf *.o $(EXE)
-#
+clean:
+	rm -rf *.o $(EXE)
+
 
