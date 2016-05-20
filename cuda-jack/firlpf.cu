@@ -39,7 +39,7 @@ __global__ void do_sample(const float *g_indata, float *g_outdata, float *g_sr, 
 			sr[i] = g_indata[x-i];
 		}
 	}else
-		printf("a\n");
+	//	printf("a\n");
 	
 	__syncthreads();
 
@@ -52,13 +52,6 @@ __global__ void do_sample(const float *g_indata, float *g_outdata, float *g_sr, 
 	g_outdata[x] = result;	//g_indata[x];
 	__syncthreads();
 
-	// fill g_sr 
-	if( x >= 2016 && x < 2048){
-		for(i=0;i<g_num_taps;i++){
-			g_sr[i] = g_indata[2047-i];
-		}
-	}
-	__syncthreads();
 }
 
 extern "C" void RunGPU_DSP( jack_default_audio_sample_t *ins, jack_default_audio_sample_t *outs, jack_default_audio_sample_t *sr, jack_default_audio_sample_t *taps, int numtaps)

@@ -268,13 +268,9 @@ _process (jack_nframes_t nframes, void *arg)
 	}
 */
 	
-	for( int j=0; j<32; j++)	printf("%f ", in[2047-j]);
+	for( int j=0; j<32; j++)	 
+		m_sr[j] = in[2047-j];
 	
-	printf("After p_sr: ");
-	for( int j=0; j<32; j++)	printf("%f ", m_sr[j]);
-	printf("\n");
-	
-
 	//count += grid * THREADS_PER_BLOCK;
 	return 0;
 }
