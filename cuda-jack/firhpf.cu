@@ -38,8 +38,7 @@ __global__ void do_sample(const float *g_indata, float *g_outdata, float *g_sr, 
 		for(i=0; i<g_num_taps;i++){
 			sr[i] = g_indata[x-i];
 		}
-	}else
-		printf("a\n");
+	}
 	
 	__syncthreads();
 
@@ -49,15 +48,13 @@ __global__ void do_sample(const float *g_indata, float *g_outdata, float *g_sr, 
 		result += sr[i] * g_taps[i];
 	}
 
-	g_outdata[x] = result;	//g_indata[x];
+	g_outdata[x] = result;
 	__syncthreads();
 
 }
 
 extern "C" void RunGPU_DSP( jack_default_audio_sample_t *ins, jack_default_audio_sample_t *outs, jack_default_audio_sample_t *sr, jack_default_audio_sample_t *taps, int numtaps)
 {
-	// count is nframes, ex) 2048 or 4096
-	//calcFIR<<< BLOCKS,THREAD_NUM >>>( ins, outs, count );
-	// 64, 32 - 2048
 	do_sample<<<BLOCKS, THREAD_NUM>>>(ins, outs, sr, taps, numtaps);
+	//<<< 64, 32 >>> - 2048
 }

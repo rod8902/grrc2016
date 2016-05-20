@@ -48,7 +48,6 @@ int cuda_initialise()
 {
 	pio->first_exec=0;
 	IO_T *ptio=&io;
-	//int nframes = 10000;
 	int deviceCount = 0;
 	int multiCount = 1;
 	cudaError rc;
@@ -74,7 +73,6 @@ int cuda_initialise()
 	if( deviceCount == 0 )
 	{
 		printf( " CUDA capable device v. 1.1 needed\n" );
-//		return 0;
 	}
 	else
 	{
@@ -140,21 +138,15 @@ float do_sample(float data_sample)	// Part of implementing in cuda code
 	int i;
 	float result;
 
-	//if( m_error_flag != 0 ) return(0);
-
 	for(i = m_num_taps - 1; i >= 1; i--){
 		m_sr[i] = m_sr[i-1];
 	}	
 	m_sr[0] = data_sample;
 
 	result = 0;
-	//printf("m_taps: ");
 	for(i = 0; i < m_num_taps; i++) {
 		result += m_sr[i] * m_taps[i];
-		//printf(" %f ", m_taps[i]);
 	}
-	//printf("\n");
-
 	return result;
 }
 
@@ -177,19 +169,17 @@ _process (jack_nframes_t nframes, void *arg)
 
 	int ref_size = nframes;	//+32;
 	
-	//printf("%d\n", nframes);	//debug
-	
 	if(!first){
 		filter(NUMTAPS, 44.1, 2.0);
 		first=1;
 	}
 
-	in = (jack_default_audio_sample_t*)jack_port_get_buffer (input_port, ref_size);//nframes);
-	out = (jack_default_audio_sample_t*)jack_port_get_buffer (output_port, ref_size);//nframes);
+	in = (jack_default_audio_sample_t*)jack_port_get_buffer (input_port, ref_size);
+	out = (jack_default_audio_sample_t*)jack_port_get_buffer (output_port, ref_size);
 
 	// Copy from cpu memory to gpu memory
 	rc = cudaMemcpy( gpuio->p_in, in, 
-					sizeof(jack_default_audio_sample_t) * ref_size/*nframes*/, 
+					sizeof(jack_default_audio_sample_t) * ref_size, 
 					cudaMemcpyHostToDevice );
 	if( rc != cudaSuccess )
 	{
@@ -197,7 +187,7 @@ _process (jack_nframes_t nframes, void *arg)
 		
 	}
 	rc = cudaMemcpy( gpuio->p_out, out, 
-					sizeof(jack_default_audio_sample_t) * ref_size/*nframes*/, 
+					sizeof(jack_default_audio_sample_t) * ref_size, 
 					cudaMemcpyHostToDevice );
 	if( rc != cudaSuccess )
 	{
@@ -222,19 +212,13 @@ _process (jack_nframes_t nframes, void *arg)
 
 	//////////////////////////////////////////////////////////////////////
 	// parallel processing
-	/*
-	printf("before p_sr: ");
-	for( int j=0; j<32; j++)	printf("%f ", m_sr[j]);
-	printf("\n");
-	*/
-
 	RunGPU_DSP(gpuio->p_in, gpuio->p_out, gpuio->p_sr, gpuio->p_taps, NUMTAPS);	
 	//RunGPU_DSP functions is in .cu file
 	//////////////////////////////////////////////////////////////////////
 
 	// Copy from gpu memory to cpu memory
 	rc = cudaMemcpy( in, gpuio->p_in, 
-					sizeof(jack_default_audio_sample_t) * ref_size/*nframes*/, 
+					sizeof(jack_default_audio_sample_t) * ref_size, 
 					cudaMemcpyDeviceToHost );
 
 	if( rc != cudaSuccess )
@@ -243,35 +227,16 @@ _process (jack_nframes_t nframes, void *arg)
 	}
 		
 	rc = cudaMemcpy( out, gpuio->p_out, 
-					sizeof(jack_default_audio_sample_t) * ref_size/*nframes*/, 
+					sizeof(jack_default_audio_sample_t) * ref_size, 
 					cudaMemcpyDeviceToHost );
 
 	if( rc != cudaSuccess )
 	{
 		printf( " !!!!!! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
 	}
-/*	
-	rc = cudaMemcpy( m_sr, gpuio->p_sr, 
-					sizeof(jack_default_audio_sample_t) * NUMTAPS, 
-					cudaMemcpyDeviceToHost );
-	if( rc != cudaSuccess )
-	{
-		printf( " !!!!!!!!cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
-		
-	}
-	rc = cudaMemcpy( m_taps, gpuio->p_taps, 
-					sizeof(jack_default_audio_sample_t) * NUMTAPS, 
-					cudaMemcpyDeviceToHost );
-	if( rc != cudaSuccess )
-	{
-		printf( " !!!!!!!!! cudaMemcpy() failed: %s\n", cudaGetErrorString( rc ) );
-	}
-*/
-	
 	for( int j=0; j<32; j++)	 
 		m_sr[j] = in[2047-j];
 	
-	//count += grid * THREADS_PER_BLOCK;
 	return 0;
 }
 
@@ -283,7 +248,6 @@ static void* jack_thread (void *arg)
 {
 	cudaError rc;
 	io_t *gpuio=(io_t *)arg;
-	//float firstM[32]={0.0f};
 
 	if (!gpuio->first_exec) {
 		rc = cudaMalloc( (void **)&(gpuio->p_in), sizeof(jack_default_audio_sample_t) * FRAMES );
